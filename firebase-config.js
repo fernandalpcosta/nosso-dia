@@ -15,4 +15,11 @@
  *   appId: "1:123456789:web:abc123"
  * };
  */
-window.NOSSO_DIA_FIREBASE = null;
+window.NOSSO_DIA_FIREBASE = {
+  apiKey: "AIzaSyBJ4M5xGSkDpGkWvMQfazFx9DTIp9E3JEk",
+  authDomain: "nosso-dia-95576.firebaseapp.com",
+  projectId: "nosso-dia-95576",
+  storageBucket: "nosso-dia-95576.firebasestorage.app",
+  messagingSenderId: "893951414894",
+  appId: "1:893951414894:web:1827a95d128b60616b0c7f"
+};
