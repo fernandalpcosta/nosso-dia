@@ -1,0 +1,12 @@
+rules_version = '2';
+
+// Nosso Dia: cada casal guarda tudo em casais/{código}/...
+// Só entra quem fez login (anônimo) e sabe o código. Não dá para listar os casais,
+// porque as regras só valem a partir de uma subcoleção dentro de um código.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /casais/{casal}/{colecao}/{resto=**} {
+      allow read, write: if request.auth != null && casal.size() >= 8;
+    }
+  }
+}

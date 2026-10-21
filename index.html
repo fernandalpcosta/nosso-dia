@@ -223,6 +223,12 @@ body {
   <div class="wrap" id="app-vod" hidden></div>
 </section>
 
+<!-- Fora do Claude: Firebase + backend.js criam o mesmo window.claude que a página usa. -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="backend.js"></script>
 <script>
 
 (function () {
@@ -328,7 +334,7 @@ body {
 
   /* ---------- Escritas ---------- */
   function fail(e) {
-    S.note = "Não consegui salvar. Peça acesso de Colaborador na página e tente de novo.";
+    S.note = "Não consegui salvar. Confira a internet e tente de novo.";
     render();
   }
   function saveName() {
@@ -553,11 +559,11 @@ body {
     var kids = [h("div", { class: "head" }, [h("h1", { text: "Nosso Dia" }), clocks])];
 
     if (S.dbOk === undefined) kids.push(h("p", { class: "empty", text: "Abrindo o cantinho de vocês…" }));
-    else if (S.dbOk === false) kids.push(h("p", { class: "note", text: "Os dados compartilhados não estão disponíveis aqui. Abra o link dentro do Claude, na sua conta, para salvar e ver a outra pessoa." }));
+    else if (S.dbOk === false) kids.push(h("p", { class: "note", text: "Os dados compartilhados não estão disponíveis agora. Veja em Ajustes, no fim da página." }));
 
     if (S.note) kids.push(h("p", { class: "note", role: "status", text: S.note }));
     if (S.dbOk && !m) kids.push(cardNome());
-    if (S.dbOk && m && !p) kids.push(h("p", { class: "note", text: "Falta a outra pessoa entrar. Compartilhe esta página com ela como Colaborador." }));
+    if (S.dbOk && m && !p) kids.push(h("p", { class: "note", text: "Falta a outra pessoa entrar. Mande o link do nosso espaço para ela (em Ajustes, no fim da página)." }));
     kids.push(cardGratidao(), cardEscuta(), cardPlano());
 
     app.textContent = "";
@@ -1276,7 +1282,7 @@ body {
     render();
     S.db.doc("puzzle/current/pieces/" + m.round + "_" + idx).set(doc).catch(function () {
       S.pieces = S.pieces.filter(function (p) { return p !== doc; });
-      S.note = "Não consegui salvar a peça. Peça acesso de Colaborador na página.";
+      S.note = "Não consegui salvar a peça. Confira a internet.";
       render();
     });
   }
@@ -1297,7 +1303,7 @@ body {
       });
       S.setup = false; S.draft = null; S.draftKind = ""; S.sel = null; S.hint = false; S.pieces = [];
     } catch (e) {
-      S.note = "Não consegui salvar. Confira se você tem acesso de Colaborador nesta página.";
+      S.note = "Não consegui salvar. Confira a internet e tente de novo.";
     }
     S.busy = false; render();
   }
@@ -1405,7 +1411,7 @@ body {
     var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Quebra-cabeça"])])];
     kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Montem juntas" }), h("p", { text: "Cada peça que um coloca aparece na tela do outro." })]));
     if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o quebra-cabeça…" }));
-    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para montar juntas, abra esta página dentro do Claude, com a sua conta." }));
+    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para montar juntas, os dados compartilhados precisam estar ligados. Veja em Ajustes, no fim da página." }));
     else if (!S.meta || S.setup) kids.push(viewSetup());
     else viewGame().forEach(function (k) { kids.push(k); });
     root.textContent = "";
@@ -1616,7 +1622,7 @@ body {
   }
   function save(doc) {
     S.db.doc("vod/current").set(doc).catch(function () {
-      S.note = "Não consegui salvar. Peça acesso de Colaborador na página.";
+      S.note = "Não consegui salvar. Confira a internet e tente de novo.";
       render();
     });
   }
@@ -1687,7 +1693,7 @@ body {
     var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Verdade ou desafio"])])];
     kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Verdade ou desafio" }), h("p", { text: "Uma pessoa por vez. A carta aparece para as duas." })]));
     if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o jogo…" }));
-    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para jogar juntas, abra esta página dentro do Claude, com a sua conta." }));
+    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para jogar juntas, os dados compartilhados precisam estar ligados. Veja em Ajustes, no fim da página." }));
     else {
       var st = cur(), mine = st.turn === S.myKey;
       kids.push(h("div", { class: "pz-top" }, [h("span", { class: "chip", text: mine ? "Sua vez" : "Vez de " + nameOf(st.turn) }), legend()]));

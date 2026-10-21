@@ -51,8 +51,41 @@ Uma pessoa por vez; a carta aparece para as duas ao mesmo tempo.
 
 ## Como funciona
 
-Tudo em HTML, CSS e JavaScript puro, sem build. Os dados compartilhados (pessoas, gratidões, plano, histórico), a sincronia em tempo real (timer e jogo) e as sugestões com IA usam os recursos de runtime dos Artifacts do Claude (`window.claude`: `db`, `room`, `user`, `sample`).
+Tudo em HTML, CSS e JavaScript puro, sem build. O app conversa com o "backend" por uma única interface, `window.claude.use(...)`, com quatro peças: `db` (dados), `room` (tempo real), `user` (quem é você) e `sample` (IA).
 
-Fora do Claude (por exemplo, abrindo o `index.html` direto ou pelo GitHub Pages), a página carrega mas mostra um aviso de que os dados compartilhados não estão disponíveis. O jogo continua funcionando no modo "mesmo celular". Para hospedar de forma independente, seria preciso trocar essas chamadas por um backend próprio (por exemplo, Firebase ou Supabase).
+- **Dentro do Claude** (como Artifact), essas peças vêm do próprio Claude.
+- **Fora do Claude** (GitHub Pages ou qualquer hospedagem), o `backend.js` cria a mesma interface usando o Firebase:
+  - `db`: Cloud Firestore. Tudo de um casal fica em `casais/{código}/…`.
+  - `user`: login anônimo do Firebase (cada aparelho/navegador tem um id).
+  - `room`: salas em tempo real feitas no Firestore (eventos + presença), usadas pelo timer de escuta e pelas salas do Mais Provável.
+  - `sample`: opcional. Quem quiser IA cola uma chave da API da Anthropic em **Ajustes**; ela fica só naquele aparelho.
+
+### O código do casal
+
+Na primeira vez, quem começa toca em **Criar nosso espaço** e ganha um código de 10 letras e números. Em **Ajustes do nosso espaço** (no fim da página) dá para copiar um link com o código e mandar para a outra pessoa; ao abrir o link, ela já entra no mesmo espaço. Quem tem o código vê os dados, então ele deve ficar só entre vocês.
+
+Se alguém limpar os dados do navegador ou trocar de celular, o app passa a ver essa pessoa como alguém novo. Nesse caso é só entrar de novo com o mesmo código.
+
+## Como publicar fora do Claude
+
+### 1. Firebase (gratuito, plano Spark)
+
+1. Em [console.firebase.google.com](https://console.firebase.google.com), crie um projeto (o Google Analytics pode ficar desligado).
+2. **Authentication → Começar → Método de login → Anônimo → Ativar.**
+3. **Firestore Database → Criar banco de dados** → modo de produção, qualquer região próxima.
+4. Na aba **Regras** do Firestore, cole o conteúdo de [`firestore.rules`](firestore.rules) e publique.
+5. **Configurações do projeto → Seus apps → ícone `</>` (Web)** → registre o app (sem Hosting) e copie o objeto `firebaseConfig`.
+6. Cole esses valores em [`firebase-config.js`](firebase-config.js), no lugar de `null`.
+7. **Authentication → Configurações → Domínios autorizados → Adicionar domínio:** `fernandalpcosta.github.io`.
+
+Os valores do `firebaseConfig` podem ficar públicos; quem protege os dados são as regras e o código do casal.
+
+### 2. GitHub Pages
+
+1. O Pages gratuito só funciona com repositório público: **Settings → General → Danger Zone → Change visibility → Public**. O repositório não tem senhas nem dados de vocês (os dados ficam no Firebase).
+2. **Settings → Pages → Source: Deploy from a branch → `main` / `(root)` → Save.**
+3. Em 1 a 2 minutos o app fica em `https://fernandalpcosta.github.io/nosso-dia/`.
+
+Sem o `firebase-config.js` preenchido, a página abre normalmente, mas sem salvar nem sincronizar nada (o Mais Provável no modo "mesmo celular" funciona).
 
 Tema claro e escuro automáticos, layout pensado para celular.
