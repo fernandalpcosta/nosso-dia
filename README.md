@@ -21,7 +21,11 @@ Cada item mostra a contagem regressiva. Ao marcar "Fizemos!", o momento entra na
 
 No topo, dois relógios mostram a hora "aqui" e "aí", usando o fuso horário de cada aparelho.
 
-## Jogos: Mais Provável
+## Jogos
+
+A aba tem três jogos; o último escolhido fica lembrado no aparelho.
+
+### Mais Provável
 
 "Quem é mais provável de…?" para duas pessoas.
 - Sala online com código de 4 letras, ou jogo no mesmo celular (passando o aparelho).
@@ -29,6 +33,21 @@ No topo, dois relógios mostram a hora "aqui" e "aí", usando o fuso horário de
 - Climas: engraçado, apocalipse, romântico, absurdo, profundo.
 - Baralho fixo de 20 cartas, mais cartas geradas por IA.
 - Placar de *sintonia*: quantas vezes os dois apontaram para a mesma pessoa.
+
+### Quebra-cabeça
+
+Um quebra-cabeça montado a quatro mãos, em tempo real.
+- Imagem: uma das ilustrações prontas (pôr do sol, estrelas, mar) ou uma foto de vocês.
+- Tamanhos de 9, 16 ou 25 peças.
+- Cada peça encaixada aparece na hora para a outra pessoa, com barra de progresso.
+- Começar um novo quebra-cabeça apaga o progresso do atual.
+
+### Verdade ou desafio
+
+Uma pessoa por vez; a carta aparece para as duas ao mesmo tempo.
+- Níveis: fofo, divertido e picante.
+- Baralho fixo mais cartas geradas por IA, com desafios que dá para cumprir por videochamada ou mensagem.
+- Botões "Respondi" / "Cumpri" passam a vez para a outra pessoa.
 
 ## Como funciona
 

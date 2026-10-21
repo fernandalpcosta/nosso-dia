@@ -105,7 +105,7 @@ body {
 #jogos .hero h1{font-size: clamp(2rem, 9vw, 2.7rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.03em;}
 #jogos .hero p{margin: 10px 0 0; color: var(--muted); max-width: 34ch;}
 #jogos .panel{background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px;}
-#jogos label.lbl{font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
+#jogos .lbl{font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
 #jogos input[type="text"]{width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 11px 12px;}
 #jogos input[type="text"]:focus-visible,#jogos button:focus-visible{outline: 3px solid var(--a); outline-offset: 2px;}
 #jogos .code-in{text-transform: uppercase; letter-spacing: 0.25em; text-align: center; font-weight: 700;}
@@ -157,6 +157,54 @@ body {
 #jogos .pass h2{font-size: 1.5rem;}
 #jogos .big-code{font-family: var(--font-display); font-weight: 800; font-size: 2rem; letter-spacing: 0.22em; padding-left: 0.22em;}
 #jogos .hidden-link{background: none; border: 0; color: var(--muted); text-decoration: underline; padding: 6px; font-size: 0.85rem;}
+#jogos [hidden], #hoje [hidden] { display: none !important; }
+#app-puzzle .imgs { display: grid; grid-template-columns: 1fr 1fr; }
+#jogos .gamepick { max-width: 460px; margin: 0 auto 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+#jogos .gamepick button { flex: 1 1 auto; min-width: 0; font: inherit; font-weight: 700; cursor: pointer; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 10px; padding: 9px 10px; }
+#jogos .gamepick button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+#jogos .gamepick button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+#app-puzzle .lbl { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+#app-puzzle .pz-title { font-size: clamp(1.8rem, 8vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+#app-puzzle .pz-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+#app-puzzle .legend { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; flex-wrap: wrap; }
+#app-puzzle .legend .sw + .sw { margin-left: 6px; }
+#app-puzzle .bar { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+#app-puzzle .bar i { display: block; height: 100%; background: var(--ok); border-radius: 999px; }
+#app-puzzle .board { position: relative; display: grid; width: 100%; aspect-ratio: 1; border-radius: 12px; overflow: hidden; border: 2px solid var(--ink); background: var(--surface); }
+#app-puzzle .ghost { position: absolute; inset: 0; background-image: var(--pz-img); background-size: 100% 100%; opacity: 0.28; pointer-events: none; }
+#app-puzzle .cell { position: relative; min-width: 0; padding: 0; margin: 0; border: 1px dashed var(--line); border-radius: 0; background: transparent; cursor: pointer; }
+#app-puzzle .cell:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); }
+#app-puzzle .cell.placed { border: 0; cursor: default; background-image: var(--pz-img); background-color: var(--surface); background-repeat: no-repeat; }
+#app-puzzle .cell.placed:hover { background-color: var(--surface); }
+#app-puzzle .cell:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+#app-puzzle .cell.shake { animation: pz-shake 0.3s; background: color-mix(in srgb, var(--b) 25%, transparent); }
+#app-puzzle .board.done .cell { border: 0; }
+#app-puzzle .dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #fff; }
+#app-puzzle .dot.a { background: var(--a); }
+#app-puzzle .dot.b { background: var(--b); }
+#app-puzzle .tray { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px; }
+#app-puzzle .piece { aspect-ratio: 1; min-width: 0; padding: 0; border: 2px solid var(--line); border-radius: 8px; background-image: var(--pz-img); background-color: var(--surface); background-repeat: no-repeat; cursor: pointer; }
+#app-puzzle .piece:hover { border-color: var(--muted); }
+#app-puzzle .piece.sel { border-color: var(--ink); outline: 3px solid var(--ink); outline-offset: 1px; transform: scale(1.06); }
+#app-puzzle .preview { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+#app-puzzle .filein { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+#app-puzzle .filebtn { flex: 1 1 0; min-width: 0; text-align: center; cursor: pointer; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 10px 12px; font-weight: 500; }
+#app-puzzle .filein:focus-visible + .filebtn { outline: 3px solid var(--ink); outline-offset: 2px; }
+@keyframes pz-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { #app-puzzle .cell.shake { animation: none; } #app-puzzle .piece.sel { transform: none; } }
+#app-vod .lbl { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px; }
+#app-vod .pz-title { font-size: clamp(1.8rem, 8vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+#app-vod .pz-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+#app-vod .legend { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; font-weight: 700; min-width: 0; }
+#app-vod .lg { display: inline-flex; align-items: center; gap: 6px; }
+#app-vod .bigpick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#app-vod .bigpick button { padding: 26px 10px; font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; border: 0; }
+#app-vod .bigpick .v { background: var(--a); color: var(--on-a); }
+#app-vod .bigpick .d { background: var(--b); color: var(--on-b); }
+#app-vod .vcard { background: var(--card); color: var(--card-ink); border-radius: 18px; padding: 20px 20px 16px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; transform: rotate(-1deg); box-shadow: 0 14px 28px -14px rgba(10, 12, 40, 0.55); }
+#app-vod .vcard .meta { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+#app-vod .vcard .vq { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 5.8vw, 1.7rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
 </style>
 
 <nav class="tabs" role="tablist" aria-label="Seções">
@@ -164,7 +212,16 @@ body {
   <button type="button" role="tab" data-tab="jogos" aria-selected="false">Jogos</button>
 </nav>
 <section id="hoje"><div class="wrap" id="app-hoje"></div></section>
-<section id="jogos" hidden><div class="wrap" id="app-jogos"></div></section>
+<section id="jogos" hidden>
+  <div class="gamepick" role="group" aria-label="Escolha o jogo">
+    <button type="button" data-game="cartas" aria-pressed="true">Mais Provável</button>
+    <button type="button" data-game="puzzle" aria-pressed="false">Quebra-cabeça</button>
+    <button type="button" data-game="vod" aria-pressed="false">Verdade ou desafio</button>
+  </div>
+  <div class="wrap" id="app-jogos"></div>
+  <div class="wrap" id="app-puzzle" hidden></div>
+  <div class="wrap" id="app-vod" hidden></div>
+</section>
 
 <script>
 
@@ -565,7 +622,7 @@ body {
       here: "{n} entrou", sync: "Sintonia", cardN: "Carta {n}",
       noCard: "Ninguém tirou uma carta ainda.", drawDeck: "Tirar carta do baralho", drawAI: "Gerar com IA", generating: "Gerando…",
       aiFail: "Não consegui gerar agora. Usei uma carta do baralho.", tone: "Clima",
-      tones: { any: "Qualquer", fun: "Engraçado", apoc: "Apocalipse", love: "Romântico", absurd: "Absurdo", deep: "Profundo" },
+      tones: { any: "Qualquer", fun: "Engraçado", apoc: "Apocalipse", love: "Romântico", absurd: "Absurdo", deep: "Profundo", spicy: "Picante" },
       waitFor: "Esperando {n} responder…", passTo: "Passe o celular para {n}", passHint: "Sem olhar a resposta da outra pessoa.", ready: "Sou eu, estou pronto(a)",
       votedFor: "votou em", agreeBoth: "Sintonia! Os dois apontaram para {n}.", eachSelf: "Cada um votou em si mesmo.", eachOther: "Cada um apontou para o outro.",
       next: "Próxima carta", leave: "Sair da sala", pickHint: "Quem é mais provável? Toque em um nome.", gone: "saiu"
@@ -581,7 +638,7 @@ body {
       here: "{n} entró", sync: "Sintonía", cardN: "Carta {n}",
       noCard: "Nadie ha sacado una carta todavía.", drawDeck: "Sacar carta del mazo", drawAI: "Generar con IA", generating: "Generando…",
       aiFail: "No pude generar ahora. Usé una carta del mazo.", tone: "Ambiente",
-      tones: { any: "Cualquiera", fun: "Divertido", apoc: "Apocalipsis", love: "Romántico", absurd: "Absurdo", deep: "Profundo" },
+      tones: { any: "Cualquiera", fun: "Divertido", apoc: "Apocalipsis", love: "Romántico", absurd: "Absurdo", deep: "Profundo", spicy: "Picante" },
       waitFor: "Esperando a que {n} responda…", passTo: "Pásale el móvil a {n}", passHint: "Sin mirar la respuesta de la otra persona.", ready: "Soy yo, estoy listo/a",
       votedFor: "votó por", agreeBoth: "¡Sintonía! Los dos señalaron a {n}.", eachSelf: "Cada uno votó por sí mismo.", eachOther: "Cada uno señaló al otro.",
       next: "Siguiente carta", leave: "Salir de la sala", pickHint: "¿Quién es más probable? Toca un nombre.", gone: "salió"
@@ -597,7 +654,7 @@ body {
       here: "{n} joined", sync: "In sync", cardN: "Card {n}",
       noCard: "Nobody has drawn a card yet.", drawDeck: "Draw from the deck", drawAI: "Generate with AI", generating: "Generating…",
       aiFail: "Could not generate right now. Drew from the deck instead.", tone: "Mood",
-      tones: { any: "Any", fun: "Funny", apoc: "Apocalypse", love: "Romantic", absurd: "Absurd", deep: "Deep" },
+      tones: { any: "Any", fun: "Funny", apoc: "Apocalypse", love: "Romantic", absurd: "Absurd", deep: "Deep", spicy: "Spicy" },
       waitFor: "Waiting for {n} to answer…", passTo: "Pass the phone to {n}", passHint: "No peeking at the other answer.", ready: "It's me, I'm ready",
       votedFor: "voted for", agreeBoth: "In sync! Both pointed at {n}.", eachSelf: "Each one voted for themselves.", eachOther: "Each one pointed at the other.",
       next: "Next card", leave: "Leave room", pickHint: "Who is most likely? Tap a name.", gone: "left"
@@ -628,7 +685,19 @@ body {
     ["absurd", "ficar preso num elevador e sair com um novo melhor amigo", "quedarse atrapado en un ascensor y salir con un nuevo mejor amigo", "get stuck in an elevator and come out with a new best friend"],
     ["absurd", "ganhar na loteria e perder o bilhete", "ganar la lotería y perder el boleto", "win the lottery and lose the ticket"],
     ["deep", "mudar de país por uma oportunidade", "mudarse de país por una oportunidad", "move to another country for an opportunity"],
-    ["deep", "largar tudo para seguir um sonho", "dejarlo todo para perseguir un sueño", "drop everything to chase a dream"]
+    ["deep", "largar tudo para seguir um sonho", "dejarlo todo para perseguir un sueño", "drop everything to chase a dream"],
+    ["spicy", "mandar uma mensagem provocante na hora errada", "mandar un mensaje provocador en el momento equivocado", "send a flirty text at the worst possible moment"],
+    ["spicy", "sentir ciúmes e fingir que não", "sentir celos y fingir que no", "get jealous and pretend not to"],
+    ["spicy", "roubar um beijo em público", "robar un beso en público", "steal a kiss in public"],
+    ["spicy", "morrer de vontade de um abraço e fingir que está tudo bem", "morirse de ganas de un abrazo y fingir que todo está bien", "ache for a hug and pretend everything is fine"],
+    ["spicy", "se arrumar toda para uma chamada de vídeo só para provocar", "arreglarse entera para una videollamada solo para provocar", "dress up for a video call just to tease"],
+    ["spicy", "querer passar o dia inteiro na cama", "querer pasar todo el día en la cama", "want to stay in bed all day"],
+    ["spicy", "seduzir sem perceber", "seducir sin darse cuenta", "be seductive without even noticing"],
+    ["spicy", "planejar uma noite a dois que ninguém esqueceria", "planear una noche para dos que nadie olvidaría", "plan a night for two nobody would forget"],
+    ["spicy", "corar com um elogio", "sonrojarse con un piropo", "blush at a compliment"],
+    ["spicy", "dar o primeiro passo quando a gente se reencontrar", "dar el primer paso cuando nos reencontremos", "make the first move when we are finally together again"],
+    ["spicy", "mandar um áudio com voz de quem acabou de acordar, de propósito", "mandar un audio con voz de recién despertado, a propósito", "send a just-woke-up voice note on purpose"],
+    ["spicy", "usar a roupa do outro e nunca devolver", "usar la ropa del otro y nunca devolverla", "wear the other's clothes and never give them back"]
   ];
   var DECK = RAW.map(function (r, i) {
     return {
@@ -763,10 +832,10 @@ body {
   }
 
   function drawDeck() {
-    var pool = DECK.filter(function (c) { return !S.used[c.id] && (S.tone === "any" || c.tone === S.tone); });
+    var pool = DECK.filter(function (c) { return !S.used[c.id] && (S.tone === "any" ? c.tone !== "spicy" : c.tone === S.tone); });
     if (!pool.length) {
-      DECK.forEach(function (c) { if (S.tone === "any" || c.tone === S.tone) delete S.used[c.id]; });
-      pool = DECK.filter(function (c) { return S.tone === "any" || c.tone === S.tone; });
+      DECK.forEach(function (c) { if (S.tone === "any" ? c.tone !== "spicy" : c.tone === S.tone) delete S.used[c.id]; });
+      pool = DECK.filter(function (c) { return S.tone === "any" ? c.tone !== "spicy" : c.tone === S.tone; });
     }
     var c = pool[Math.floor(Math.random() * pool.length)];
     S.used[c.id] = true;
@@ -777,7 +846,7 @@ body {
   async function drawAI() {
     if (!S.sample || S.busy) return;
     S.busy = true; S.note = ""; render();
-    var toneTxt = S.tone === "any" ? "qualquer clima, surpreenda" : UI.pt.tones[S.tone];
+    var toneTxt = S.tone === "any" ? "qualquer clima, surpreenda, mas sem conteúdo picante" : S.tone === "spicy" ? "picante: flerte, provocação e sensualidade entre adultos que namoram. Sugestivo e divertido, sem descrever atos sexuais de forma explícita" : UI.pt.tones[S.tone];
     var prompt =
       "Crie UMA pergunta para o jogo “Quem é mais provável de…” entre duas pessoas que se conhecem bem e moram em países diferentes.\n" +
       "Clima: " + toneTxt + ".\n" +
@@ -969,7 +1038,7 @@ body {
 
     // controles
     var tones = h("div", { class: "tones", role: "group", "aria-label": t("tone") });
-    ["any", "fun", "apoc", "love", "absurd", "deep"].forEach(function (k) {
+    ["any", "fun", "apoc", "love", "absurd", "deep", "spicy"].forEach(function (k) {
       tones.appendChild(h("button", { type: "button", "aria-pressed": S.tone === k ? "true" : "false", text: UI[S.lang].tones[k], onclick: function () { S.tone = k; render(); } }));
     });
     var canDeal = S.local || S.partnerOnline || true;
@@ -1026,5 +1095,650 @@ body {
 })();
 
 </script>
+<script>
+(function () {
+  "use strict";
+  var root = document.getElementById("app-puzzle");
+  if (!root) return;
+
+  var OKSRC = /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/;
+  var OKROUND = /^[a-z0-9]{1,12}$/;
+  var S = {
+    ok: undefined, db: null, myKey: null, people: {}, meta: null, pieces: [],
+    sel: null, hint: false, setup: false, draft: null, draftKind: "", size: 4,
+    busy: false, note: "", shake: -1, curSrc: ""
+  };
+
+  function safe(id) { return String(id).replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 120); }
+  function pad(n) { return ("0" + n).slice(-2); }
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      var v = attrs[k];
+      if (v === false || v == null) continue;
+      if (k === "class") el.className = v;
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function (c) {
+      if (c == null || c === false) return;
+      el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return el;
+  }
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function hashStr(s) {
+    var x = 2166136261;
+    for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); }
+    return x >>> 0;
+  }
+  function dur(ms) {
+    var s = Math.max(1, Math.round(ms / 1000));
+    if (s < 60) return s + " s";
+    var m = Math.floor(s / 60);
+    if (m < 60) return m + " min " + pad(s % 60) + " s";
+    return Math.floor(m / 60) + " h " + pad(m % 60) + " min";
+  }
+
+  /* ---------- Imagens geradas ---------- */
+  var W = 560, TAU = Math.PI * 2;
+  function art(kind) {
+    var c = document.createElement("canvas"); c.width = c.height = W;
+    var g = c.getContext("2d"), i, k, x, gr;
+    if (kind === "sunset") {
+      var R = rng(7);
+      gr = g.createLinearGradient(0, 0, 0, W);
+      gr.addColorStop(0, "#2b1055"); gr.addColorStop(0.45, "#d53369"); gr.addColorStop(0.72, "#ffb347"); gr.addColorStop(1, "#ffe29f");
+      g.fillStyle = gr; g.fillRect(0, 0, W, W);
+      g.fillStyle = "rgba(255,255,255,0.8)";
+      for (i = 0; i < 70; i++) { g.beginPath(); g.arc(R() * W, R() * W * 0.38, R() * 1.5 + 0.4, 0, TAU); g.fill(); }
+      g.fillStyle = "#fff4c2"; g.beginPath(); g.arc(380, 330, 74, 0, TAU); g.fill();
+      var hills = ["#8a2f5e", "#4a1d4d", "#241238"];
+      for (k = 0; k < 3; k++) {
+        g.fillStyle = hills[k]; g.beginPath(); g.moveTo(0, W);
+        for (x = 0; x <= W; x += 14) g.lineTo(x, 370 + k * 62 + Math.sin(x / 70 + k * 2) * 26 + Math.sin(x / 23 + k) * 7);
+        g.lineTo(W, W); g.closePath(); g.fill();
+      }
+      g.fillStyle = "#ffd98a"; g.fillRect(96, 468, 26, 22); g.beginPath(); g.moveTo(90, 468); g.lineTo(109, 450); g.lineTo(128, 468); g.fill();
+    } else if (kind === "stars") {
+      var R2 = rng(21);
+      gr = g.createLinearGradient(0, 0, 0, W);
+      gr.addColorStop(0, "#080c22"); gr.addColorStop(0.6, "#1d2a5c"); gr.addColorStop(1, "#3a4c8a");
+      g.fillStyle = gr; g.fillRect(0, 0, W, W);
+      for (i = 0; i < 320; i++) { g.fillStyle = "rgba(255,255,255," + (0.3 + R2() * 0.7) + ")"; g.beginPath(); g.arc(R2() * W, R2() * W * 0.8, R2() * 1.6 + 0.3, 0, TAU); g.fill(); }
+      var glows = [[120, 120], [420, 90], [300, 230], [500, 300], [80, 330]];
+      glows.forEach(function (p) {
+        var rg = g.createRadialGradient(p[0], p[1], 0, p[0], p[1], 34);
+        rg.addColorStop(0, "rgba(255,244,200,1)"); rg.addColorStop(1, "rgba(255,244,200,0)");
+        g.fillStyle = rg; g.beginPath(); g.arc(p[0], p[1], 34, 0, TAU); g.fill();
+      });
+      g.fillStyle = "#f6f1d8"; g.beginPath(); g.arc(440, 170, 46, 0, TAU); g.fill();
+      g.fillStyle = "#1a2552"; g.beginPath(); g.arc(458, 158, 42, 0, TAU); g.fill();
+      g.fillStyle = "#0a0f26"; g.beginPath(); g.moveTo(0, W); g.lineTo(0, 430);
+      [[70, 380], [150, 440], [250, 340], [340, 450], [430, 390], [520, 440], [W, 410]].forEach(function (p) { g.lineTo(p[0], p[1]); });
+      g.lineTo(W, W); g.closePath(); g.fill();
+      g.fillStyle = "#ffcf6b"; g.fillRect(246, 470, 14, 14);
+    } else {
+      gr = g.createLinearGradient(0, 0, 0, W * 0.55);
+      gr.addColorStop(0, "#8ac7ff"); gr.addColorStop(1, "#f3fbff");
+      g.fillStyle = gr; g.fillRect(0, 0, W, W);
+      g.fillStyle = "#fff6c7"; g.beginPath(); g.arc(110, 110, 52, 0, TAU); g.fill();
+      g.fillStyle = "rgba(255,255,255,0.9)";
+      [[300, 90, 70], [380, 80, 54], [470, 110, 60], [360, 130, 50]].forEach(function (p) { g.beginPath(); g.arc(p[0], p[1], p[2] * 0.5, 0, TAU); g.fill(); });
+      var sea = ["#4aa3e8", "#2f86d1", "#1f6bb8", "#16529a", "#0f3c7a", "#0a2c5c"];
+      for (k = 0; k < sea.length; k++) {
+        g.fillStyle = sea[k]; g.beginPath(); g.moveTo(0, W);
+        for (x = 0; x <= W; x += 10) g.lineTo(x, 270 + k * 52 + Math.sin(x / 40 + k * 1.7) * 9);
+        g.lineTo(W, W); g.closePath(); g.fill();
+      }
+      g.fillStyle = "#7a3e1d"; g.beginPath(); g.moveTo(230, 300); g.lineTo(380, 300); g.lineTo(350, 332); g.lineTo(256, 332); g.closePath(); g.fill();
+      g.fillStyle = "#4a2a15"; g.fillRect(303, 190, 5, 112);
+      g.fillStyle = "#ffffff"; g.beginPath(); g.moveTo(300, 194); g.lineTo(300, 296); g.lineTo(244, 296); g.closePath(); g.fill();
+      g.fillStyle = "#ff6b5b"; g.beginPath(); g.moveTo(311, 204); g.lineTo(311, 296); g.lineTo(358, 296); g.closePath(); g.fill();
+    }
+    return c.toDataURL("image/jpeg", 0.8);
+  }
+
+  function fromFile(file) {
+    if (!file) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        var s = Math.min(im.width, im.height), sx = (im.width - s) / 2, sy = (im.height - s) / 2, out = null;
+        [560, 420, 320].some(function (sz) {
+          var c = document.createElement("canvas"); c.width = c.height = sz;
+          c.getContext("2d").drawImage(im, sx, sy, s, s, 0, 0, sz, sz);
+          return [0.8, 0.7, 0.6, 0.5].some(function (q) {
+            var u = c.toDataURL("image/jpeg", q);
+            if (u.length < 170000) { out = u; return true; }
+            return false;
+          });
+        });
+        if (out) { S.draft = out; S.draftKind = "foto"; S.note = ""; }
+        else S.note = "A foto ficou grande demais. Tente outra.";
+        render();
+      };
+      im.onerror = function () { S.note = "Não consegui abrir essa imagem."; render(); };
+      im.src = rd.result;
+    };
+    rd.readAsDataURL(file);
+  }
+
+  /* ---------- Estado derivado ---------- */
+  function applyImg() {
+    var src = S.meta ? S.meta.src : "";
+    if (src !== S.curSrc) {
+      S.curSrc = src;
+      if (src) root.style.setProperty("--pz-img", 'url("' + src + '")');
+      else root.style.removeProperty("--pz-img");
+    }
+  }
+  function placedMap() {
+    var m = {};
+    if (!S.meta) return m;
+    var nn = S.meta.size * S.meta.size;
+    S.pieces.forEach(function (p) {
+      if (p && p.round === S.meta.round && typeof p.idx === "number" && p.idx >= 0 && p.idx < nn && p.idx === Math.floor(p.idx)) m[p.idx] = p;
+    });
+    return m;
+  }
+  function trayOrder(n, round) {
+    var a = [], i;
+    for (i = 0; i < n; i++) a.push(i);
+    var r = rng(hashStr(round));
+    for (i = n - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function otherName(fallbackKey) {
+    for (var k in S.people) if (k !== S.myKey && S.people[k] && S.people[k].name) return String(S.people[k].name).slice(0, 24);
+    if (fallbackKey && S.people[fallbackKey] && S.people[fallbackKey].name) return String(S.people[fallbackKey].name).slice(0, 24);
+    return "Outra pessoa";
+  }
+  function bgStyle(N, r, c) {
+    return "background-size:" + (N * 100) + "% " + (N * 100) + "%;background-position:" + (c / (N - 1) * 100) + "% " + (r / (N - 1) * 100) + "%";
+  }
+
+  /* ---------- Ações ---------- */
+  function place(idx) {
+    var m = S.meta; if (!S.db || !m) return;
+    var doc = { round: m.round, idx: idx, uid: S.myKey, at: Date.now() };
+    S.sel = null; S.note = "";
+    S.pieces = S.pieces.concat([doc]);
+    render();
+    S.db.doc("puzzle/current/pieces/" + m.round + "_" + idx).set(doc).catch(function () {
+      S.pieces = S.pieces.filter(function (p) { return p !== doc; });
+      S.note = "Não consegui salvar a peça. Peça acesso de Colaborador na página.";
+      render();
+    });
+  }
+  function attempt(cell, piece) {
+    if (piece == null) { S.note = "Escolha uma peça primeiro."; render(); return; }
+    if (piece === cell) { place(cell); return; }
+    S.shake = cell; S.note = "Essa peça não encaixa aí."; render();
+    setTimeout(function () { S.shake = -1; render(); }, 350);
+  }
+  async function start() {
+    if (!S.draft || !S.db || S.busy) return;
+    S.busy = true; S.note = ""; render();
+    var old = S.pieces.slice(), round = Date.now().toString(36);
+    try {
+      await S.db.doc("puzzle/current").set({ round: round, size: S.size, src: S.draft, by: S.myKey, at: Date.now() });
+      old.forEach(function (p) {
+        if (p && OKROUND.test(String(p.round)) && typeof p.idx === "number") S.db.doc("puzzle/current/pieces/" + p.round + "_" + p.idx).delete().catch(function () {});
+      });
+      S.setup = false; S.draft = null; S.draftKind = ""; S.sel = null; S.hint = false; S.pieces = [];
+    } catch (e) {
+      S.note = "Não consegui salvar. Confira se você tem acesso de Colaborador nesta página.";
+    }
+    S.busy = false; render();
+  }
+
+  /* ---------- Telas ---------- */
+  function viewSetup() {
+    var presets = [["sunset", "Pôr do sol"], ["stars", "Estrelas"], ["sea", "Mar"]];
+    var row = h("div", { class: "seg imgs" }, [
+      h("input", { type: "file", id: "pz-file", class: "filein", accept: "image/*", onchange: function (e) { fromFile(e.target.files && e.target.files[0]); } }),
+      h("label", { class: "filebtn", for: "pz-file", text: "Foto de vocês" })
+    ]);
+    presets.forEach(function (p) {
+      row.appendChild(h("button", { type: "button", "aria-pressed": S.draftKind === p[0] ? "true" : "false", text: p[1], onclick: function () { S.draft = art(p[0]); S.draftKind = p[0]; S.note = ""; render(); } }));
+    });
+    var sizes = h("div", { class: "seg", role: "group", "aria-label": "Tamanho" });
+    [3, 4, 5].forEach(function (n) {
+      sizes.appendChild(h("button", { type: "button", "aria-pressed": S.size === n ? "true" : "false", text: (n * n) + " peças", onclick: function () { S.size = n; render(); } }));
+    });
+    return h("div", { class: "panel" }, [
+      h("div", null, [h("span", { class: "lbl", text: "1. Escolha a imagem" }), row]),
+      S.draft ? h("img", { class: "preview", src: S.draft, alt: "Prévia da imagem escolhida" }) : null,
+      S.draftKind === "foto" ? h("p", { class: "note", text: "A foto fica guardada nesta página e só aparece para quem você convidou." }) : null,
+      h("div", null, [h("span", { class: "lbl", text: "2. Tamanho" }), sizes]),
+      S.meta ? h("p", { class: "note warn", text: "Começar um novo quebra-cabeça apaga o progresso do atual." }) : null,
+      S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null,
+      h("div", { class: "row" }, [
+        h("button", { type: "button", class: "btn-main grow", disabled: !S.draft || S.busy, text: S.busy ? "Preparando…" : "Começar", onclick: start }),
+        S.meta ? h("button", { type: "button", text: "Cancelar", onclick: function () { S.setup = false; S.note = ""; render(); } }) : null
+      ])
+    ]);
+  }
+
+  function viewGame() {
+    var N = S.meta.size, NN = N * N, placed = placedMap(), count = Object.keys(placed).length, done = count === NN;
+    if (S.sel != null && placed[S.sel]) S.sel = null;
+    var mine = 0, theirs = 0, otherKey = null, last = S.meta.at;
+    Object.keys(placed).forEach(function (k) {
+      var p = placed[k];
+      if (p.uid === S.myKey) mine++; else { theirs++; otherKey = p.uid; }
+      if (p.at > last) last = p.at;
+    });
+    var out = [];
+
+    out.push(h("div", { class: "pz-top" }, [
+      h("span", { class: "chip", text: count + " de " + NN + " peças" }),
+      h("span", { class: "legend" }, [h("i", { class: "sw a" }), "Você " + mine, h("i", { class: "sw b" }), otherName(otherKey) + " " + theirs])
+    ]));
+    out.push(h("div", { class: "bar", role: "progressbar", "aria-valuemin": "0", "aria-valuemax": String(NN), "aria-valuenow": String(count) }, [h("i", { style: "width:" + (count / NN * 100) + "%" })]));
+
+    var board = h("div", { class: "board" + (done ? " done" : ""), style: "grid-template-columns:repeat(" + N + ",1fr)" });
+    if (S.hint && !done) board.appendChild(h("div", { class: "ghost" }));
+    for (var i = 0; i < NN; i++) {
+      (function (i) {
+        var r = Math.floor(i / N), c = i % N, cell;
+        if (placed[i]) {
+          cell = h("div", { class: "cell placed", style: bgStyle(N, r, c) }, [done ? null : h("i", { class: "dot " + (placed[i].uid === S.myKey ? "a" : "b") })]);
+        } else {
+          cell = h("button", {
+            type: "button", class: "cell" + (S.shake === i ? " shake" : ""),
+            "aria-label": "Linha " + (r + 1) + ", coluna " + (c + 1),
+            onclick: function () { attempt(i, S.sel); },
+            ondragover: function (e) { e.preventDefault(); },
+            ondrop: function (e) {
+              e.preventDefault();
+              var v = parseInt(e.dataTransfer.getData("text/plain"), 10);
+              attempt(i, isNaN(v) ? S.sel : v);
+            }
+          });
+        }
+        board.appendChild(cell);
+      })(i);
+    }
+    out.push(board);
+
+    if (done) {
+      out.push(h("div", { class: "panel pass", role: "status" }, [
+        h("h2", { text: "Completo!" }),
+        h("p", { class: "note", text: "Vocês montaram as " + NN + " peças em " + dur(last - S.meta.at) + ". Você colocou " + mine + " e " + otherName(otherKey) + " colocou " + theirs + "." })
+      ]));
+    } else {
+      out.push(h("p", { class: "note", role: "status", text: S.note || (S.sel != null ? "Peça escolhida. Toque no quadrado onde ela encaixa." : "Toque numa peça e depois no lugar dela. No computador, dá para arrastar.") }));
+      var tray = h("div", { class: "tray" });
+      trayOrder(NN, S.meta.round).forEach(function (idx) {
+        if (placed[idx]) return;
+        var r = Math.floor(idx / N), c = idx % N;
+        tray.appendChild(h("button", {
+          type: "button", class: "piece" + (S.sel === idx ? " sel" : ""), draggable: "true",
+          "aria-label": "Peça " + (idx + 1), "aria-current": S.sel === idx ? "true" : null,
+          style: bgStyle(N, r, c),
+          onclick: function () { S.sel = S.sel === idx ? null : idx; S.note = ""; render(); },
+          ondragstart: function (e) { e.dataTransfer.setData("text/plain", String(idx)); S.sel = idx; }
+        }));
+      });
+      out.push(tray);
+    }
+
+    out.push(h("div", { class: "row" }, [
+      done ? null : h("button", { type: "button", "aria-pressed": S.hint ? "true" : "false", text: "Dica", onclick: function () { S.hint = !S.hint; render(); } }),
+      h("button", { type: "button", text: "Novo quebra-cabeça", onclick: function () { S.setup = true; S.note = ""; render(); } })
+    ]));
+    return out;
+  }
+
+  function render() {
+    var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Quebra-cabeça"])])];
+    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Montem juntas" }), h("p", { text: "Cada peça que um coloca aparece na tela do outro." })]));
+    if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o quebra-cabeça…" }));
+    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para montar juntas, abra esta página dentro do Claude, com a sua conta." }));
+    else if (!S.meta || S.setup) kids.push(viewSetup());
+    else viewGame().forEach(function (k) { kids.push(k); });
+    root.textContent = "";
+    kids.forEach(function (k) { if (k) root.appendChild(k); });
+  }
+
+  render();
+
+  (async function () {
+    var c = window.claude;
+    if (!c || !c.use) { S.ok = false; render(); return; }
+    try {
+      var db = await c.use("db"), user = await c.use("user");
+      var id = user ? await user.id() : null;
+      if (!db || !id) { S.ok = false; render(); return; }
+      S.db = db; S.myKey = safe(id); S.ok = true;
+      var onErr = function () { S.note = "A conexão falhou. Recarregue a página."; render(); };
+      db.doc("puzzle/current").onSnapshot(function (snap) {
+        var d = snap.exists ? snap.data() : null;
+        if (d) {
+          var n = Math.floor(Number(d.size));
+          if (typeof d.round !== "string" || !OKROUND.test(d.round) || typeof d.src !== "string" || !OKSRC.test(d.src) || !(n >= 3 && n <= 6)) d = null;
+          else d = { round: d.round, size: n, src: d.src, by: d.by, at: Number(d.at) || 0 };
+        }
+        S.meta = d; applyImg(); render();
+      }, onErr);
+      db.doc("puzzle/current").collection("pieces").onSnapshot(function (snap) {
+        S.pieces = snap.docs.map(function (x) { return x.data(); }); render();
+      }, onErr);
+      db.collection("people").onSnapshot(function (snap) {
+        var o = {}; snap.docs.forEach(function (x) { o[x.id] = x.data(); }); S.people = o; render();
+      }, function () {});
+      render();
+    } catch (e) { S.ok = false; render(); }
+  })();
+})();
+
+
+(function(){
+  var btns = document.querySelectorAll(".gamepick button");
+  var panes = { cartas: document.getElementById("app-jogos"), puzzle: document.getElementById("app-puzzle"), vod: document.getElementById("app-vod") };
+  function show(k, save){
+    Object.keys(panes).forEach(function(key){ panes[key].hidden = (key !== k); });
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-game") === k ? "true" : "false"); });
+    if (save) { try { localStorage.setItem("nosso-dia-game", k); } catch(e){} }
+  }
+  btns.forEach(function(b){ b.addEventListener("click", function(){ show(b.getAttribute("data-game"), true); }); });
+  var start = "cartas";
+  try { var sg = localStorage.getItem("nosso-dia-game"); if (sg === "puzzle" || sg === "vod") start = sg; } catch(e){}
+  show(start, false);
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  var root = document.getElementById("app-vod");
+  if (!root) return;
+
+  var KINDS = { verdade: "Verdade", desafio: "Desafio" };
+  var LEVELS = { fofo: "Fofo", divertido: "Divertido", picante: "Picante" };
+  var OKKEY = /^[A-Za-z0-9_\-.~:@+]{1,120}$/;
+
+  var DECK = {
+    verdade: {
+      fofo: [
+        "Quando foi que você percebeu que estava gostando de mim de verdade?",
+        "Qual é a primeira lembrança de nós que vem à sua cabeça?",
+        "O que você mais sente falta em mim quando estamos longe?",
+        "Qual detalhe meu você acha o mais fofo e nunca me contou?",
+        "Qual música te lembra de mim, e por quê?",
+        "Qual foi a coisa mais bonita que já fiz por você?"
+      ],
+      divertido: [
+        "Qual foi a coisa mais vergonhosa que você já fez na frente de alguém de quem gostava?",
+        "Qual hábito meu te dá mais vontade de rir?",
+        "Se você pudesse trocar de vida comigo por um dia, o que faria primeiro?",
+        "Qual é a mentirinha que você mais conta no dia a dia?",
+        "Qual foi sua primeira impressão de mim, sem filtro?",
+        "Qual foi a pior ideia de encontro que você já teve?"
+      ],
+      picante: [
+        "O que você mais gosta de olhar em mim?",
+        "Qual foi a primeira vez que você pensou em mim de um jeito mais ousado?",
+        "Qual é a primeira coisa que você quer fazer quando a gente se reencontrar?",
+        "O que eu faço que te deixa sem jeito, mas de um jeito bom?",
+        "Qual foi o sonho mais ousado que você já teve comigo?",
+        "O que te faz se sentir mais atraente?"
+      ]
+    },
+    desafio: {
+      fofo: [
+        "Mande um áudio de 20 segundos contando por que você gosta de mim.",
+        "Mostre pela câmera o objeto que mais te lembra de mim.",
+        "Escreva uma mensagem de bom dia para mim como se fosse uma carta antiga.",
+        "Faça um desenho nosso em 1 minuto e mostre pela câmera.",
+        "Cante o refrão de uma música que te lembra de mim.",
+        "Diga três coisas que admira em mim, olhando para a câmera."
+      ],
+      divertido: [
+        "Imite meu jeito de falar por 30 segundos.",
+        "Faça sua melhor dancinha de 15 segundos na câmera.",
+        "Tente falar o alfabeto de trás para frente, sem errar.",
+        "Coloque na cabeça algo que não seja chapéu e mostre pela câmera.",
+        "Conte um filme inteiro usando só mímica, e eu adivinho.",
+        "Mostre o que tem na sua geladeira agora e invente um prato com isso."
+      ],
+      picante: [
+        "Mande um áudio com a sua voz mais sedutora dizendo o que vai fazer quando a gente se encontrar.",
+        "Mande uma selfie com o seu melhor olhar de quem está provocando.",
+        "Descreva em três frases o beijo perfeito.",
+        "Faça um elogio bem ousado sobre o meu jeito, olhando para a câmera.",
+        "Descreva nosso próximo encontro como uma cena de filme romântico.",
+        "Dê um beijo de boa-noite na câmera, do jeito mais dramático que conseguir."
+      ]
+    }
+  };
+
+  var S = {
+    ok: undefined, db: null, myKey: null, people: {}, st: null, sample: undefined,
+    level: "fofo", ai: false, busy: false, note: "", confirm: false, used: {}, recent: []
+  };
+
+  function safe(id) { return String(id).replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 120); }
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      var v = attrs[k];
+      if (v === false || v == null) continue;
+      if (k === "class") el.className = v;
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function (c) {
+      if (c == null || c === false) return;
+      el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return el;
+  }
+
+  /* ---------- Pessoas e turno ---------- */
+  function partnerKey() {
+    for (var k in S.people) if (k !== S.myKey) return k;
+    return null;
+  }
+  function nameOf(key) {
+    if (key === S.myKey) return "Você";
+    var p = S.people[key];
+    return (p && p.name) ? String(p.name).slice(0, 24) : "A outra pessoa";
+  }
+  function cur() {
+    return S.st || { turn: S.myKey, phase: "pick", stats: {}, n: 0 };
+  }
+  function stat(key) {
+    var s = cur().stats || {};
+    var v = s[key] || {};
+    return { d: +v.d || 0, s: +v.s || 0 };
+  }
+
+  /* ---------- Cartas ---------- */
+  function pickDeck(kind, level) {
+    var arr = DECK[kind][level], free = [], i;
+    for (i = 0; i < arr.length; i++) if (!S.used[kind + level + i]) free.push(i);
+    if (!free.length) { for (i = 0; i < arr.length; i++) delete S.used[kind + level + i]; free = arr.map(function (_, j) { return j; }); }
+    var idx = free[Math.floor(Math.random() * free.length)];
+    S.used[kind + level + idx] = true;
+    return arr[idx];
+  }
+  async function draw(kind) {
+    if (S.busy || !S.db) return;
+    S.busy = true; S.note = ""; render();
+    var text = null, src = "deck", level = S.level;
+    if (S.ai && S.sample) {
+      var prompt =
+        "Crie UMA carta do jogo Verdade ou Desafio para duas pessoas que namoram e moram em países diferentes.\n" +
+        "Tipo: " + (kind === "verdade" ? "uma pergunta de verdade" : "um desafio que dá para cumprir por chamada de vídeo ou mensagem") + ".\n" +
+        "Nível: " + (level === "fofo" ? "fofo e carinhoso" : level === "divertido" ? "divertido e bobo" : "picante: flerte, provocação e sensualidade entre adultos, sugestivo, sem descrever atos sexuais de forma explícita") + ".\n" +
+        "Regras: uma frase curta em português do Brasil, falando direto com a pessoa (\"você\"), sem adjetivos que marquem gênero, sem repetir estas: " + S.recent.join(" | ") + ".\n" +
+        "Responda só com JSON: {\"text\":\"...\"}";
+      try {
+        var out = await S.sample.json(prompt, { modelTier: "quick", cache: false });
+        if (out && typeof out.text === "string" && out.text.trim()) { text = out.text.trim().slice(0, 260); src = "ai"; }
+      } catch (e) {
+        if (e && e.code === "not_granted") S.sample = null;
+        S.note = "Não consegui gerar agora. Usei uma carta do baralho.";
+      }
+    }
+    if (!text) text = pickDeck(kind, level);
+    S.recent.push(text); if (S.recent.length > 6) S.recent.shift();
+    var base = cur();
+    var doc = { turn: S.myKey, phase: "card", kind: kind, level: level, text: text, src: src, stats: base.stats || {}, n: (base.n || 0) + 1, at: Date.now() };
+    S.st = doc; S.busy = false; render();
+    save(doc);
+  }
+  function finish(done) {
+    var base = cur(), stats = JSON.parse(JSON.stringify(base.stats || {}));
+    var me = stats[S.myKey] || { d: 0, s: 0 };
+    if (done) me.d = (+me.d || 0) + 1; else me.s = (+me.s || 0) + 1;
+    stats[S.myKey] = me;
+    var doc = { turn: partnerKey() || S.myKey, phase: "pick", stats: stats, n: base.n || 0, at: Date.now() };
+    S.st = doc; S.note = ""; render();
+    save(doc);
+  }
+  function reset() {
+    var doc = { turn: S.myKey, phase: "pick", stats: {}, n: 0, at: Date.now() };
+    S.st = doc; S.confirm = false; S.note = ""; render();
+    save(doc);
+  }
+  function save(doc) {
+    S.db.doc("vod/current").set(doc).catch(function () {
+      S.note = "Não consegui salvar. Peça acesso de Colaborador na página.";
+      render();
+    });
+  }
+
+  /* ---------- Telas ---------- */
+  function legend() {
+    var o = otherKey();
+    var a = stat(S.myKey), b = o ? stat(o) : { d: 0, s: 0 };
+    return h("span", { class: "legend" }, [
+      h("span", { class: "lg" }, [h("i", { class: "sw a" }), "Você: " + a.d + " feitos, " + a.s + " passadas"]),
+      h("span", { class: "lg" }, [h("i", { class: "sw b" }), (o ? nameOf(o) : "A outra pessoa") + ": " + b.d + " feitos, " + b.s + " passadas"])
+    ]);
+  }
+  function otherKey() {
+    var pk = partnerKey();
+    if (pk) return pk;
+    var t = cur().turn;
+    return t && t !== S.myKey ? t : null;
+  }
+
+  function viewPick(mine, st) {
+    var out = [];
+    if (!mine) {
+      out.push(h("div", { class: "panel pass" }, [
+        h("h2", { text: "Vez de " + nameOf(st.turn) }),
+        h("p", { class: "note", role: "status", text: "Esperando escolher verdade ou desafio. A carta aparece aqui na hora." })
+      ]));
+      return out;
+    }
+    var lv = h("div", { class: "seg", role: "group", "aria-label": "Nível" });
+    Object.keys(LEVELS).forEach(function (k) {
+      lv.appendChild(h("button", { type: "button", "aria-pressed": S.level === k ? "true" : "false", text: LEVELS[k], onclick: function () { S.level = k; render(); } }));
+    });
+    var panel = [
+      h("div", null, [h("span", { class: "lbl", text: "Nível" }), lv])
+    ];
+    if (S.sample) {
+      panel.push(h("div", { class: "row" }, [h("button", { type: "button", "aria-pressed": S.ai ? "true" : "false", text: S.ai ? "Carta com IA: ligada" : "Carta com IA: desligada", onclick: function () { S.ai = !S.ai; render(); } })]));
+    }
+    out.push(h("div", { class: "panel" }, panel));
+    out.push(h("div", { class: "bigpick" }, [
+      h("button", { type: "button", class: "v", disabled: S.busy, text: S.busy ? "Gerando…" : "Verdade", onclick: function () { draw("verdade"); } }),
+      h("button", { type: "button", class: "d", disabled: S.busy, text: S.busy ? "Gerando…" : "Desafio", onclick: function () { draw("desafio"); } })
+    ]));
+    return out;
+  }
+
+  function viewCard(mine, st) {
+    var out = [];
+    var kind = KINDS[st.kind] ? st.kind : "verdade";
+    out.push(h("div", { class: "vcard", "aria-live": "polite" }, [
+      h("div", { class: "meta" }, [h("span", { text: KINDS[kind] + " · " + (LEVELS[st.level] || "") }), h("span", { text: "Carta " + (st.n || 1) })]),
+      h("p", { class: "vq", text: st.text || "" }),
+      h("div", { class: "meta" }, [h("span", { text: "Para " + (st.turn === S.myKey ? "você" : nameOf(st.turn)) }), h("span", { text: st.src === "ai" ? "feita pela IA" : "" })])
+    ]));
+    if (mine) {
+      out.push(h("div", { class: "row" }, [
+        h("button", { type: "button", class: "btn-main grow", text: kind === "verdade" ? "Respondi" : "Cumpri", onclick: function () { finish(true); } }),
+        h("button", { type: "button", class: "grow", text: "Passar", onclick: function () { finish(false); } })
+      ]));
+    } else {
+      out.push(h("p", { class: "note", role: "status", text: "Esperando " + nameOf(st.turn) + (kind === "verdade" ? " responder…" : " cumprir…") }));
+    }
+    return out;
+  }
+
+  function render() {
+    var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Verdade ou desafio"])])];
+    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Verdade ou desafio" }), h("p", { text: "Uma pessoa por vez. A carta aparece para as duas." })]));
+    if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o jogo…" }));
+    else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para jogar juntas, abra esta página dentro do Claude, com a sua conta." }));
+    else {
+      var st = cur(), mine = st.turn === S.myKey;
+      kids.push(h("div", { class: "pz-top" }, [h("span", { class: "chip", text: mine ? "Sua vez" : "Vez de " + nameOf(st.turn) }), legend()]));
+      if (!partnerKey()) kids.push(h("p", { class: "note", text: "Falta a outra pessoa entrar. Ela precisa abrir esta página e escrever o nome na aba Hoje." }));
+      (st.phase === "card" ? viewCard(mine, st) : viewPick(mine, st)).forEach(function (k) { kids.push(k); });
+      if (S.note) kids.push(h("p", { class: "note warn", role: "status", text: S.note }));
+      if (!S.confirm) kids.push(h("button", { type: "button", class: "hidden-link", text: "Recomeçar o placar", onclick: function () { S.confirm = true; render(); } }));
+      else kids.push(h("div", { class: "row" }, [
+        h("button", { type: "button", text: "Apagar o placar e recomeçar", onclick: reset }),
+        h("button", { type: "button", class: "btn-ghost", text: "Cancelar", onclick: function () { S.confirm = false; render(); } })
+      ]));
+    }
+    root.textContent = "";
+    kids.forEach(function (k) { if (k) root.appendChild(k); });
+  }
+
+  render();
+
+  (async function () {
+    var c = window.claude;
+    if (!c || !c.use) { S.ok = false; render(); return; }
+    try { S.sample = (await c.use("sample")) || null; } catch (e) { S.sample = null; }
+    try {
+      var db = await c.use("db"), user = await c.use("user");
+      var id = user ? await user.id() : null;
+      if (!db || !id) { S.ok = false; render(); return; }
+      S.db = db; S.myKey = safe(id); S.ok = true;
+      var onErr = function () { S.note = "A conexão falhou. Recarregue a página."; render(); };
+      db.doc("vod/current").onSnapshot(function (snap) {
+        var d = snap.exists ? snap.data() : null;
+        if (d && (d.phase === "pick" || d.phase === "card") && typeof d.turn === "string" && OKKEY.test(d.turn)) {
+          var stats = {};
+          if (d.stats && typeof d.stats === "object") for (var k in d.stats) if (OKKEY.test(k) && d.stats[k] && typeof d.stats[k] === "object") stats[k] = { d: +d.stats[k].d || 0, s: +d.stats[k].s || 0 };
+          S.st = {
+            turn: d.turn, phase: d.phase, stats: stats, n: Math.max(0, Math.floor(+d.n || 0)),
+            kind: KINDS[d.kind] ? d.kind : "verdade", level: LEVELS[d.level] ? d.level : "fofo",
+            text: typeof d.text === "string" ? d.text.slice(0, 300) : "", src: d.src === "ai" ? "ai" : "deck"
+          };
+        } else S.st = null;
+        render();
+      }, onErr);
+      db.collection("people").onSnapshot(function (snap) {
+        var o = {}; snap.docs.forEach(function (x) { o[x.id] = x.data(); }); S.people = o; render();
+      }, function () {});
+      render();
+    } catch (e) { S.ok = false; render(); }
+  })();
+})();
+
+</script>
+
+
 
 </body></html>
