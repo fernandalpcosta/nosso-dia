@@ -1,0 +1,1030 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Nosso Dia</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;700&display=swap">
+<style>
+
+/* Layout: two tabs (Hoje / Jogos) over one phone-width column. Hoje = three ritual cards with their own hues; Jogos = the question-card game. */
+:root {
+  --bg: #f1eef8; --surface: #fbfaff; --ink: #221a3b; --muted: #625a7e; --line: #d9d3ea;
+  --g: #f2a93b; --on-g: #2a1b00; --l: #2a9d9d; --on-l: #04201f; --p: #e0527a; --on-p: #2b0612;
+  --a: #3a55ff; --on-a: #ffffff; --b: #ff5b49; --on-b: #15172b;
+  --card: #15172b; --card-ink: #f4f5ff; --ok: #17835a;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #16112a; --surface: #201a38; --ink: #f0ecff; --muted: #a79fc6; --line: #32295a;
+    --g: #f5b658; --l: #4fc3c0; --p: #f07c9c;
+    --a: #7b8cff; --on-a: #15172b; --b: #ff7c6b; --on-b: #15172b;
+    --card: #f1f2ff; --card-ink: #15172b; --ok: #4fd1a0; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #16112a; --surface: #201a38; --ink: #f0ecff; --muted: #a79fc6; --line: #32295a;
+  --g: #f5b658; --l: #4fc3c0; --p: #f07c9c;
+  --a: #7b8cff; --on-a: #15172b; --b: #ff7c6b; --on-b: #15172b;
+  --card: #f1f2ff; --card-ink: #15172b; --ok: #4fd1a0; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-block: 18px 44px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+#hoje { --font-display: "Gabarito", "Trebuchet MS", system-ui, sans-serif; }
+#jogos { --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif; }
+.tabs { max-width: 520px; margin: 0 auto 16px; display: flex; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px; }
+.tabs button { flex: 1; font: inherit; font-weight: 700; cursor: pointer; border: 0; border-radius: 9px; background: transparent; color: var(--muted); padding: 10px 12px; }
+.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+.tabs button:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+#hoje .wrap{max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px;}
+#hoje h1,#hoje h2,#hoje h3{font-family: var(--font-display); margin: 0; text-wrap: balance;}
+#hoje .head{display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;}
+#hoje .head h1{font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;}
+#hoje .clocks{display: flex; gap: 8px; flex-wrap: wrap;}
+#hoje .clock{display: inline-flex; align-items: center; gap: 7px; font-size: 0.85rem; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-variant-numeric: tabular-nums;}
+#hoje .clock b{color: var(--ink); font-weight: 700;}
+#hoje .sun,#hoje .moon{width: 12px; height: 12px; border-radius: 50%; flex: none;}
+#hoje .sun{background: var(--g);}
+#hoje .moon{box-shadow: inset -4px -2px 0 0 var(--muted);}
+#hoje .card{background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px;}
+#hoje .card.g{background: color-mix(in srgb, var(--g) 10%, var(--surface));}
+#hoje .card.l{background: color-mix(in srgb, var(--l) 10%, var(--surface));}
+#hoje .card.p{background: color-mix(in srgb, var(--p) 9%, var(--surface));}
+#hoje .tag{align-self: flex-start; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px;}
+#hoje .g .tag{background: var(--g); color: var(--on-g);}
+#hoje .l .tag{background: var(--l); color: var(--on-l);}
+#hoje .p .tag{background: var(--p); color: var(--on-p);}
+#hoje .card h2{font-size: 1.35rem; font-weight: 800; letter-spacing: -0.015em; line-height: 1.15;}
+#hoje .sub{margin: 0; color: var(--muted); font-size: 0.92rem;}
+#hoje .lbl{font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
+#hoje textarea,#hoje input[type="text"],#hoje input[type="date"]{width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px;}
+#hoje textarea{min-height: 84px; resize: vertical;}
+#hoje textarea:focus-visible,#hoje input:focus-visible,#hoje button:focus-visible{outline: 3px solid var(--ink); outline-offset: 2px;}
+#hoje button{font: inherit; cursor: pointer; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); padding: 9px 13px; font-weight: 500;}
+#hoje button:disabled{opacity: 0.5; cursor: not-allowed;}
+#hoje button[aria-pressed="true"]{background: var(--ink); color: var(--bg); border-color: var(--ink);}
+#hoje .main{background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700;}
+#hoje .row{display: flex; gap: 8px; flex-wrap: wrap; align-items: center;}
+#hoje .row > .grow{flex: 1; min-width: 0;}
+#hoje .say{background: var(--bg); border: 1px dashed var(--line); border-radius: 12px; padding: 12px 14px;}
+#hoje .say .who{font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; display: block;}
+#hoje .say p{margin: 0; white-space: pre-wrap; overflow-wrap: anywhere;}
+#hoje .wait{color: var(--muted); font-size: 0.92rem; margin: 0;}
+#hoje .note{font-size: 0.9rem; margin: 0; padding: 8px 10px; background: var(--bg); border-left: 4px solid var(--p); border-radius: 6px;}
+#hoje .link{background: none; border: 0; padding: 4px 0; color: var(--muted); text-decoration: underline; font-size: 0.88rem; align-self: flex-start;}
+#hoje .vault{display: flex; flex-direction: column; gap: 10px; max-height: 320px; overflow-y: auto;}
+#hoje .vault .day{font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;}
+#hoje .q{font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; line-height: 1.25; margin: 0; text-wrap: balance;}
+#hoje .timer{font-family: var(--font-display); font-weight: 800; font-size: clamp(3rem, 18vw, 4.4rem); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin: 0;}
+#hoje .timer.done{color: var(--p);}
+#hoje .stage{display: flex; flex-direction: column; gap: 10px; align-items: flex-start;}
+#hoje .rule{font-size: 0.85rem; color: var(--muted); margin: 0;}
+#hoje .plan{display: flex; flex-direction: column; gap: 10px;}
+#hoje .item{background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px;}
+#hoje .item .when{font-size: 0.74rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted);}
+#hoje .item .name{font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;}
+#hoje .item .count{font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.02em;}
+#hoje .item .count small{font-family: var(--font-body); font-weight: 500; font-size: 0.85rem; color: var(--muted); letter-spacing: 0;}
+#hoje .chips{display: flex; gap: 6px; flex-wrap: wrap;}
+#hoje .chips button{border-radius: 999px; font-size: 0.85rem; padding: 6px 11px; text-align: left;}
+#hoje .hist{margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 0.92rem;}
+#hoje .hist span{color: var(--muted);}
+#hoje .empty{color: var(--muted); font-size: 0.92rem; margin: 0;}
+#jogos .wrap{max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px;}
+#jogos h1,#jogos h2{font-family: var(--font-display); margin: 0; text-wrap: balance;}
+#jogos .brand{font-family: var(--font-display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px;}
+#jogos .brand i{width: 10px; height: 10px; border-radius: 50%; background: var(--a); box-shadow: 14px 0 0 var(--b); margin-right: 14px; display: inline-block;}
+#jogos .top{display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;}
+#jogos .chip{font-size: 0.8rem; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface);}
+#jogos .dot{width: 8px; height: 8px; border-radius: 50%; background: var(--line);}
+#jogos .dot.on{background: var(--ok);}
+#jogos .hero h1{font-size: clamp(2rem, 9vw, 2.7rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.03em;}
+#jogos .hero p{margin: 10px 0 0; color: var(--muted); max-width: 34ch;}
+#jogos .panel{background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px;}
+#jogos label.lbl{font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
+#jogos input[type="text"]{width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 11px 12px;}
+#jogos input[type="text"]:focus-visible,#jogos button:focus-visible{outline: 3px solid var(--a); outline-offset: 2px;}
+#jogos .code-in{text-transform: uppercase; letter-spacing: 0.25em; text-align: center; font-weight: 700;}
+#jogos .seg{display: flex; gap: 6px; flex-wrap: wrap;}
+#jogos .seg button{flex: 1 1 0; min-width: 0;}
+#jogos button{font: inherit; cursor: pointer; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); padding: 10px 12px; font-weight: 500;}
+#jogos button[aria-pressed="true"]{background: var(--ink); color: var(--bg); border-color: var(--ink);}
+#jogos button:disabled{opacity: 0.5; cursor: not-allowed;}
+#jogos .btn-main{background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; padding: 13px 14px;}
+#jogos .btn-ghost{background: transparent;}
+#jogos .row{display: flex; gap: 10px;}
+#jogos .row > *{min-width: 0;}
+#jogos .row .grow{flex: 1;}
+#jogos .or{text-align: center; color: var(--muted); font-size: 0.85rem;}
+#jogos .note{font-size: 0.9rem; color: var(--muted); margin: 0;}
+#jogos .note.warn{color: var(--ink); background: var(--bg); border-left: 4px solid var(--b); padding: 8px 10px; border-radius: 6px;}
+#jogos .score{display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px;}
+#jogos .who{display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700;}
+#jogos .who span{overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+#jogos .who.r{justify-content: flex-end;}
+#jogos .sw{width: 14px; height: 14px; border-radius: 4px; flex: none;}
+#jogos .sw.a{background: var(--a);}
+#jogos .sw.b{background: var(--b);}
+#jogos .sync{font-size: 0.8rem; color: var(--muted); text-align: center; font-variant-numeric: tabular-nums;}
+#jogos .sync b{font-family: var(--font-display); color: var(--ink); font-size: 1.1rem;}
+#jogos .card{background: var(--card); color: var(--card-ink); border-radius: 18px; padding: 22px 20px 18px; transform: rotate(-1.2deg); box-shadow: 0 14px 28px -14px rgba(10, 12, 40, 0.55); min-height: 250px; display: flex; flex-direction: column; justify-content: space-between; gap: 22px;}
+#jogos .card.deal{animation: deal 0.32s ease-out;}
+@keyframes deal{ from { transform: translateY(14px) rotate(2deg); opacity: 0.2; } to { transform: rotate(-1.2deg); opacity: 1; } }
+@media (prefers-reduced-motion: reduce){#jogos .card.deal{animation: none;}}
+#jogos .card .meta{display: flex; justify-content: space-between; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; font-variant-numeric: tabular-nums;}
+#jogos .card .q{font-family: var(--font-display); font-weight: 800; font-size: clamp(1.45rem, 6.4vw, 1.85rem); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; margin: 0;}
+#jogos .card .alt{font-size: 0.9rem; opacity: 0.72; margin: 0; padding-top: 12px; border-top: 1px solid currentColor; border-top-color: color-mix(in srgb, currentColor 25%, transparent);}
+#jogos .card.empty .q{font-size: 1.3rem;}
+#jogos .picks{display: grid; grid-template-columns: 1fr 1fr; gap: 10px;}
+#jogos .pick{padding: 16px 10px; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; border: 0; overflow: hidden; text-overflow: ellipsis;}
+#jogos .pick.a{background: var(--a); color: var(--on-a);}
+#jogos .pick.b{background: var(--b); color: var(--on-b);}
+#jogos .pick[aria-pressed="true"]{outline: 3px solid var(--ink); outline-offset: 2px; background-clip: padding-box;}
+#jogos .pick.a[aria-pressed="true"]{background: var(--a); color: var(--on-a); border: 0;}
+#jogos .pick.b[aria-pressed="true"]{background: var(--b); color: var(--on-b); border: 0;}
+#jogos .ledger{display: flex; flex-direction: column; gap: 8px;}
+#jogos .ledger .line{display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
+#jogos .ledger .arrow{color: var(--muted);}
+#jogos .verdict{font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em;}
+#jogos .verdict.ok{color: var(--ok);}
+#jogos .tones{display: flex; gap: 6px; flex-wrap: wrap;}
+#jogos .tones button{padding: 6px 11px; font-size: 0.85rem; border-radius: 999px;}
+#jogos .pass{text-align: center; align-items: center; padding: 28px 16px;}
+#jogos .pass h2{font-size: 1.5rem;}
+#jogos .big-code{font-family: var(--font-display); font-weight: 800; font-size: 2rem; letter-spacing: 0.22em; padding-left: 0.22em;}
+#jogos .hidden-link{background: none; border: 0; color: var(--muted); text-decoration: underline; padding: 6px; font-size: 0.85rem;}
+</style>
+
+<nav class="tabs" role="tablist" aria-label="Seções">
+  <button type="button" role="tab" data-tab="hoje" aria-selected="true">Hoje</button>
+  <button type="button" role="tab" data-tab="jogos" aria-selected="false">Jogos</button>
+</nav>
+<section id="hoje"><div class="wrap" id="app-hoje"></div></section>
+<section id="jogos" hidden><div class="wrap" id="app-jogos"></div></section>
+
+<script>
+
+(function () {
+  "use strict";
+
+  var PROMPTS = [
+    "Qual foi o melhor momento do seu dia, por menor que seja?",
+    "Como estão seu corpo e sua cabeça agora?",
+    "O que te fez sorrir hoje?",
+    "Tem algo que você está esperando com vontade?",
+    "O que pesou um pouco hoje, sem precisar resolver?",
+    "Qual foi a coisa mais diferente que você viu ou fez hoje?",
+    "Do que você precisou hoje e talvez não percebeu?",
+    "Qual pensamento ficou rodando na sua cabeça?",
+    "O que você aprendeu hoje?",
+    "O que você gostaria de lembrar deste dia?",
+    "Como você está se sentindo em relação a nós esta semana?",
+    "Que cena, som ou cheiro do seu dia você me mostraria se pudesse?",
+    "Do que você sente saudade hoje?",
+    "O que te deu energia hoje, e o que tirou?"
+  ];
+  var ITEMS = [
+    { k: "e1", when: "A cada 2 semanas", name: "Encontro só dos dois", fallback: "Sem falar de rotina nem de trabalho." },
+    { k: "e2", when: "A cada 2 meses", name: "Escapada de fim de semana", fallback: "Um fim de semana só de vocês, perto ou longe." },
+    { k: "e3", when: "A cada 2 anos", name: "A viagem grande", fallback: "Aquela viagem que vale planejar com calma." }
+  ];
+
+  var S = {
+    dbOk: undefined, myKey: null, people: {}, grat: [], plan: {}, done: [],
+    db: null, room: null, sample: null,
+    draft: "", vault: false, ls: null, dur: 5, first: "me",
+    editing: null, eDate: "", eTitle: "", ideas: [], busy: false, note: "", nameDraft: ""
+  };
+
+  /* ---------- Datas ---------- */
+  function pad(n) { return ("0" + n).slice(-2); }
+  function ds(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function parseD(s) { var p = String(s).split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function today() { return ds(new Date()); }
+  function daysUntil(s) { var n = new Date(); n = new Date(n.getFullYear(), n.getMonth(), n.getDate()); return Math.round((parseD(s) - n) / 86400000); }
+  function fmt(s) { return parseD(s).toLocaleDateString("pt-BR", { day: "numeric", month: "short" }); }
+  function fmtLong(s) { return parseD(s).toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }); }
+  function advance(k, s) {
+    var n = new Date(); n = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+    var d = parseD(s); if (d < n) d = n;
+    if (k === "e1") d.setDate(d.getDate() + 14);
+    else if (k === "e2") d.setMonth(d.getMonth() + 2);
+    else d.setFullYear(d.getFullYear() + 2);
+    return ds(d);
+  }
+  function safe(id) { return String(id).replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 120); }
+
+  /* ---------- Pessoas ---------- */
+  function me() { return S.people[S.myKey] || null; }
+  function partnerKey() { for (var k in S.people) if (k !== S.myKey) return k; return null; }
+  function partner() { var k = partnerKey(); return k ? S.people[k] : null; }
+  function nameOf(k) { var p = S.people[k]; return (p && p.name) || "Alguém"; }
+
+  /* ---------- DOM helper ---------- */
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      var v = attrs[k];
+      if (v === false || v == null) continue;
+      if (k === "class") el.className = v;
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function (c) {
+      if (c == null || c === false) return;
+      el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return el;
+  }
+  var app = document.getElementById("app-hoje");
+
+  /* ---------- Relógios ---------- */
+  function timeIn(tz) {
+    try { return new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: tz || undefined }); } catch (e) { return ""; }
+  }
+  function hourIn(tz) {
+    try { return +new Date().toLocaleTimeString("en-GB", { hour: "2-digit", hour12: false, timeZone: tz || undefined }).slice(0, 2); } catch (e) { return 12; }
+  }
+  function clockEl(id, label, tz) {
+    var day = hourIn(tz) >= 6 && hourIn(tz) < 19;
+    return h("span", { class: "clock", id: id }, [h("i", { class: day ? "sun" : "moon" }), label + " ", h("b", { text: timeIn(tz) })]);
+  }
+  function tick() {
+    var m = me(), p = partner();
+    var a = document.getElementById("clk-me"), b = document.getElementById("clk-you");
+    if (a && m) { var n = clockEl("clk-me", "Aqui", m.tz); a.replaceWith(n); }
+    if (b && p) { var n2 = clockEl("clk-you", "Aí", p.tz); b.replaceWith(n2); }
+    if (S.ls && !S.ls.ended) {
+      var rem = remaining();
+      var t = document.getElementById("timer");
+      if (t) t.textContent = mmss(rem);
+      if (rem <= 0) { S.ls.ended = true; try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} render(); }
+    }
+  }
+  function remaining() { return Math.max(0, S.ls.dur * 60 - Math.floor((Date.now() - S.ls.startedAt) / 1000)); }
+  function mmss(s) { return Math.floor(s / 60) + ":" + pad(s % 60); }
+
+  /* ---------- Escritas ---------- */
+  function fail(e) {
+    S.note = "Não consegui salvar. Peça acesso de Colaborador na página e tente de novo.";
+    render();
+  }
+  function saveName() {
+    var name = (S.nameDraft || "").trim().slice(0, 24);
+    if (!name) return;
+    var tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+    S.db.doc("people/" + S.myKey).set({ name: name, tz: tz, at: Date.now() }).catch(fail);
+  }
+  function saveGrat() {
+    var text = (S.draft || "").trim().slice(0, 500);
+    if (!text) return;
+    var d = today();
+    S.db.doc("gratitude/" + d + "_" + S.myKey).set({ uid: S.myKey, date: d, text: text, at: Date.now() }).then(function () { S.draft = ""; }).catch(fail);
+  }
+  function savePlan(k, val) {
+    var next = JSON.parse(JSON.stringify(S.plan || {}));
+    next[k] = val;
+    return S.db.doc("plan/current").set(next);
+  }
+  function savePlanEdit() {
+    if (!S.eDate) { S.note = "Escolha uma data."; render(); return; }
+    var k = S.editing;
+    savePlan(k, { date: S.eDate, title: (S.eTitle || "").trim().slice(0, 80) }).then(function () { S.editing = null; S.ideas = []; S.note = ""; render(); }).catch(fail);
+  }
+  function markDone(k) {
+    var it = S.plan[k]; if (!it) return;
+    var def = ITEMS.filter(function (x) { return x.k === k; })[0];
+    S.db.collection("done").add({ kind: def.name, title: it.title || "", date: it.date, at: Date.now(), by: S.myKey })
+      .then(function () { return savePlan(k, { date: advance(k, it.date), title: "" }); })
+      .catch(fail);
+  }
+  async function askIdeas() {
+    if (!S.sample || S.busy) return;
+    S.busy = true; S.note = ""; render();
+    var prompt =
+      "Sugira 4 ideias curtas de encontro virtual para um casal que mora em países diferentes. " +
+      "O objetivo é se divertir e fazer algo diferente, sem falar de rotina, trabalho ou problemas. " +
+      "Cada ideia tem no máximo 60 caracteres, começa com um verbo e dá para fazer por videochamada. " +
+      (S.ideas.length ? "Não repita: " + S.ideas.join(" | ") + ". " : "") +
+      "Responda só com um array JSON de 4 strings.";
+    try {
+      var out = await S.sample.json(prompt, { modelTier: "quick", cache: false });
+      if (!Array.isArray(out)) throw new Error("shape");
+      S.ideas = out.slice(0, 4).map(function (x) { return String(x).slice(0, 80); });
+    } catch (e) {
+      S.note = "Não consegui gerar ideias agora. Tente de novo em instantes.";
+    }
+    S.busy = false; render();
+  }
+
+  /* ---------- Escuta (sincronizada pela sala) ---------- */
+  function startListen(speakerKey, turn) {
+    var msg = { type: "start", speaker: speakerKey, dur: S.dur, turn: turn };
+    S.ls = { speaker: speakerKey, dur: S.dur, turn: turn, startedAt: Date.now(), ended: false };
+    if (S.room) S.room.emit("listen", msg).catch(function () {});
+    render();
+  }
+  function stopListen() {
+    S.ls = null;
+    if (S.room) S.room.emit("listen", { type: "stop" }).catch(function () {});
+    render();
+  }
+  function onListen(m) {
+    if (m.isMe || m.sameTab) return;
+    var d = m.data;
+    if (!d) return;
+    if (d.type === "stop") { S.ls = null; render(); return; }
+    if (d.type === "start" && typeof d.speaker === "string") {
+      var dur = d.dur === 3 ? 3 : 5;
+      S.ls = { speaker: d.speaker, dur: dur, turn: d.turn === 2 ? 2 : 1, startedAt: Date.now(), ended: false };
+      render();
+    }
+  }
+
+  /* ---------- Cartões ---------- */
+  function cardGratidao() {
+    var m = me(), p = partner(), pk = partnerKey(), d = today();
+    var mine = S.grat.filter(function (g) { return g.date === d && g.uid === S.myKey; })[0];
+    var theirs = pk ? S.grat.filter(function (g) { return g.date === d && g.uid === pk; })[0] : null;
+    var kids = [h("span", { class: "tag", text: "Todo dia" }), h("h2", { text: "Uma coisa que eu valorizo em você" }),
+      h("p", { class: "sub", text: "Pode ser algo de hoje ou um jeito seu. Vocês só leem a resposta um do outro depois de escrever a sua." })];
+
+    if (!mine) {
+      kids.push(h("div", null, [h("label", { class: "lbl", for: "gratText", text: "Hoje eu sou grato(a) por…" }),
+        h("textarea", { id: "gratText", maxlength: "500", oninput: function (e) { S.draft = e.target.value; } }, [])]));
+      kids.push(h("div", { class: "row" }, [h("button", { type: "button", class: "main", disabled: !m, text: "Guardar", onclick: saveGrat })]));
+      if (theirs) kids.push(h("p", { class: "wait", text: nameOf(pk) + " já escreveu hoje. Escreva a sua para ler." }));
+      else if (p) kids.push(h("p", { class: "wait", text: nameOf(pk) + " ainda não escreveu hoje." }));
+    } else {
+      kids.push(h("div", { class: "say" }, [h("span", { class: "who", text: "Você" }), h("p", { text: mine.text })]));
+      if (theirs) kids.push(h("div", { class: "say" }, [h("span", { class: "who", text: nameOf(pk) }), h("p", { text: theirs.text })]));
+      else kids.push(h("p", { class: "wait", text: p ? "Esperando " + nameOf(pk) + " escrever a dela ou dele." : "Esperando a outra pessoa entrar." }));
+    }
+
+    kids.push(h("button", { type: "button", class: "link", text: S.vault ? "Fechar o cofre" : "Abrir o cofre de gratidão", onclick: function () { S.vault = !S.vault; render(); } }));
+    if (S.vault) {
+      var past = S.grat.filter(function (g) { return g.date !== d; });
+      // Hide the partner's entries for days where I wrote nothing.
+      var mineDays = {}; S.grat.forEach(function (g) { if (g.uid === S.myKey) mineDays[g.date] = true; });
+      past = past.filter(function (g) { return g.uid === S.myKey || mineDays[g.date]; });
+      if (!past.length) kids.push(h("p", { class: "empty", text: "Os dias anteriores aparecem aqui. Releia nos dias difíceis." }));
+      else {
+        var box = h("div", { class: "vault" });
+        var lastDay = "";
+        past.forEach(function (g) {
+          if (g.date !== lastDay) { box.appendChild(h("div", { class: "day", text: fmt(g.date) })); lastDay = g.date; }
+          box.appendChild(h("div", { class: "say" }, [h("span", { class: "who", text: g.uid === S.myKey ? "Você" : nameOf(g.uid) }), h("p", { text: g.text })]));
+        });
+        kids.push(box);
+      }
+    }
+    return h("section", { class: "card g" }, kids);
+  }
+
+  function cardEscuta() {
+    var p = partner(), pk = partnerKey();
+    var idx = Math.floor((Date.now() / 86400000)) % PROMPTS.length;
+    var kids = [h("span", { class: "tag", text: "No fim do dia" }), h("h2", { text: "5 minutos de escuta" }),
+      h("p", { class: "q", text: PROMPTS[idx] })];
+
+    if (!S.ls) {
+      kids.push(h("div", null, [h("span", { class: "lbl", text: "Tempo de cada um" }),
+        h("div", { class: "row" }, [3, 5].map(function (n) {
+          return h("button", { type: "button", "aria-pressed": S.dur === n ? "true" : "false", text: n + " min", onclick: function () { S.dur = n; render(); } });
+        }))]));
+      kids.push(h("div", null, [h("span", { class: "lbl", text: "Quem fala primeiro" }),
+        h("div", { class: "row" }, [
+          h("button", { type: "button", "aria-pressed": S.first === "me" ? "true" : "false", text: "Eu", onclick: function () { S.first = "me"; render(); } }),
+          h("button", { type: "button", "aria-pressed": S.first === "you" ? "true" : "false", disabled: !p, text: p ? p.name : "A outra pessoa", onclick: function () { S.first = "you"; render(); } })
+        ])]));
+      kids.push(h("div", { class: "row" }, [h("button", { type: "button", class: "main", disabled: !me() || (S.first === "you" && !pk), text: "Começar", onclick: function () { startListen(S.first === "me" ? S.myKey : pk, 1); } })]));
+      kids.push(h("p", { class: "rule", text: "Quem ouve só ouve: sem conselho, sem interromper, sem mudar de assunto." }));
+    } else {
+      var speaker = S.ls.speaker, listener = speaker === S.myKey ? pk : S.myKey;
+      var rem = S.ls.ended ? 0 : remaining();
+      kids.push(h("div", { class: "stage" }, [
+        h("p", { class: "timer" + (S.ls.ended ? " done" : ""), id: "timer", text: mmss(rem), "aria-live": "off" }),
+        h("p", { class: "sub", text: "Fala: " + (speaker === S.myKey ? "você" : nameOf(speaker)) + "  ·  Ouve: " + (listener === S.myKey ? "você" : nameOf(listener)) }),
+        S.ls.ended ? h("p", { class: "wait", role: "status", text: S.ls.turn === 1 ? "Tempo! Agradeça por ter sido ouvido(a) e troquem." : "Tempo! Obrigado(a) pelos dois lados." }) : null,
+        h("div", { class: "row" }, [
+          S.ls.turn === 1 ? h("button", { type: "button", class: "main", text: "Trocar de vez", onclick: function () { startListen(listener, 2); } }) : null,
+          h("button", { type: "button", text: "Encerrar", onclick: stopListen })
+        ])
+      ]));
+      if (!S.room) kids.push(h("p", { class: "rule", text: "O timer roda só neste aparelho. Combinem a troca por chamada." }));
+    }
+    return h("section", { class: "card l" }, kids);
+  }
+
+  function itemEl(def) {
+    var it = S.plan[def.k];
+    var box = h("div", { class: "item" }, [h("span", { class: "when", text: def.when }), h("span", { class: "name", text: def.name })]);
+    if (S.editing === def.k) {
+      box.appendChild(h("div", null, [h("label", { class: "lbl", for: "plan-date", text: "Quando" }),
+        h("input", { type: "date", id: "plan-date", value: S.eDate, oninput: function (e) { S.eDate = e.target.value; } })]));
+      box.appendChild(h("div", null, [h("label", { class: "lbl", for: "plan-title", text: "O que vão fazer (opcional)" }),
+        h("input", { type: "text", id: "plan-title", maxlength: "80", value: S.eTitle, oninput: function (e) { S.eTitle = e.target.value; } })]));
+      if (S.ideas.length) {
+        box.appendChild(h("div", { class: "chips" }, S.ideas.map(function (idea) {
+          return h("button", { type: "button", text: idea, onclick: function () { S.eTitle = idea; render(); } });
+        })));
+      }
+      box.appendChild(h("div", { class: "row" }, [
+        h("button", { type: "button", class: "main", text: "Salvar", onclick: savePlanEdit }),
+        h("button", { type: "button", text: "Cancelar", onclick: function () { S.editing = null; S.ideas = []; S.note = ""; render(); } }),
+        S.sample && def.k === "e1" ? h("button", { type: "button", disabled: S.busy, text: S.busy ? "Pensando…" : "Ideias com IA", onclick: askIdeas }) : null
+      ]));
+      return box;
+    }
+    if (!it || !it.date) {
+      box.appendChild(h("p", { class: "empty", text: def.fallback }));
+      box.appendChild(h("div", { class: "row" }, [h("button", { type: "button", disabled: !me(), text: "Marcar data", onclick: function () { S.editing = def.k; S.eDate = ""; S.eTitle = ""; render(); } })]));
+      return box;
+    }
+    var n = daysUntil(it.date), big, small;
+    if (n > 1) { big = n >= 60 ? "~" + Math.round(n / 30) + " meses" : n + " dias"; small = " faltam"; }
+    else if (n === 1) { big = "Amanhã"; small = ""; }
+    else if (n === 0) { big = "É hoje"; small = ""; }
+    else { big = Math.abs(n) + (Math.abs(n) === 1 ? " dia" : " dias"); small = " de atraso"; }
+    box.appendChild(h("div", { class: "count" }, [big, h("small", { text: small })]));
+    box.appendChild(h("p", { class: "sub", text: fmtLong(it.date) + (it.title ? " · " + it.title : "") }));
+    box.appendChild(h("div", { class: "row" }, [
+      h("button", { type: "button", text: "Editar", onclick: function () { S.editing = def.k; S.eDate = it.date; S.eTitle = it.title || ""; render(); } }),
+      h("button", { type: "button", text: "Fizemos!", onclick: function () { markDone(def.k); } })
+    ]));
+    return box;
+  }
+
+  function cardPlano() {
+    var kids = [h("span", { class: "tag", text: "Regra 2-2-2" }), h("h2", { text: "O que vem por aí" }),
+      h("p", { class: "sub", text: "Um encontro a cada 2 semanas, uma escapada a cada 2 meses e uma viagem grande a cada 2 anos. Ao marcar “Fizemos!”, a próxima data já é sugerida." })];
+    var list = h("div", { class: "plan" }, ITEMS.map(itemEl));
+    kids.push(list);
+    kids.push(h("div", null, [h("span", { class: "lbl", text: "Nossa história" }),
+      S.done.length
+        ? h("ul", { class: "hist" }, S.done.map(function (d) {
+            return h("li", null, [d.kind + (d.title ? ": " + d.title : "") + " ", h("span", { text: "· " + fmt(d.date) })]);
+          }))
+        : h("p", { class: "empty", text: "Quando vocês marcarem “Fizemos!”, o que viveram juntos fica registrado aqui." })]));
+    return h("section", { class: "card p" }, kids);
+  }
+
+  function cardNome() {
+    return h("section", { class: "card" }, [
+      h("h2", { text: "Primeiro, como te chamo?" }),
+      h("p", { class: "sub", text: "O nome aparece para a outra pessoa. O fuso horário do seu aparelho também, para mostrar a hora daí do outro lado." }),
+      h("div", null, [h("label", { class: "lbl", for: "nameIn", text: "Seu nome" }),
+        h("input", { type: "text", id: "nameIn", maxlength: "24", autocomplete: "given-name", value: S.nameDraft, oninput: function (e) { S.nameDraft = e.target.value; } })]),
+      h("div", { class: "row" }, [h("button", { type: "button", class: "main", text: "Entrar", onclick: saveName })])
+    ]);
+  }
+
+  /* ---------- Render ---------- */
+  function render() {
+    var ae = document.activeElement, aid = ae && ae.id, ss = null, se = null;
+    try { if (ae && ae.selectionStart != null) { ss = ae.selectionStart; se = ae.selectionEnd; } } catch (e) {}
+    var m = me(), p = partner();
+    var clocks = h("div", { class: "clocks" }, [
+      m ? clockEl("clk-me", "Aqui", m.tz) : null,
+      p ? clockEl("clk-you", "Aí" + (p.name ? ", " + p.name : ""), p.tz) : null
+    ]);
+    var kids = [h("div", { class: "head" }, [h("h1", { text: "Nosso Dia" }), clocks])];
+
+    if (S.dbOk === undefined) kids.push(h("p", { class: "empty", text: "Abrindo o cantinho de vocês…" }));
+    else if (S.dbOk === false) kids.push(h("p", { class: "note", text: "Os dados compartilhados não estão disponíveis aqui. Abra o link dentro do Claude, na sua conta, para salvar e ver a outra pessoa." }));
+
+    if (S.note) kids.push(h("p", { class: "note", role: "status", text: S.note }));
+    if (S.dbOk && !m) kids.push(cardNome());
+    if (S.dbOk && m && !p) kids.push(h("p", { class: "note", text: "Falta a outra pessoa entrar. Compartilhe esta página com ela como Colaborador." }));
+    kids.push(cardGratidao(), cardEscuta(), cardPlano());
+
+    app.textContent = "";
+    kids.forEach(function (k) { if (k) app.appendChild(k); });
+
+    if (aid) {
+      var el = document.getElementById(aid);
+      if (el) { el.focus(); try { if (ss != null) el.setSelectionRange(ss, se); } catch (e) {} }
+    }
+    var ta = document.getElementById("gratText");
+    if (ta) ta.value = S.draft;
+  }
+
+  render();
+  setInterval(tick, 1000);
+
+  /* ---------- Capacidades ---------- */
+  (async function () {
+    var c = window.claude;
+    if (!c || !c.use) { S.dbOk = false; render(); return; }
+    try { S.sample = (await c.use("sample")) || null; } catch (e) { S.sample = null; }
+    try { S.room = (await c.use("room")) || null; if (S.room) S.room.on("listen", onListen); } catch (e) { S.room = null; }
+    try {
+      var db = await c.use("db"), user = await c.use("user");
+      var id = user ? await user.id() : null;
+      if (!db || !id) { S.dbOk = false; render(); return; }
+      S.db = db; S.myKey = safe(id); S.dbOk = true;
+      var onErr = function () { S.note = "A conexão com os dados falhou. Recarregue a página."; render(); };
+      db.collection("people").onSnapshot(function (snap) {
+        var o = {}; snap.docs.forEach(function (d) { o[d.id] = d.data(); }); S.people = o; render();
+      }, onErr);
+      db.collection("gratitude").orderBy("date", "desc").limit(400).onSnapshot(function (snap) {
+        S.grat = snap.docs.map(function (d) { return d.data(); }); render();
+      }, onErr);
+      db.doc("plan/current").onSnapshot(function (snap) {
+        S.plan = snap.exists ? snap.data() : {}; render();
+      }, onErr);
+      db.collection("done").orderBy("at", "desc").limit(6).onSnapshot(function (snap) {
+        S.done = snap.docs.map(function (d) { return d.data(); }); render();
+      }, onErr);
+      render();
+    } catch (e) { S.dbOk = false; render(); }
+  })();
+})();
+
+</script>
+<script>
+
+(function () {
+  "use strict";
+
+  /* ---------- Textos da interface ---------- */
+  var UI = {
+    pt: {
+      tag: "Quem é mais provável…? Um jogo de cartas para duas pessoas, em qualquer lugar do mundo.",
+      yourName: "Seu nome", yourLang: "Seu idioma", create: "Criar sala", join: "Entrar", code: "Código da sala",
+      or: "ou", local: "Jogar no mesmo celular", connecting: "Conectando…",
+      offline: "Salas online não estão disponíveis nesta tela. Você ainda pode jogar no mesmo celular.",
+      roomFail: "Não deu para abrir a sala. Confira o código e tente de novo.", needName: "Escreva seu nome primeiro.", needCode: "Digite o código da sala.",
+      otherName: "Nome da outra pessoa", start: "Começar", back: "Voltar",
+      shareCode: "Mande este código para a outra pessoa", copy: "Copiar", copied: "Copiado", waiting: "Esperando a outra pessoa entrar na sala…",
+      here: "{n} entrou", sync: "Sintonia", cardN: "Carta {n}",
+      noCard: "Ninguém tirou uma carta ainda.", drawDeck: "Tirar carta do baralho", drawAI: "Gerar com IA", generating: "Gerando…",
+      aiFail: "Não consegui gerar agora. Usei uma carta do baralho.", tone: "Clima",
+      tones: { any: "Qualquer", fun: "Engraçado", apoc: "Apocalipse", love: "Romântico", absurd: "Absurdo", deep: "Profundo" },
+      waitFor: "Esperando {n} responder…", passTo: "Passe o celular para {n}", passHint: "Sem olhar a resposta da outra pessoa.", ready: "Sou eu, estou pronto(a)",
+      votedFor: "votou em", agreeBoth: "Sintonia! Os dois apontaram para {n}.", eachSelf: "Cada um votou em si mesmo.", eachOther: "Cada um apontou para o outro.",
+      next: "Próxima carta", leave: "Sair da sala", pickHint: "Quem é mais provável? Toque em um nome.", gone: "saiu"
+    },
+    es: {
+      tag: "¿Quién es más probable…? Un juego de cartas para dos personas, estén donde estén.",
+      yourName: "Tu nombre", yourLang: "Tu idioma", create: "Crear sala", join: "Entrar", code: "Código de la sala",
+      or: "o", local: "Jugar en el mismo móvil", connecting: "Conectando…",
+      offline: "Las salas en línea no están disponibles en esta pantalla. Aún puedes jugar en el mismo móvil.",
+      roomFail: "No se pudo abrir la sala. Revisa el código e inténtalo otra vez.", needName: "Escribe tu nombre primero.", needCode: "Escribe el código de la sala.",
+      otherName: "Nombre de la otra persona", start: "Empezar", back: "Volver",
+      shareCode: "Envía este código a la otra persona", copy: "Copiar", copied: "Copiado", waiting: "Esperando a que la otra persona entre en la sala…",
+      here: "{n} entró", sync: "Sintonía", cardN: "Carta {n}",
+      noCard: "Nadie ha sacado una carta todavía.", drawDeck: "Sacar carta del mazo", drawAI: "Generar con IA", generating: "Generando…",
+      aiFail: "No pude generar ahora. Usé una carta del mazo.", tone: "Ambiente",
+      tones: { any: "Cualquiera", fun: "Divertido", apoc: "Apocalipsis", love: "Romántico", absurd: "Absurdo", deep: "Profundo" },
+      waitFor: "Esperando a que {n} responda…", passTo: "Pásale el móvil a {n}", passHint: "Sin mirar la respuesta de la otra persona.", ready: "Soy yo, estoy listo/a",
+      votedFor: "votó por", agreeBoth: "¡Sintonía! Los dos señalaron a {n}.", eachSelf: "Cada uno votó por sí mismo.", eachOther: "Cada uno señaló al otro.",
+      next: "Siguiente carta", leave: "Salir de la sala", pickHint: "¿Quién es más probable? Toca un nombre.", gone: "salió"
+    },
+    en: {
+      tag: "Who is most likely to…? A card game for two people, wherever they are in the world.",
+      yourName: "Your name", yourLang: "Your language", create: "Create room", join: "Join", code: "Room code",
+      or: "or", local: "Play on the same phone", connecting: "Connecting…",
+      offline: "Online rooms are not available on this screen. You can still play on the same phone.",
+      roomFail: "Could not open the room. Check the code and try again.", needName: "Type your name first.", needCode: "Type the room code.",
+      otherName: "Other person's name", start: "Start", back: "Back",
+      shareCode: "Send this code to the other person", copy: "Copy", copied: "Copied", waiting: "Waiting for the other person to join the room…",
+      here: "{n} joined", sync: "In sync", cardN: "Card {n}",
+      noCard: "Nobody has drawn a card yet.", drawDeck: "Draw from the deck", drawAI: "Generate with AI", generating: "Generating…",
+      aiFail: "Could not generate right now. Drew from the deck instead.", tone: "Mood",
+      tones: { any: "Any", fun: "Funny", apoc: "Apocalypse", love: "Romantic", absurd: "Absurd", deep: "Deep" },
+      waitFor: "Waiting for {n} to answer…", passTo: "Pass the phone to {n}", passHint: "No peeking at the other answer.", ready: "It's me, I'm ready",
+      votedFor: "voted for", agreeBoth: "In sync! Both pointed at {n}.", eachSelf: "Each one voted for themselves.", eachOther: "Each one pointed at the other.",
+      next: "Next card", leave: "Leave room", pickHint: "Who is most likely? Tap a name.", gone: "left"
+    }
+  };
+  var LANGS = { pt: "Português", es: "Español", en: "English" };
+  var PREFIX = { pt: "Quem é mais provável de ", es: "¿Quién tiene más probabilidades de ", en: "Who is most likely to " };
+  var SUFFIX = { pt: "?", es: "?", en: "?" };
+
+  /* ---------- Baralho: [clima, pt, es, en] ---------- */
+  var RAW = [
+    ["apoc", "sobreviver a um apocalipse zumbi", "sobrevivir a un apocalipsis zombi", "survive a zombie apocalypse"],
+    ["apoc", "virar zumbi por pura distração", "convertirse en zombi por pura distracción", "get turned into a zombie out of pure distraction"],
+    ["apoc", "liderar o grupo de sobreviventes", "liderar al grupo de supervivientes", "lead the group of survivors"],
+    ["apoc", "comer o último pacote de bolacha sem avisar ninguém", "comerse el último paquete de galletas sin avisar a nadie", "eat the last pack of cookies without telling anyone"],
+    ["fun", "se atrasar para o próprio casamento", "llegar tarde a su propia boda", "be late to their own wedding"],
+    ["fun", "se perder em uma cidade que já conhece", "perderse en una ciudad que ya conoce", "get lost in a city they already know"],
+    ["fun", "chorar com comercial de TV", "llorar con un anuncio de televisión", "cry at a TV commercial"],
+    ["fun", "procurar o celular com o celular na mão", "buscar el móvil teniendo el móvil en la mano", "look for their phone while holding it"],
+    ["fun", "ganhar uma discussão só na teimosia", "ganar una discusión solo por cabezonería", "win an argument purely out of stubbornness"],
+    ["fun", "voltar com um sotaque estranho depois de uma semana viajando", "volver con un acento raro después de una semana de viaje", "come back with a weird accent after a week of travel"],
+    ["love", "planejar uma viagem surpresa", "planear un viaje sorpresa", "plan a surprise trip"],
+    ["love", "mandar mensagem primeiro depois de uma briga", "escribir primero después de una pelea", "text first after a fight"],
+    ["love", "lembrar uma data especial sem precisar de lembrete", "acordarse de una fecha especial sin necesitar recordatorio", "remember a special date without a reminder"],
+    ["love", "dizer “eu te amo” primeiro", "decir “te quiero” primero", "say “I love you” first"],
+    ["absurd", "ser abduzido por alienígenas e gostar da experiência", "ser abducido por extraterrestres y disfrutar la experiencia", "get abducted by aliens and enjoy it"],
+    ["absurd", "virar celebridade sem querer", "volverse famoso sin querer", "become famous by accident"],
+    ["absurd", "ficar preso num elevador e sair com um novo melhor amigo", "quedarse atrapado en un ascensor y salir con un nuevo mejor amigo", "get stuck in an elevator and come out with a new best friend"],
+    ["absurd", "ganhar na loteria e perder o bilhete", "ganar la lotería y perder el boleto", "win the lottery and lose the ticket"],
+    ["deep", "mudar de país por uma oportunidade", "mudarse de país por una oportunidad", "move to another country for an opportunity"],
+    ["deep", "largar tudo para seguir um sonho", "dejarlo todo para perseguir un sueño", "drop everything to chase a dream"]
+  ];
+  var DECK = RAW.map(function (r, i) {
+    return {
+      id: "d" + i, tone: r[0],
+      tx: {
+        pt: PREFIX.pt + r[1] + SUFFIX.pt,
+        es: PREFIX.es + r[2] + SUFFIX.es,
+        en: PREFIX.en + r[3] + SUFFIX.en
+      }
+    };
+  });
+
+  /* ---------- Estado ---------- */
+  var S = {
+    view: "home", lang: "pt", name: "", name2: "", codeIn: "", code: "", note: "",
+    room: null, partner: null, partnerOnline: false,
+    roomApi: undefined, sample: undefined,
+    local: false, turn: 0, passing: false,
+    card: null, picks: [null, null], early: null, counted: {}, total: 0, agree: 0, n: 0,
+    tone: "any", busy: false, used: {}, recent: [], dealt: false, copied: false
+  };
+  try {
+    var saved = JSON.parse(localStorage.getItem("mais-provavel") || "{}");
+    if (saved.name) S.name = String(saved.name).slice(0, 24);
+    if (saved.lang && UI[saved.lang]) S.lang = saved.lang;
+  } catch (e) {}
+  function persist() { try { localStorage.setItem("mais-provavel", JSON.stringify({ name: S.name, lang: S.lang })); } catch (e) {} }
+
+  function t(key, vars) {
+    var s = UI[S.lang][key];
+    if (vars) for (var k in vars) s = s.replace("{" + k + "}", vars[k]);
+    return s;
+  }
+
+  /* ---------- DOM helper ---------- */
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    if (attrs) for (var k in attrs) {
+      var v = attrs[k];
+      if (v === false || v == null) continue;
+      if (k === "class") el.className = v;
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+      else if (k === "text") el.textContent = v;
+      else el.setAttribute(k, v === true ? "" : v);
+    }
+    (kids || []).forEach(function (c) {
+      if (c == null || c === false) return;
+      el.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return el;
+  }
+
+  var app = document.getElementById("app-jogos");
+
+  /* ---------- Nomes ---------- */
+  function names() {
+    if (S.local) return [S.name || "A", S.name2 || "B"];
+    return [S.name || "Eu", (S.partner && S.partner.name) || "…"];
+  }
+  function partnerLang() { return S.partner && S.partner.lang && UI[S.partner.lang] ? S.partner.lang : null; }
+
+  /* ---------- Fluxo da sala online ---------- */
+  function makeCode() {
+    var a = "abcdefghjkmnpqrstuvwxyz23456789", s = "";
+    for (var i = 0; i < 4; i++) s += a.charAt(Math.floor(Math.random() * a.length));
+    return s;
+  }
+
+  async function enterRoom(code) {
+    var api = S.roomApi;
+    if (!api) { S.note = t("offline"); render(); return; }
+    code = code.toLowerCase().replace(/[^a-z0-9]/g, "");
+    if (code.length < 3) { S.note = t("needCode"); render(); return; }
+    try {
+      var r = await api.join("sala-" + code);
+      S.room = r; S.code = code; S.local = false; S.view = "game"; S.note = "";
+      S.card = null; S.picks = [null, null]; S.total = 0; S.agree = 0; S.n = 0; S.counted = {};
+      r.on("card", function (m) {
+        if (m.isMe || m.sameTab) return;
+        var d = m.data;
+        if (!d || !d.tx || typeof d.id !== "string") return;
+        setCard({ id: d.id.slice(0, 40), tone: String(d.tone || ""), tx: { pt: String(d.tx.pt || ""), es: String(d.tx.es || ""), en: String(d.tx.en || "") } }, true);
+      });
+      r.on("pick", function (m) {
+        if (m.isMe || m.sameTab) return;
+        var d = m.data;
+        if (!d || (d.who !== "me" && d.who !== "you")) return;
+        var idx = d.who === "me" ? 1 : 0;
+        if (S.card && S.card.id === d.cardId) { S.picks[1] = idx; afterPick(); render(); }
+        else S.early = { cardId: d.cardId, idx: idx };
+      });
+      r.onPeers(function () { syncPeers(r); render(); });
+      await r.presence({ name: S.name, lang: S.lang });
+      syncPeers(r);
+      render();
+    } catch (e) {
+      S.note = t("roomFail"); S.view = "home"; render();
+    }
+  }
+
+  function syncPeers(r) {
+    var list = [];
+    try { list = r.peers() || []; } catch (e) {}
+    var other = null;
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      if (p.isMe || p.sameTab) continue;
+      var pr = p.presence || {};
+      if (pr.name) { other = { name: String(pr.name).slice(0, 24), lang: String(pr.lang || "") }; break; }
+    }
+    if (other) { S.partner = other; S.partnerOnline = true; }
+    else S.partnerOnline = false;
+  }
+
+  function leaveRoom() {
+    try { if (S.room && S.room.leave) S.room.leave(); } catch (e) {}
+    S.room = null; S.partner = null; S.partnerOnline = false; S.view = "home"; S.card = null; S.local = false;
+    render();
+  }
+
+  /* ---------- Cartas ---------- */
+  function setCard(card, fromPeer) {
+    S.card = card; S.picks = [null, null]; S.passing = false; S.turn = 0; S.dealt = true; S.n += 1;
+    if (S.early && S.early.cardId === card.id) { S.picks[1] = S.early.idx; }
+    S.early = null;
+    S.recent.push(card.tx.pt || card.tx.en); if (S.recent.length > 8) S.recent.shift();
+    if (!fromPeer) broadcastCard(card);
+    render();
+  }
+  function broadcastCard(card) {
+    if (S.room) S.room.emit("card", { id: card.id, tone: card.tone, tx: card.tx }).catch(function () {});
+  }
+
+  function drawDeck() {
+    var pool = DECK.filter(function (c) { return !S.used[c.id] && (S.tone === "any" || c.tone === S.tone); });
+    if (!pool.length) {
+      DECK.forEach(function (c) { if (S.tone === "any" || c.tone === S.tone) delete S.used[c.id]; });
+      pool = DECK.filter(function (c) { return S.tone === "any" || c.tone === S.tone; });
+    }
+    var c = pool[Math.floor(Math.random() * pool.length)];
+    S.used[c.id] = true;
+    S.note = "";
+    setCard({ id: c.id, tone: c.tone, tx: c.tx }, false);
+  }
+
+  async function drawAI() {
+    if (!S.sample || S.busy) return;
+    S.busy = true; S.note = ""; render();
+    var toneTxt = S.tone === "any" ? "qualquer clima, surpreenda" : UI.pt.tones[S.tone];
+    var prompt =
+      "Crie UMA pergunta para o jogo “Quem é mais provável de…” entre duas pessoas que se conhecem bem e moram em países diferentes.\n" +
+      "Clima: " + toneTxt + ".\n" +
+      "Regras: curta, concreta, fácil de responder apontando para uma das duas pessoas, sem ofender ninguém. " +
+      "Comece com “Quem é mais provável de” e termine com ?. Escreva a mesma pergunta em português, espanhol e inglês, naturais em cada idioma.\n" +
+      (S.recent.length ? "Não repita nem se aproxime destas: " + S.recent.join(" | ") + "\n" : "") +
+      "Responda somente com JSON neste formato: {\"pt\":\"...\",\"es\":\"...\",\"en\":\"...\"}";
+    try {
+      var out = await S.sample.json(prompt, { modelTier: "quick", cache: false });
+      if (!out || !out.pt || !out.es || !out.en) throw new Error("shape");
+      var id = "ai" + Date.now().toString(36);
+      S.busy = false;
+      setCard({ id: id, tone: S.tone, tx: { pt: String(out.pt).slice(0, 220), es: String(out.es).slice(0, 220), en: String(out.en).slice(0, 220) } }, false);
+    } catch (e) {
+      S.busy = false;
+      if (e && e.code === "not_granted") S.sample = null;
+      drawDeck();
+      S.note = t("aiFail"); render();
+    }
+  }
+
+  /* ---------- Respostas ---------- */
+  function choose(idx) {
+    if (!S.card) return;
+    if (S.local) {
+      S.picks[S.turn] = idx;
+      if (S.turn === 0) { S.passing = true; S.turn = 1; }
+      else afterPick();
+      render();
+      return;
+    }
+    if (S.picks[0] !== null) return;
+    S.picks[0] = idx;
+    if (S.room) S.room.emit("pick", { cardId: S.card.id, who: idx === 0 ? "me" : "you" }).catch(function () {});
+    afterPick();
+    render();
+  }
+  function revealed() { return S.picks[0] !== null && S.picks[1] !== null; }
+  function afterPick() {
+    if (revealed() && S.card && !S.counted[S.card.id]) {
+      S.counted[S.card.id] = true;
+      S.total += 1;
+      if (S.picks[0] === S.picks[1]) S.agree += 1;
+    }
+  }
+
+  /* ---------- Views ---------- */
+  function brandBar(extra) {
+    return h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Mais Provável"]), extra]);
+  }
+
+  function langSeg() {
+    var seg = h("div", { class: "seg", role: "group", "aria-label": t("yourLang") });
+    Object.keys(LANGS).forEach(function (k) {
+      seg.appendChild(h("button", { type: "button", "aria-pressed": S.lang === k ? "true" : "false", text: LANGS[k], onclick: function () { S.lang = k; persist(); render(); } }));
+    });
+    return seg;
+  }
+
+  function viewHome() {
+    var online = S.roomApi;
+    var nameIn = h("input", { type: "text", id: "name", maxlength: "24", autocomplete: "given-name", value: S.name, oninput: function (e) { S.name = e.target.value.trim(); persist(); } });
+    var codeIn = h("input", { type: "text", id: "code", class: "code-in", maxlength: "6", autocomplete: "off", autocapitalize: "characters", placeholder: "ABCD", value: S.codeIn, oninput: function (e) { S.codeIn = e.target.value; } });
+    function needName() { if (!S.name) { S.note = t("needName"); render(); return true; } return false; }
+    var kids = [
+      brandBar(null),
+      h("div", { class: "hero" }, [h("h1", { text: "Quem é mais provável?" }), h("p", { text: t("tag") })]),
+      h("div", { class: "panel" }, [
+        h("div", null, [h("label", { class: "lbl", for: "name", text: t("yourName") }), nameIn]),
+        h("div", null, [h("span", { class: "lbl", text: t("yourLang") }), langSeg()]),
+        S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null,
+        h("button", { type: "button", class: "btn-main", disabled: !online, text: S.roomApi === undefined ? t("connecting") : t("create"), onclick: function () { if (needName()) return; enterRoom(makeCode()); } }),
+        h("div", { class: "or", text: t("or") }),
+        h("div", null, [h("label", { class: "lbl", for: "code", text: t("code") })]),
+        h("div", { class: "row" }, [h("div", { class: "grow" }, [codeIn]), h("button", { type: "button", disabled: !online, text: t("join"), onclick: function () { if (needName()) return; enterRoom(S.codeIn); } })]),
+        S.roomApi === null ? h("p", { class: "note", text: t("offline") }) : null
+      ]),
+      h("button", { type: "button", class: "btn-ghost", text: t("local"), onclick: function () { S.view = "local"; S.note = ""; render(); } })
+    ];
+    return kids;
+  }
+
+  function viewLocalSetup() {
+    var n1 = h("input", { type: "text", id: "n1", maxlength: "24", value: S.name, oninput: function (e) { S.name = e.target.value.trim(); persist(); } });
+    var n2 = h("input", { type: "text", id: "n2", maxlength: "24", value: S.name2, oninput: function (e) { S.name2 = e.target.value.trim(); } });
+    return [
+      brandBar(null),
+      h("div", { class: "panel" }, [
+        h("div", null, [h("label", { class: "lbl", for: "n1", text: t("yourName") }), n1]),
+        h("div", null, [h("label", { class: "lbl", for: "n2", text: t("otherName") }), n2]),
+        h("div", null, [h("span", { class: "lbl", text: t("yourLang") }), langSeg()]),
+        S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null,
+        h("button", { type: "button", class: "btn-main", text: t("start"), onclick: function () {
+          if (!S.name || !S.name2) { S.note = t("needName"); render(); return; }
+          S.local = true; S.view = "game"; S.note = ""; S.card = null; S.picks = [null, null]; S.turn = 0; S.passing = false; S.total = 0; S.agree = 0; S.n = 0; S.counted = {}; render();
+        } }),
+        h("button", { type: "button", class: "btn-ghost", text: t("back"), onclick: function () { S.view = "home"; S.note = ""; render(); } })
+      ])
+    ];
+  }
+
+  function viewGame() {
+    var nm = names();
+    var kids = [];
+    var chip = null;
+    if (!S.local) {
+      chip = h("span", { class: "chip" }, [h("span", { class: "dot" + (S.partnerOnline ? " on" : "") }), (S.code || "").toUpperCase()]);
+    }
+    kids.push(brandBar(chip));
+
+    kids.push(h("div", { class: "score" }, [
+      h("div", { class: "who" }, [h("i", { class: "sw a" }), h("span", { text: nm[0] })]),
+      h("div", { class: "sync" }, [t("sync") + " ", h("b", { text: S.agree + "/" + S.total })]),
+      h("div", { class: "who r" }, [h("span", { text: nm[1] }), h("i", { class: "sw b" })])
+    ]));
+
+    if (!S.local && !S.partnerOnline) {
+      var codeBox = h("div", { class: "panel pass" }, [
+        h("p", { class: "note", text: t("shareCode") }),
+        h("div", { class: "big-code", text: (S.code || "").toUpperCase() }),
+        h("button", { type: "button", text: S.copied ? t("copied") : t("copy"), onclick: function () {
+          function done() { S.copied = true; render(); setTimeout(function () { S.copied = false; render(); }, 1600); }
+          try { navigator.clipboard.writeText((S.code || "").toUpperCase()).then(done, function () {}); } catch (e) {}
+        } }),
+        h("p", { class: "note", role: "status", text: t("waiting") })
+      ]);
+      kids.push(codeBox);
+    }
+
+    // passar o celular
+    if (S.local && S.passing && S.card) {
+      kids.push(h("div", { class: "panel pass" }, [
+        h("h2", { text: t("passTo", { n: nm[1] }) }),
+        h("p", { class: "note", text: t("passHint") }),
+        h("button", { type: "button", class: "btn-main", text: t("ready"), onclick: function () { S.passing = false; render(); } })
+      ]));
+      return kids;
+    }
+
+    // carta
+    var other = !S.local ? partnerLang() : null;
+    var card;
+    if (S.card) {
+      var main = S.card.tx[S.lang] || S.card.tx.pt || S.card.tx.en;
+      var alt = other && other !== S.lang ? S.card.tx[other] : "";
+      card = h("div", { class: "card" + (S.dealt ? " deal" : ""), "aria-live": "polite" }, [
+        h("div", { class: "meta" }, [h("span", { text: t("cardN", { n: S.n }) }), h("span", { text: S.card.tone && UI[S.lang].tones[S.card.tone] && S.card.tone !== "any" ? UI[S.lang].tones[S.card.tone] : "" })]),
+        h("div", null, [h("p", { class: "q", text: main })]),
+        alt ? h("p", { class: "alt", text: alt }) : null
+      ]);
+      S.dealt = false;
+    } else {
+      card = h("div", { class: "card empty" }, [
+        h("div", { class: "meta" }, [h("span", { text: "Mais Provável" }), h("span", { text: "" })]),
+        h("p", { class: "q", text: t("noCard") }),
+        h("p", { class: "alt", text: t("pickHint") })
+      ]);
+    }
+    kids.push(card);
+
+    // respostas
+    if (S.card) {
+      var done = revealed();
+      var mine = S.local ? S.picks[S.turn] : S.picks[0];
+      if (!done) {
+        var locked = !S.local && S.picks[0] !== null;
+        kids.push(h("div", { class: "picks" }, [
+          h("button", { type: "button", class: "pick a", disabled: locked && S.picks[0] !== 0, "aria-pressed": mine === 0 ? "true" : "false", text: nm[0], onclick: function () { choose(0); } }),
+          h("button", { type: "button", class: "pick b", disabled: locked && S.picks[0] !== 1, "aria-pressed": mine === 1 ? "true" : "false", text: nm[1], onclick: function () { choose(1); } })
+        ]));
+        if (locked) kids.push(h("p", { class: "note", role: "status", text: t("waitFor", { n: nm[1] }) }));
+        if (S.local) kids.push(h("p", { class: "note", text: nm[S.turn] + ": " + t("pickHint") }));
+      } else {
+        var p0 = S.picks[0], p1 = S.picks[1];
+        var verdict, ok = false;
+        if (p0 === p1) { verdict = t("agreeBoth", { n: nm[p0] }); ok = true; }
+        else if (p0 === 0) verdict = t("eachSelf");
+        else verdict = t("eachOther");
+        function line(voter, sw, voted, swv) {
+          return h("div", { class: "line" }, [h("i", { class: "sw " + sw }), h("b", { text: voter }), h("span", { class: "arrow", text: t("votedFor") }), h("i", { class: "sw " + swv }), h("b", { text: voted })]);
+        }
+        kids.push(h("div", { class: "panel ledger", "aria-live": "polite" }, [
+          h("div", { class: "verdict" + (ok ? " ok" : ""), text: verdict }),
+          line(nm[0], "a", nm[p0], p0 === 0 ? "a" : "b"),
+          line(nm[1], "b", nm[p1], p1 === 0 ? "a" : "b")
+        ]));
+      }
+    }
+
+    // controles
+    var tones = h("div", { class: "tones", role: "group", "aria-label": t("tone") });
+    ["any", "fun", "apoc", "love", "absurd", "deep"].forEach(function (k) {
+      tones.appendChild(h("button", { type: "button", "aria-pressed": S.tone === k ? "true" : "false", text: UI[S.lang].tones[k], onclick: function () { S.tone = k; render(); } }));
+    });
+    var canDeal = S.local || S.partnerOnline || true;
+    var ctrl = h("div", { class: "panel" }, [
+      h("div", null, [h("span", { class: "lbl", text: t("tone") }), tones]),
+      h("div", { class: "row" }, [
+        h("button", { type: "button", class: "btn-main grow", disabled: S.busy || !canDeal, text: S.card ? t("next") : t("drawDeck"), onclick: drawDeck }),
+        S.sample ? h("button", { type: "button", class: "grow", disabled: S.busy, text: S.busy ? t("generating") : t("drawAI"), onclick: drawAI }) : null
+      ]),
+      S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null
+    ]);
+    kids.push(ctrl);
+
+    kids.push(h("button", { type: "button", class: "hidden-link", text: S.local ? t("back") : t("leave"), onclick: function () { if (S.local) { S.view = "home"; S.local = false; S.card = null; render(); } else leaveRoom(); } }));
+    return kids;
+  }
+
+  function render() {
+    var active = document.activeElement && document.activeElement.id;
+    var kids = S.view === "home" ? viewHome() : S.view === "local" ? viewLocalSetup() : viewGame();
+    app.textContent = "";
+    kids.forEach(function (k) { if (k) app.appendChild(k); });
+    if (active && (S.view === "home" || S.view === "local")) { var el = document.getElementById(active); if (el && el.tagName === "INPUT") { /* keep focus out of the way on rerender */ } }
+  }
+
+  render();
+
+  /* ---------- Capacidades (podem não existir) ---------- */
+  (async function () {
+    var c = window.claude;
+    if (!c || !c.use) { S.roomApi = null; S.sample = null; render(); return; }
+    try { S.roomApi = (await c.use("room")) || null; } catch (e) { S.roomApi = null; }
+    try { S.sample = (await c.use("sample")) || null; } catch (e) { S.sample = null; }
+    if (S.view === "home") render(); else if (S.view === "game") render();
+  })();
+})();
+
+</script>
+<script>
+
+(function(){
+  var tabs = document.querySelectorAll(".tabs button");
+  function show(id, save){
+    ["hoje","jogos"].forEach(function(k){
+      document.getElementById(k).hidden = (k !== id);
+    });
+    tabs.forEach(function(b){ b.setAttribute("aria-selected", b.getAttribute("data-tab") === id ? "true" : "false"); });
+    if (save) { try { localStorage.setItem("nosso-dia-tab", id); } catch(e){} }
+  }
+  tabs.forEach(function(b){ b.addEventListener("click", function(){ show(b.getAttribute("data-tab"), true); }); });
+  var start = "hoje";
+  try { var h = (location.hash || "").replace("#",""); if (h === "hoje" || h === "jogos") start = h; else { var s = localStorage.getItem("nosso-dia-tab"); if (s === "jogos") start = "jogos"; } } catch(e){}
+  show(start, false);
+})();
+
+</script>
+
+</body></html>
