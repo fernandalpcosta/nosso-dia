@@ -1,5 +1,7 @@
 # Nosso Dia
 
+📣 **[Veja as novidades](NOVIDADES.md)**
+
 Um cantinho compartilhado para casais que moram em países diferentes. A ideia é manter a conexão do dia a dia com rituais curtos e leves, e ter sempre algo divertido para fazer juntos por videochamada.
 
 O app é uma única página (`index.html`) com duas abas.
