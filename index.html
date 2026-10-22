@@ -1178,7 +1178,8 @@ body {
   var root = document.getElementById("app-puzzle");
   if (!root) return;
 
-  var OKSRC = /^data:image\/(jpeg|png);base64,[A-Za-z0-9+\/=]+$/;
+  // Imagens aceitas: JPEG/PNG (fotos e desenhos convertidos) ou o próprio SVG da IA, quando o aparelho não deixa converter.
+  var OKSRC = /^data:image\/(jpeg|png|svg\+xml);base64,[A-Za-z0-9+\/=]+$/;
   var OKROUND = /^[a-z0-9]{1,12}$/;
   var S = {
     ok: undefined, db: null, myKey: null, people: {}, meta: null, pieces: [],
@@ -1329,8 +1330,11 @@ body {
       .replace(/<(image|use|a|iframe|style)\b[\s\S]*?(\/>|<\/\1>)/gi, "")
       .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi, "")
       .replace(/\s(xlink:)?href\s*=\s*("(?!#)[^"]*"|'(?!#)[^']*')/gi, "");
+    // Reparos comuns que fazem o navegador recusar o SVG: "&" solto e xlink sem declaração.
+    s = s.replace(/&(?!#?[A-Za-z0-9]+;)/g, "&amp;").replace(/<!--[\s\S]*?-->/g, "");
     s = s.replace(/<svg\b[^>]*>/i, function (tag) {
       tag = tag.replace(/\s(width|height)\s*=\s*("[^"]*"|'[^']*')/gi, "");
+      if (/xlink:/.test(s) && !/xmlns:xlink=/.test(tag)) tag = tag.replace(/<svg/i, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
       if (!/xmlns=/.test(tag)) tag = tag.replace(/<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
       if (!/viewBox=/i.test(tag)) tag = tag.replace(/<svg/i, '<svg viewBox="0 0 560 560"');
       return tag.replace(/<svg/i, '<svg width="560" height="560" preserveAspectRatio="xMidYMid slice"');
@@ -1353,6 +1357,32 @@ body {
       im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
     });
   }
+  function svgValid(svgText) {
+    try {
+      var doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+      return !doc.getElementsByTagName("parsererror").length && doc.documentElement && doc.documentElement.nodeName.toLowerCase() === "svg";
+    } catch (e) { return false; }
+  }
+  function svgDataUrl(svgText) {
+    var bytes = new TextEncoder().encode(svgText), bin = "";
+    for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return "data:image/svg+xml;base64," + btoa(bin);
+  }
+  function aiError(e) {
+    var code = (e && e.code) || "";
+    if (code === "truncated") return "A IA começou o desenho, mas ele ficou grande demais e veio cortado. Tente uma descrição mais simples (menos elementos na cena).";
+    if (code === "http_401" || code === "http_403") return "A chave da API não foi aceita. Confira a chave em Ajustes.";
+    if (code === "http_429" || code === "http_529" || code === "http_503") return "A IA está sobrecarregada agora. Tente de novo em alguns minutos.";
+    if (code === "http_400") return "A IA recusou o pedido" + (e.detail ? ": " + e.detail : ".") ;
+    if (code.indexOf("http_") === 0) return "A IA respondeu com erro (" + code.slice(5) + "). Tente de novo mais tarde.";
+    if (code === "nosvg") return "A IA respondeu, mas sem um desenho. Tente de novo.";
+    if (code === "invalid") return "A IA mandou um desenho com defeito que o celular não consegue abrir. Tente de novo ou mude a descrição.";
+    if (code === "toobig") return "O desenho ficou pesado demais para salvar. Tente uma descrição mais simples.";
+    if (e && /fetch|network|Failed/i.test(String(e.message))) return "Não consegui falar com a IA. Confira a internet e tente de novo.";
+    return "Não consegui criar a imagem agora. Tente de novo ou mude a descrição.";
+  }
+  function fail(code) { var e = new Error(code); e.code = code; return e; }
+
   async function createAi() {
     var desc = (S.aiText || "").trim().slice(0, 300);
     if (!S.sample || S.aiBusy) return;
@@ -1366,17 +1396,30 @@ body {
       "muitas cores e detalhes diferentes espalhados por todas as regiões da imagem, para que cada peça do quebra-cabeça seja reconhecível; " +
       "sem texto; use apenas path, rect, circle, ellipse, polygon, polyline, line, g, defs, linearGradient, radialGradient e stop; " +
       "nada de <image>, <foreignObject>, <script>, <style>, fontes ou links externos. Se houver pessoas, desenhe de forma simples e carinhosa.\n" +
+      "Seja econômico no código: no máximo cerca de 150 elementos, coordenadas com números inteiros, sem comentários e sem atributos desnecessários. O SVG precisa caber inteiro na resposta e terminar com </svg>.\n" +
       "Responda somente com o código SVG, sem explicações.";
     try {
       var text = S.sample.text
-        ? await S.sample.text(prompt, { maxTokens: 12000, quality: "high" })
-        : (await S.sample.json(prompt + "\nResponda em JSON: {\"svg\":\"...\"}", { maxTokens: 12000, quality: "high" })).svg;
+        ? await S.sample.text(prompt, { maxTokens: 16000, quality: "high" })
+        : (await S.sample.json(prompt + "\nResponda em JSON: {\"svg\":\"...\"}", { maxTokens: 16000, quality: "high" })).svg;
+      if (/<svg/i.test(text || "") && !/<\/svg>/i.test(text || "")) throw fail("truncated");
       var svg = cleanSvg(text);
-      if (!svg) throw new Error("sem svg");
-      S.draft = await svgToJpeg(svg); S.draftKind = "ia";
+      if (!svg) throw fail("nosvg");
+      if (!svgValid(svg)) throw fail("invalid");
+      try {
+        S.draft = await svgToJpeg(svg);
+      } catch (convErr) {
+        // Alguns aparelhos (ex.: Safari) não deixam converter SVG em JPEG; usa o próprio desenho.
+        console.warn("Nosso Dia: usando o SVG direto", convErr);
+        var url = svgDataUrl(svg);
+        if (url.length > 700000) throw fail("toobig");
+        S.draft = url;
+      }
+      S.draftKind = "ia";
     } catch (e) {
+      console.error("Nosso Dia: falha ao criar imagem com IA", e);
       if (e && e.code === "not_granted") S.sample = null;
-      S.note = "Não consegui criar a imagem agora. Tente de novo ou mude a descrição.";
+      S.note = aiError(e);
     }
     S.aiBusy = false; render();
   }

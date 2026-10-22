@@ -235,9 +235,22 @@
           messages: [{ role: "user", content: prompt }]
         })
       });
-      if (!r.ok) throw new Error("IA indisponível (" + r.status + ")");
+      if (!r.ok) {
+        var detail = "";
+        try { var body = await r.json(); detail = body && body.error && body.error.message || ""; } catch (e) {}
+        var err = new Error("IA indisponível (" + r.status + ")" + (detail ? ": " + detail : ""));
+        err.code = "http_" + r.status; err.detail = detail;
+        throw err;
+      }
       var out = await r.json();
-      return (out.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("");
+      var text = (out.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("");
+      // A resposta bateu no limite de tamanho: o texto veio incompleto.
+      if (out.stop_reason === "max_tokens") {
+        var cut = new Error("A resposta da IA foi cortada no limite de tamanho");
+        cut.code = "truncated"; cut.partial = text;
+        throw cut;
+      }
+      return text;
     }
     return {
       json: async function (prompt, opts) { return parseJson(await ask(prompt, opts)); },
