@@ -425,9 +425,15 @@
           try { await fn(); lines.push("✓ " + label + ": funcionando"); }
           catch (e) { lines.push("✗ " + label + ": " + window.NossoDiaAIErro(e) + (e && e.message ? " [" + e.message + "]" : "")); }
         }
-        await check("Cartas e ideias", function () { return api.json('Responda só com este JSON: {"ok":true}', { maxTokens: 2000 }); });
+        // Mesmo tipo de pedido e mesmas configurações das cartas de verdade (antes era um pedido trivial e passava mesmo quando as cartas falhavam).
+        var sample = "";
+        await check("Cartas e ideias", async function () {
+          var c = await api.json('Crie uma carta do jogo "Quem é mais provável…" para um casal de duas mulheres, carinhosa e divertida. Responda só com JSON: {"pt":"pergunta em português","es":"em espanhol","en":"em inglês"}');
+          if (!c || !c.pt) { var e = new Error("A IA respondeu fora do formato esperado"); e.code = "badjson"; throw e; }
+          sample = c.pt;
+        });
         await check("Imagens do quebra-cabeça", function () { return api.text("Responda só: ok", { maxTokens: 2000, quality: "high" }); });
-        testOut.textContent = lines.join("  ·  ");
+        testOut.textContent = lines.join("  ·  ") + (sample ? "  ·  Carta de exemplo: " + sample : "");
         ev.target.disabled = false;
       } }));
       box.appendChild(testOut);
