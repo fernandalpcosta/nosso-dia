@@ -218,6 +218,9 @@
     var handlers = {}, peerCbs = [], peerList = [], unsubs = [], myPresence = null, beat = null, left = false;
     var FV = firebase.firestore.FieldValue;
     var myDoc = people.doc(safeId(c.uid + "_" + TAB));
+    // "Sou eu" é a mesma PESSOA, não o mesmo aparelho: a Fernanda no computador não é parceira da Fernanda no celular.
+    // Registros antigos, sem "person", caem na comparação por aparelho.
+    function samePerson(x) { return x && x.person ? x.person === c.person : !!x && x.uid === c.uid; }
 
     // Eventos: ignora o que já existia ao entrar, entrega só os novos.
     var first = true;
@@ -227,7 +230,7 @@
         if (ch.type !== "added") return;
         var d = ch.doc.data() || {};
         var list = handlers[d.ev] || [];
-        var m = { data: d.data, isMe: d.uid === c.uid, sameTab: d.uid === c.uid && d.tab === TAB };
+        var m = { data: d.data, isMe: samePerson(d), sameTab: d.uid === c.uid && d.tab === TAB };
         list.forEach(function (fn) { try { fn(m); } catch (e) { console.error(e); } });
       });
     }, function (e) { console.error("Nosso Dia: sala", e); }));
@@ -239,7 +242,7 @@
         var x = d.data() || {};
         var at = x.at && x.at.toMillis ? x.at.toMillis() : now;
         if (now - at > 75000) return;
-        out.push({ isMe: x.uid === c.uid, sameTab: x.uid === c.uid && x.tab === TAB, presence: x.presence || {} });
+        out.push({ isMe: samePerson(x), sameTab: x.uid === c.uid && x.tab === TAB, presence: x.presence || {} });
       });
       return out;
     }
@@ -261,13 +264,13 @@
       on: function (ev, fn) { (handlers[ev] = handlers[ev] || []).push(fn); },
       emit: function (ev, data) {
         if (left) return Promise.resolve();
-        return events.add({ ev: String(ev), data: data == null ? null : data, uid: c.uid, tab: TAB, at: FV.serverTimestamp() });
+        return events.add({ ev: String(ev), data: data == null ? null : data, uid: c.uid, person: c.person, tab: TAB, at: FV.serverTimestamp() });
       },
       onPeers: function (fn) { peerCbs.push(fn); },
       peers: function () { return peerList.slice(); },
       presence: function (obj) {
         myPresence = obj || {};
-        var write = function () { return myDoc.set({ uid: c.uid, tab: TAB, presence: myPresence, at: FV.serverTimestamp() }); };
+        var write = function () { return myDoc.set({ uid: c.uid, person: c.person, tab: TAB, presence: myPresence, at: FV.serverTimestamp() }); };
         if (!beat) beat = setInterval(function () { write().catch(function () {}); }, 20000);
         return write();
       },
