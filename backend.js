@@ -296,10 +296,18 @@
   function sampleApi(k) {
     var key = k || lsGet(LS_KEY);
     if (!key) return null;
-    // opts.maxTokens: tamanho máximo da resposta (padrão 500).
+    // opts.maxTokens: tamanho máximo da resposta (padrão 4000; o "pensamento" do modelo também conta).
     // opts.quality === "high": usa um modelo mais capaz (para desenhos do quebra-cabeça).
     async function ask(prompt, opts) {
       opts = opts || {};
+      var high = opts.quality === "high";
+      var req = {
+        model: high ? "claude-sonnet-5-5" : "claude-haiku-5-5",
+        max_tokens: Math.min(16000, Math.max(high ? 1000 : 2000, opts.maxTokens || 4000)),
+        messages: [{ role: "user", content: prompt }]
+      };
+      // Cartas e ideias são respostas curtas: sem "pensar" antes, para não gastar o limite à toa.
+      if (!high) { req.thinking = { type: "disabled" }; req.output_config = { effort: "low" }; }
       var r = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -308,11 +316,7 @@
           "anthropic-version": "2023-06-01",
           "anthropic-dangerous-direct-browser-access": "true"
         },
-        body: JSON.stringify({
-          model: opts.quality === "high" ? "claude-sonnet-5-5" : "claude-haiku-5-5",
-          max_tokens: Math.min(16000, Math.max(100, opts.maxTokens || 500)),
-          messages: [{ role: "user", content: prompt }]
-        })
+        body: JSON.stringify(req)
       });
       if (!r.ok) {
         var detail = "";
@@ -334,7 +338,12 @@
     return {
       // Se a resposta vier fora do formato, pede de novo uma vez, de forma mais rígida.
       json: async function (prompt, opts) {
-        var raw = await ask(prompt, opts);
+        var raw;
+        try { raw = await ask(prompt, opts); } catch (e0) {
+          // Cortada, mas o JSON pode ter vindo inteiro antes do corte.
+          if (e0.code === "truncated" && e0.partial) { try { return parseJson(e0.partial); } catch (e) {} }
+          throw e0;
+        }
         try { return parseJson(raw); } catch (e1) {
           var raw2 = await ask(prompt + "\n\nIMPORTANTE: responda apenas com JSON válido, sem nenhum texto antes ou depois e sem blocos de código. Dentro dos textos, use aspas tipográficas “ ” em vez de aspas retas.", opts);
           try { return parseJson(raw2); } catch (e2) {
@@ -416,8 +425,8 @@
           try { await fn(); lines.push("✓ " + label + ": funcionando"); }
           catch (e) { lines.push("✗ " + label + ": " + window.NossoDiaAIErro(e) + (e && e.message ? " [" + e.message + "]" : "")); }
         }
-        await check("Cartas e ideias", function () { return api.json('Responda só com este JSON: {"ok":true}', { maxTokens: 30 }); });
-        await check("Imagens do quebra-cabeça", function () { return api.text("Responda só: ok", { maxTokens: 10, quality: "high" }); });
+        await check("Cartas e ideias", function () { return api.json('Responda só com este JSON: {"ok":true}', { maxTokens: 2000 }); });
+        await check("Imagens do quebra-cabeça", function () { return api.text("Responda só: ok", { maxTokens: 2000, quality: "high" }); });
         testOut.textContent = lines.join("  ·  ");
         ev.target.disabled = false;
       } }));
