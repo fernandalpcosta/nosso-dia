@@ -295,13 +295,13 @@ body {
 </section>
 <section id="mundo" hidden><div class="wrap" id="app-mundo"></div></section>
 
-<script src="porque.js?v=20261022c"></script>
+<script src="porque.js?v=20261022d"></script>
 <!-- Fora do Claude: Firebase + backend.js criam o mesmo window.claude que a página usa. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20261022c"></script>
-<script src="backend.js?v=20261022c"></script>
+<script src="firebase-config.js?v=20261022d"></script>
+<script src="backend.js?v=20261022d"></script>
 <script>
 
 (function () {
@@ -465,7 +465,8 @@ body {
       if (!Array.isArray(out)) throw new Error("shape");
       S.ideas = out.slice(0, 4).map(function (x) { return String(x).slice(0, 80); });
     } catch (e) {
-      S.note = "Não consegui gerar ideias agora. Tente de novo em instantes.";
+      console.error("Nosso Dia: ideias com IA falharam", e);
+      S.note = window.NossoDiaAIErro ? window.NossoDiaAIErro(e) : "Não consegui gerar ideias agora. Tente de novo em instantes.";
     }
     S.busy = false; render();
   }
@@ -948,9 +949,10 @@ body {
       setCard({ id: id, tone: S.tone, tx: { pt: String(out.pt).slice(0, 220), es: String(out.es).slice(0, 220), en: String(out.en).slice(0, 220) } }, false);
     } catch (e) {
       S.busy = false;
+      console.error("Nosso Dia: carta com IA falhou", e);
       if (e && e.code === "not_granted") S.sample = null;
       drawDeck();
-      S.note = t("aiFail"); render();
+      S.note = window.NossoDiaAIErro ? window.NossoDiaAIErro(e) + " Usei uma carta do baralho." : t("aiFail"); render();
     }
   }
 
@@ -1826,8 +1828,9 @@ body {
         var out = await S.sample.json(prompt, { modelTier: "quick", cache: false });
         if (out && typeof out.text === "string" && out.text.trim()) { text = out.text.trim().slice(0, 260); src = "ai"; }
       } catch (e) {
+        console.error("Nosso Dia: carta de verdade ou desafio com IA falhou", e);
         if (e && e.code === "not_granted") S.sample = null;
-        S.note = "Não consegui gerar agora. Usei uma carta do baralho.";
+        S.note = (window.NossoDiaAIErro ? window.NossoDiaAIErro(e) + " " : "Não consegui gerar agora. ") + "Usei uma carta do baralho.";
       }
     }
     if (!text) text = pickDeck(kind, level);
@@ -1976,7 +1979,7 @@ body {
 })();
 
 </script>
-<script src="mundo.js?v=20261022c"></script>
-<script src="lembra.js?v=20261022c"></script>
+<script src="mundo.js?v=20261022d"></script>
+<script src="lembra.js?v=20261022d"></script>
 
 </body></html>

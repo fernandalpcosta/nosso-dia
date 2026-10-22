@@ -293,8 +293,8 @@
     if (a >= 0 && b > a) return JSON.parse(t.slice(a, b + 1));
     throw new Error("A resposta não veio em JSON.");
   }
-  function sampleApi() {
-    var key = lsGet(LS_KEY);
+  function sampleApi(k) {
+    var key = k || lsGet(LS_KEY);
     if (!key) return null;
     // opts.maxTokens: tamanho máximo da resposta (padrão 500).
     // opts.quality === "high": usa um modelo mais capaz (para desenhos do quebra-cabeça).
@@ -332,10 +332,35 @@
       return text;
     }
     return {
-      json: async function (prompt, opts) { return parseJson(await ask(prompt, opts)); },
+      // Se a resposta vier fora do formato, pede de novo uma vez, de forma mais rígida.
+      json: async function (prompt, opts) {
+        var raw = await ask(prompt, opts);
+        try { return parseJson(raw); } catch (e1) {
+          var raw2 = await ask(prompt + "\n\nIMPORTANTE: responda apenas com JSON válido, sem nenhum texto antes ou depois e sem blocos de código. Dentro dos textos, use aspas tipográficas “ ” em vez de aspas retas.", opts);
+          try { return parseJson(raw2); } catch (e2) {
+            console.error("Nosso Dia: resposta da IA fora do formato", raw, raw2);
+            var err = new Error("A IA respondeu fora do formato esperado"); err.code = "badjson"; err.raw = String(raw2).slice(0, 300);
+            throw err;
+          }
+        }
+      },
       text: ask
     };
   }
+
+  // Mensagem clara para cada tipo de falha da IA (usada pelas cartas, ideias e verdade ou desafio).
+  window.NossoDiaAIErro = function (e) {
+    var code = (e && e.code) || "";
+    if (code === "http_401" || code === "http_403") return "A chave da API não foi aceita. Confira em Ajustes.";
+    if (code === "http_404") return "O modelo de IA não foi encontrado para esta chave.";
+    if (code === "http_429" || code === "http_529" || code === "http_503") return "A IA está sobrecarregada ou o limite de uso foi atingido. Tente daqui a pouco.";
+    if (code === "http_400") return "A IA recusou o pedido" + (e.detail ? ": " + e.detail : ".");
+    if (code.indexOf("http_") === 0) return "A IA respondeu com erro (" + code.slice(5) + ").";
+    if (code === "badjson") return "A IA respondeu fora do formato esperado.";
+    if (code === "truncated") return "A resposta da IA veio cortada.";
+    if (e && /fetch|network|Load failed/i.test(String(e.message))) return "Não consegui falar com a IA. Confira a internet.";
+    return "Não consegui gerar com a IA agora.";
+  };
 
   /* ---------- Interface pública (igual à do Claude) ---------- */
   var mainRoom = null;
@@ -379,6 +404,24 @@
       ]));
       box.appendChild(key);
       box.appendChild(el("button", { type: "button", text: "Salvar e recarregar", onclick: function () { lsSet(LS_KEY, key.value.trim() || null); location.reload(); } }));
+      // Diagnóstico: uma chamada mínima a cada modelo, mostrando o resultado exato.
+      var testOut = el("p", { hidden: true, role: "status" });
+      box.appendChild(el("button", { type: "button", text: "Testar a IA", onclick: async function (ev) {
+        var k = key.value.trim();
+        testOut.hidden = false;
+        if (!k) { testOut.textContent = "Cole a chave acima primeiro."; return; }
+        ev.target.disabled = true; testOut.textContent = "Testando… (alguns segundos)";
+        var api = sampleApi(k), lines = [];
+        async function check(label, fn) {
+          try { await fn(); lines.push("✓ " + label + ": funcionando"); }
+          catch (e) { lines.push("✗ " + label + ": " + window.NossoDiaAIErro(e) + (e && e.message ? " [" + e.message + "]" : "")); }
+        }
+        await check("Cartas e ideias", function () { return api.json('Responda só com este JSON: {"ok":true}', { maxTokens: 30 }); });
+        await check("Imagens do quebra-cabeça", function () { return api.text("Responda só: ok", { maxTokens: 10, quality: "high" }); });
+        testOut.textContent = lines.join("  ·  ");
+        ev.target.disabled = false;
+      } }));
+      box.appendChild(testOut);
       if (lsGet(LS_CODE)) {
         box.appendChild(el("button", { type: "button", text: "Sair deste espaço", onclick: function () {
           if (!window.confirm("Sair do espaço do casal neste aparelho? Os dados continuam salvos; para voltar, use o mesmo código.")) return;
