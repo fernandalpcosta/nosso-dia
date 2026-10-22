@@ -75,6 +75,40 @@ Com o total de atividades aparecem surpresas: riacho (5), ponte (12), cachoeira 
 
 Como funciona: o mundo não é salvo como imagem; o `mundo.js` redesenha tudo a partir das gratidões e encontros já salvos e de "sementes" na coleção `mundo` (escuta, quebra-cabeça, verdade ou desafio, sintonia). Cada semente tem um id fixo, então nada conta em dobro, e as posições vêm de sorteios com semente fixa, por isso o mundo é igual nos dois celulares. O histórico antigo de vocês já conta: o mundo nasce crescido.
 
+## A ciência por trás
+
+Cada atividade tem um botão **Por que isso?** que explica a ideia, o que a pesquisa diz e os limites. Resumo:
+
+| Atividade | Base |
+|---|---|
+| Uma coisa que eu valorizo em você | Algoe, Gable e Maisel (2010); Algoe (2012) |
+| 5 minutos de escuta | Reis e Shaver (1988); Laurenceau, Barrett e Pietromonaco (1998); Markman, Stanley e Blumberg (2010); Jiang e Hancock (2013) |
+| Regra 2-2-2 | Não vem de pesquisa (post do Reddit, ~2015); o princípio se apoia em Aron et al. (2000) e Stafford e Merolla (2007) |
+| Lembra quando…? | Osgarby e Halford (2013); Kurtz e Algoe (2015); estudos de "joint savoring" |
+| Mais Provável | Kurtz e Algoe (2015); Proyer (2014) |
+| Quebra-cabeça a quatro mãos | Aron et al. (2000); Proyer (2014) |
+| Verdade ou desafio | Aron et al. (1997); Reis e Shaver (1988); Jiang e Hancock (2013); Aron et al. (2000) |
+| Nosso mundo | Sem pesquisa direta: escolha de design (o mundo só cresce, nunca murcha) |
+
+### Referências
+
+- Algoe, S. B. (2012). Find, remind, and bind: The functions of gratitude in everyday relationships. Social and Personality Psychology Compass, 6(6), 455–469.
+- Algoe, S. B., Gable, S. L., & Maisel, N. C. (2010). It's the little things: Everyday gratitude as a booster shot for romantic relationships. Personal Relationships, 17, 217–233. [Link](https://labs.psych.ucsb.edu/gable/shelly/publications/414)
+- Aron, A., Melinat, E., Aron, E. N., Vallone, R. D., & Bator, R. J. (1997). The experimental generation of interpersonal closeness. Personality and Social Psychology Bulletin, 23(4), 363–377. [Link](https://ggia.berkeley.edu/practice/practice_as_pdf/36_questions_for_increasing_closeness)
+- Aron, A., Norman, C. C., Aron, E. N., McKenna, C., & Heyman, R. E. (2000). Couples' shared participation in novel and arousing activities and experienced relationship quality. Journal of Personality and Social Psychology, 78(2), 273–284.
+- Jiang, L. C., & Hancock, J. T. (2013). Absence makes the communication grow fonder: Geographic separation, interpersonal media, and intimacy in dating relationships. Journal of Communication, 63(3), 556–577. [Link](https://academic.oup.com/joc/article/63/3/556/4085877)
+- Kurtz, L. E., & Algoe, S. B. (2015). Putting laughter in context: Shared laughter as behavioral indicator of relationship well-being. Personal Relationships, 22(4), 573–590. [Link](https://pubmed.ncbi.nlm.nih.gov/26957946/)
+- Laurenceau, J.-P., Barrett, L. F., & Pietromonaco, P. R. (1998). Intimacy as an interpersonal process: The importance of self-disclosure, partner disclosure, and perceived partner responsiveness in interpersonal exchanges. Journal of Personality and Social Psychology, 74(5), 1238–1251. [Link](https://www.affective-science.org/pubs/1998/LaurenFBPl1998.pdf)
+- Markman, H. J., Stanley, S. M., & Blumberg, S. L. (2010). Fighting for your marriage (ed. rev.). Jossey-Bass.
+- Osgarby, S. M., & Halford, W. K. (2013). Couple relationship distress and observed expression of intimacy during reminiscence about positive relationship events. Behavior Therapy, 44(4), 686–700.
+- Proyer, R. T. (2014). To love and play: Testing the association of adult playfulness with the relationship personality and relationship satisfaction. Current Psychology.
+- Reis, H. T., & Shaver, P. (1988). Intimacy as an interpersonal process. In S. Duck (Ed.), Handbook of personal relationships (pp. 367–389). Wiley.
+- Society for Personality and Social Psychology (resumo): Proyer e Brauer sobre brincadeira em relacionamentos. [Link](https://www.spsp.org/news-center/blog/proyer-brauer-playfulness)
+- Stafford, L., & Merolla, A. J. (2007). Idealization, reunions, and stability in long-distance dating relationships. Journal of Social and Personal Relationships, 24(1), 37–54. doi:10.1177/0265407507072578 [Link](https://doi.org/10.1177/0265407507072578)
+- Universidade de Illinois (notícia): Savoring pleasurable moments strengthens couples' bonds. [Link](https://news.illinois.edu/savoring-pleasurable-moments-strengthens-couples-bonds/)
+
+Os estudos citados são, em sua maioria, correlacionais ou de laboratório, com amostras pequenas: mostram tendências, não garantias.
+
 ## Como funciona
 
 Tudo em HTML, CSS e JavaScript puro, sem build. O app conversa com o "backend" por uma única interface, `window.claude.use(...)`, com quatro peças: `db` (dados), `room` (tempo real), `user` (quem é você) e `sample` (IA).

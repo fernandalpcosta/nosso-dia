@@ -384,7 +384,7 @@
 
   function renderMain(k, ph) {
     if (!mainHost) return;
-    var kids = [h("div", { class: "w-head" }, [h("h1", { text: "Nosso mundo" }), h("p", { class: "sub", text: "Cada coisa que vocês fazem juntas no app vira natureza aqui. As duas veem o mesmo mundinho." })])];
+    var kids = [h("div", { class: "w-head" }, [h("h1", { text: "Nosso mundo" }), h("p", { class: "sub", text: "Cada coisa que vocês fazem juntas no app vira natureza aqui. As duas veem o mesmo mundinho." }), window.NossoDiaPorque ? window.NossoDiaPorque.button("mundo") : null])];
     if (S.ok === false) kids.push(h("p", { class: "note", text: "O mundo cresce quando os dados compartilhados estão ligados. Veja em Ajustes, no fim da página." }));
     kids.push(svg(k, ph, "0 0 1000 600", describe(k), "wm"));
     kids.push(h("div", { class: "w-chips" }, [

@@ -2,6 +2,12 @@
 
 ## 22 de outubro de 2026
 
+### 🔬 "Por que isso?" em todas as atividades
+
+Cada atividade ganhou um botão **Por que isso?**, que abre um painel com a ideia, o que a pesquisa diz, os limites dos estudos e as referências. Quando não há pesquisa direta (a regra 2-2-2, o mundinho), o painel diz isso.
+
+<img src="docs/img/novidades/porque-isso.png" alt="Painel Por que isso do Lembra quando, com pesquisa, limites e referências" width="260">
+
 ### 💞 Lembra quando…?
 
 Um cartão novo na aba **Hoje**: a cada 3 dias, uma lembrança de vocês volta. Cada uma conta um detalhe que a outra talvez tenha esquecido, e os dois aparecem quando as duas escreverem. Dá para guardar lembranças à mão ("Lembra quando… a gente se conheceu").

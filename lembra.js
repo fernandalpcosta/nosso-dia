@@ -160,7 +160,7 @@
   }
 
   function card() {
-    var kids = [h("span", { class: "tag", text: "A cada 3 dias" }), h("h2", { text: "Lembra quando…?" })];
+    var kids = [h("span", { class: "tag", text: "A cada 3 dias" }), h("h2", { text: "Lembra quando…?" }), window.NossoDiaPorque ? window.NossoDiaPorque.button("lembra") : null];
     if (S.ok === undefined) { kids.push(h("p", { class: "empty", text: "Procurando lembranças…" })); return h("section", { class: "card m" }, kids); }
     if (S.ok === false) { kids.push(h("p", { class: "empty", text: "As lembranças aparecem quando os dados compartilhados estão ligados." })); return h("section", { class: "card m" }, kids); }
     var items = pool(), m = choose(items), pk = partnerKey();

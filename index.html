@@ -109,6 +109,7 @@ body {
 #jogos .dot.on{background: var(--ok);}
 #jogos .hero h1{font-size: clamp(2rem, 9vw, 2.7rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.03em;}
 #jogos .hero p{margin: 10px 0 0; color: var(--muted); max-width: 34ch;}
+#jogos .hero .why{margin-top: 8px;}
 #jogos .panel{background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 14px;}
 #jogos .lbl{font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
 #jogos input[type="text"]{width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 11px 12px;}
@@ -294,6 +295,7 @@ body {
 </section>
 <section id="mundo" hidden><div class="wrap" id="app-mundo"></div></section>
 
+<script src="porque.js"></script>
 <!-- Fora do Claude: Firebase + backend.js criam o mesmo window.claude que a página usa. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -499,7 +501,7 @@ body {
     var m = me(), p = partner(), pk = partnerKey(), d = today();
     var mine = S.grat.filter(function (g) { return g.date === d && g.uid === S.myKey; })[0];
     var theirs = pk ? S.grat.filter(function (g) { return g.date === d && g.uid === pk; })[0] : null;
-    var kids = [h("span", { class: "tag", text: "Todo dia" }), h("h2", { text: "Uma coisa que eu valorizo em você" }),
+    var kids = [h("span", { class: "tag", text: "Todo dia" }), h("h2", { text: "Uma coisa que eu valorizo em você" }), window.NossoDiaPorque ? window.NossoDiaPorque.button("gratidao") : null,
       h("p", { class: "sub", text: "Pode ser algo de hoje ou um jeito seu. Vocês só leem a resposta um do outro depois de escrever a sua." })];
 
     if (!mine) {
@@ -537,7 +539,7 @@ body {
   function cardEscuta() {
     var p = partner(), pk = partnerKey();
     var idx = Math.floor((Date.now() / 86400000)) % PROMPTS.length;
-    var kids = [h("span", { class: "tag", text: "No fim do dia" }), h("h2", { text: "5 minutos de escuta" }),
+    var kids = [h("span", { class: "tag", text: "No fim do dia" }), h("h2", { text: "5 minutos de escuta" }), window.NossoDiaPorque ? window.NossoDiaPorque.button("escuta") : null,
       h("p", { class: "q", text: PROMPTS[idx] })];
 
     if (!S.ls) {
@@ -609,7 +611,7 @@ body {
   }
 
   function cardPlano() {
-    var kids = [h("span", { class: "tag", text: "Regra 2-2-2" }), h("h2", { text: "O que vem por aí" }),
+    var kids = [h("span", { class: "tag", text: "Regra 2-2-2" }), h("h2", { text: "O que vem por aí" }), window.NossoDiaPorque ? window.NossoDiaPorque.button("plano") : null,
       h("p", { class: "sub", text: "Um encontro a cada 2 semanas, uma escapada a cada 2 meses e uma viagem grande a cada 2 anos. Ao marcar “Fizemos!”, a próxima data já é sugerida." })];
     var list = h("div", { class: "plan" }, ITEMS.map(itemEl));
     kids.push(list);
@@ -982,7 +984,7 @@ body {
 
   /* ---------- Views ---------- */
   function brandBar(extra) {
-    return h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Mais Provável"]), extra]);
+    return h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Mais Provável"]), extra, window.NossoDiaPorque ? window.NossoDiaPorque.button("maisprovavel") : null]);
   }
 
   function langSeg() {
@@ -1567,7 +1569,7 @@ body {
 
   function render() {
     var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Quebra-cabeça"])])];
-    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Montem juntas" }), h("p", { text: "Cada peça que um coloca aparece na tela do outro." })]));
+    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Montem juntas" }), h("p", { text: "Cada peça que um coloca aparece na tela do outro." }), window.NossoDiaPorque ? window.NossoDiaPorque.button("quebracabeca") : null]));
     if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o quebra-cabeça…" }));
     else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para montar juntas, os dados compartilhados precisam estar ligados. Veja em Ajustes, no fim da página." }));
     else if (!S.meta || S.setup) kids.push(viewSetup());
@@ -1851,7 +1853,7 @@ body {
 
   function render() {
     var kids = [h("div", { class: "top" }, [h("div", { class: "brand" }, [h("i"), "Verdade ou desafio"])])];
-    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Verdade ou desafio" }), h("p", { text: "Uma pessoa por vez. A carta aparece para as duas." })]));
+    kids.push(h("div", { class: "hero" }, [h("h2", { class: "pz-title", text: "Verdade ou desafio" }), h("p", { text: "Uma pessoa por vez. A carta aparece para as duas." }), window.NossoDiaPorque ? window.NossoDiaPorque.button("vod") : null]));
     if (S.ok === undefined) kids.push(h("p", { class: "note", text: "Abrindo o jogo…" }));
     else if (S.ok === false) kids.push(h("p", { class: "note warn", text: "Para jogar juntas, os dados compartilhados precisam estar ligados. Veja em Ajustes, no fim da página." }));
     else {
