@@ -49,6 +49,23 @@ Uma pessoa por vez; a carta aparece para as duas ao mesmo tempo.
 - Baralho fixo mais cartas geradas por IA, com desafios que dá para cumprir por videochamada ou mensagem.
 - Botões "Respondi" / "Cumpri" passam a vez para a outra pessoa.
 
+## Mundo: nosso mundinho
+
+Uma florestinha que cresce com o que vocês fazem no app. As duas veem o mesmo mundo, e uma miniatura dele fica no topo da aba Hoje.
+
+| Atividade | O que nasce |
+|---|---|
+| Cada gratidão escrita | 🌸 uma flor |
+| 5 minutos de escuta completos (as duas falaram) | 🌳 uma árvore |
+| Encontro marcado como "Fizemos!" | 🦊 um animal (coelho, raposa, capivara, veado…) |
+| Quebra-cabeça completo | 🍄 um cantinho especial (cogumelos, banco, balanço, fogueira…) |
+| Verdade ou desafio cumprido | 🦋 borboletas (vaga-lumes à noite) |
+| Sintonia no Mais Provável | 🐦 um passarinho |
+
+Com o total de atividades aparecem surpresas: riacho (5), ponte (12), cachoeira (20), lago com patos (35), arco-íris (50), cabana (75) e a árvore da vida (100). O céu segue o horário de quem está olhando (dia, entardecer e noite estrelada).
+
+Como funciona: o mundo não é salvo como imagem; o `mundo.js` redesenha tudo a partir das gratidões e encontros já salvos e de "sementes" na coleção `mundo` (escuta, quebra-cabeça, verdade ou desafio, sintonia). Cada semente tem um id fixo, então nada conta em dobro, e as posições vêm de sorteios com semente fixa, por isso o mundo é igual nos dois celulares. O histórico antigo de vocês já conta: o mundo nasce crescido.
+
 ## Como funciona
 
 Tudo em HTML, CSS e JavaScript puro, sem build. O app conversa com o "backend" por uma única interface, `window.claude.use(...)`, com quatro peças: `db` (dados), `room` (tempo real), `user` (quem é você) e `sample` (IA).

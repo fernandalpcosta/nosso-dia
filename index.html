@@ -205,11 +205,71 @@ body {
 #app-vod .vcard { background: var(--card); color: var(--card-ink); border-radius: 18px; padding: 20px 20px 16px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; gap: 20px; transform: rotate(-1deg); box-shadow: 0 14px 28px -14px rgba(10, 12, 40, 0.55); }
 #app-vod .vcard .meta { display: flex; justify-content: space-between; gap: 10px; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
 #app-vod .vcard .vq { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.3rem, 5.8vw, 1.7rem); line-height: 1.15; letter-spacing: -0.02em; margin: 0; text-wrap: balance; overflow-wrap: anywhere; }
+#app-mundo .w-head h1 { font-family: "Gabarito", system-ui, sans-serif; font-size: clamp(1.8rem, 8vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; margin: 0; }
+#app-mundo .sub, #app-mundo .note { color: var(--muted); margin: 6px 0 0; font-size: 0.95rem; }
+#app-mundo .note { color: var(--ink); background: var(--surface); border-left: 4px solid var(--p); padding: 8px 10px; border-radius: 6px; }
+#app-mundo .lbl { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; }
+#mundo .wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+.w-frame { border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: #8fd16a; line-height: 0; }
+.w-frame svg { width: 100%; height: auto; display: block; aspect-ratio: 1000 / 600; }
+.w-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.w-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 0.88rem; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+.w-chip b { color: var(--ink); }
+.w-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.w-next { margin: 0; font-size: 1.05rem; }
+.w-bar { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.w-bar i { display: block; height: 100%; background: linear-gradient(90deg, #66bb6a, #26a69a); border-radius: 999px; }
+.w-how, .w-log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 0.95rem; }
+.w-how li, .w-log li { display: flex; gap: 10px; align-items: baseline; }
+.w-log small { margin-left: auto; color: var(--muted); white-space: nowrap; padding-left: 8px; }
+#hoje .w-mini, .w-mini { display: block; width: 100%; padding: 0; border: 1px solid var(--line); background: var(--surface); cursor: pointer; text-align: left; font: inherit; color: inherit; border-radius: 16px; overflow: hidden; }
+.w-mini .w-frame { border: 0; border-radius: 0; }
+.w-mini .w-frame svg { aspect-ratio: 1000 / 430; }
+.w-mini-cap { display: flex; align-items: center; gap: 4px 10px; flex-wrap: wrap; padding: 10px 14px; font-size: 0.85rem; color: var(--muted); line-height: 1.3; }
+.w-mini-cap b { color: var(--ink); font-family: "Gabarito", system-ui, sans-serif; font-size: 1rem; }
+.w-mini-cap .w-go { margin-left: auto; color: var(--ink); font-weight: 700; }
+#hoje .w-mini:focus-visible, .w-mini:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.w-sway { transform-box: fill-box; transform-origin: 50% 100%; animation: w-sway 5s ease-in-out infinite alternate; }
+.w-sway.slow { animation-duration: 8s; }
+@keyframes w-sway { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+.w-flow { animation: w-flow 2.4s linear infinite; }
+@keyframes w-flow { to { stroke-dashoffset: -72; } }
+.w-fall { animation: w-fall 0.9s linear infinite; }
+@keyframes w-fall { from { transform: translateY(-24px); } to { transform: translateY(0); } }
+.w-cloud { animation: w-cloud 70s linear infinite; }
+@keyframes w-cloud { from { transform: translateX(-160px); } to { transform: translateX(160px); } }
+.w-twinkle { animation: w-twinkle 3s ease-in-out infinite alternate; }
+@keyframes w-twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+.w-firefly { animation: w-firefly 2.6s ease-in-out infinite alternate; }
+@keyframes w-firefly { from { opacity: 0.15; transform: translate(-4px, 3px); } to { opacity: 1; transform: translate(4px, -5px); } }
+.w-flap { transform-box: fill-box; transform-origin: 50% 50%; animation: w-flap 0.35s ease-in-out infinite alternate; }
+@keyframes w-flap { from { transform: scaleX(1); } to { transform: scaleX(0.3); } }
+.w-drift { animation: w-drift 9s ease-in-out infinite alternate; }
+@keyframes w-drift { from { transform: translate(-14px, 6px); } to { transform: translate(18px, -10px); } }
+.w-bird { animation: w-bird 40s linear infinite; }
+@keyframes w-bird { from { transform: translate(-260px, 10px); } to { transform: translate(260px, -10px); } }
+.w-wing { transform-box: fill-box; transform-origin: 50% 100%; animation: w-wing 0.6s ease-in-out infinite alternate; }
+@keyframes w-wing { from { transform: scaleY(1); } to { transform: scaleY(0.35); } }
+.w-breathe { animation: w-breathe 3.5s ease-in-out infinite alternate; }
+@keyframes w-breathe { from { transform: translateY(0); } to { transform: translateY(-1.5px); } }
+.w-bob { animation: w-bob 3s ease-in-out infinite alternate; }
+@keyframes w-bob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+.w-ripple { animation: w-twinkle 2.5s ease-in-out infinite alternate; }
+.w-flicker { transform-box: fill-box; transform-origin: 50% 100%; animation: w-flicker 0.5s ease-in-out infinite alternate; }
+@keyframes w-flicker { from { transform: scale(1, 1); } to { transform: scale(0.9, 1.12); } }
+.w-swing { transform-box: fill-box; transform-origin: 50% 0; animation: w-swing 3s ease-in-out infinite alternate; }
+@keyframes w-swing { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.w-smoke { animation: w-smoke 4s ease-in-out infinite alternate; }
+@keyframes w-smoke { from { transform: translate(0, 0); opacity: 0.9; } to { transform: translate(6px, -6px); opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) {
+  .w-frame * { animation: none !important; }
+}
 </style>
 
 <nav class="tabs" role="tablist" aria-label="Seções">
   <button type="button" role="tab" data-tab="hoje" aria-selected="true">Hoje</button>
   <button type="button" role="tab" data-tab="jogos" aria-selected="false">Jogos</button>
+  <button type="button" role="tab" data-tab="mundo" aria-selected="false">Mundo</button>
 </nav>
 <section id="hoje"><div class="wrap" id="app-hoje"></div></section>
 <section id="jogos" hidden>
@@ -222,6 +282,7 @@ body {
   <div class="wrap" id="app-puzzle" hidden></div>
   <div class="wrap" id="app-vod" hidden></div>
 </section>
+<section id="mundo" hidden><div class="wrap" id="app-mundo"></div></section>
 
 <!-- Fora do Claude: Firebase + backend.js criam o mesmo window.claude que a página usa. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -305,6 +366,9 @@ body {
     return el;
   }
   var app = document.getElementById("app-hoje");
+  // Miniatura do mundinho: o mundo.js desenha aqui; o nó é reaproveitado a cada render.
+  var miniHost = document.createElement("div");
+  window.NossoDiaMini = miniHost;
 
   /* ---------- Relógios ---------- */
   function timeIn(tz) {
@@ -326,7 +390,13 @@ body {
       var rem = remaining();
       var t = document.getElementById("timer");
       if (t) t.textContent = mmss(rem);
-      if (rem <= 0) { S.ls.ended = true; try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} render(); }
+      if (rem <= 0) {
+        S.ls.ended = true;
+        try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+        // As duas falaram: nasce uma árvore no mundinho (o id da sessão evita árvore em dobro).
+        if (S.ls.turn === 2 && S.ls.sid && window.NossoMundo) window.NossoMundo.grow("arvore", "escuta_" + S.ls.sid);
+        render();
+      }
     }
   }
   function remaining() { return Math.max(0, S.ls.dur * 60 - Math.floor((Date.now() - S.ls.startedAt) / 1000)); }
@@ -386,9 +456,10 @@ body {
   }
 
   /* ---------- Escuta (sincronizada pela sala) ---------- */
-  function startListen(speakerKey, turn) {
-    var msg = { type: "start", speaker: speakerKey, dur: S.dur, turn: turn };
-    S.ls = { speaker: speakerKey, dur: S.dur, turn: turn, startedAt: Date.now(), ended: false };
+  function startListen(speakerKey, turn, sid) {
+    sid = sid || (Date.now().toString(36) + Math.random().toString(36).slice(2, 6));
+    var msg = { type: "start", speaker: speakerKey, dur: S.dur, turn: turn, sid: sid };
+    S.ls = { speaker: speakerKey, dur: S.dur, turn: turn, sid: sid, startedAt: Date.now(), ended: false };
     if (S.room) S.room.emit("listen", msg).catch(function () {});
     render();
   }
@@ -404,7 +475,8 @@ body {
     if (d.type === "stop") { S.ls = null; render(); return; }
     if (d.type === "start" && typeof d.speaker === "string") {
       var dur = d.dur === 3 ? 3 : 5;
-      S.ls = { speaker: d.speaker, dur: dur, turn: d.turn === 2 ? 2 : 1, startedAt: Date.now(), ended: false };
+      var sid = typeof d.sid === "string" && /^[a-z0-9]{4,24}$/.test(d.sid) ? d.sid : "";
+      S.ls = { speaker: d.speaker, dur: dur, turn: d.turn === 2 ? 2 : 1, sid: sid, startedAt: Date.now(), ended: false };
       render();
     }
   }
@@ -475,7 +547,7 @@ body {
         h("p", { class: "sub", text: "Fala: " + (speaker === S.myKey ? "você" : nameOf(speaker)) + "  ·  Ouve: " + (listener === S.myKey ? "você" : nameOf(listener)) }),
         S.ls.ended ? h("p", { class: "wait", role: "status", text: S.ls.turn === 1 ? "Tempo! Agradeça por ter sido ouvido(a) e troquem." : "Tempo! Obrigado(a) pelos dois lados." }) : null,
         h("div", { class: "row" }, [
-          S.ls.turn === 1 ? h("button", { type: "button", class: "main", text: "Trocar de vez", onclick: function () { startListen(listener, 2); } }) : null,
+          S.ls.turn === 1 ? h("button", { type: "button", class: "main", text: "Trocar de vez", onclick: function () { startListen(listener, 2, S.ls.sid); } }) : null,
           h("button", { type: "button", text: "Encerrar", onclick: stopListen })
         ])
       ]));
@@ -556,7 +628,7 @@ body {
       m ? clockEl("clk-me", "Aqui", m.tz) : null,
       p ? clockEl("clk-you", "Aí" + (p.name ? ", " + p.name : ""), p.tz) : null
     ]);
-    var kids = [h("div", { class: "head" }, [h("h1", { text: "Nosso Dia" }), clocks])];
+    var kids = [h("div", { class: "head" }, [h("h1", { text: "Nosso Dia" }), clocks]), miniHost];
 
     if (S.dbOk === undefined) kids.push(h("p", { class: "empty", text: "Abrindo o cantinho de vocês…" }));
     else if (S.dbOk === false) kids.push(h("p", { class: "note", text: "Os dados compartilhados não estão disponíveis agora. Veja em Ajustes, no fim da página." }));
@@ -895,7 +967,10 @@ body {
     if (revealed() && S.card && !S.counted[S.card.id]) {
       S.counted[S.card.id] = true;
       S.total += 1;
-      if (S.picks[0] === S.picks[1]) S.agree += 1;
+      if (S.picks[0] === S.picks[1]) {
+        S.agree += 1;
+        if (window.NossoMundo) window.NossoMundo.grow("passaro", "sint_" + (S.local ? "local" : S.code) + "_" + new Date().toISOString().slice(0, 10) + "_" + S.card.id);
+      }
     }
   }
 
@@ -1088,15 +1163,16 @@ body {
 (function(){
   var tabs = document.querySelectorAll(".tabs button");
   function show(id, save){
-    ["hoje","jogos"].forEach(function(k){
+    ["hoje","jogos","mundo"].forEach(function(k){
       document.getElementById(k).hidden = (k !== id);
     });
     tabs.forEach(function(b){ b.setAttribute("aria-selected", b.getAttribute("data-tab") === id ? "true" : "false"); });
     if (save) { try { localStorage.setItem("nosso-dia-tab", id); } catch(e){} }
   }
   tabs.forEach(function(b){ b.addEventListener("click", function(){ show(b.getAttribute("data-tab"), true); }); });
+  window.NossoDiaTabs = { show: function (id, save) { show(id, save); window.scrollTo(0, 0); } };
   var start = "hoje";
-  try { var h = (location.hash || "").replace("#",""); if (h === "hoje" || h === "jogos") start = h; else { var s = localStorage.getItem("nosso-dia-tab"); if (s === "jogos") start = "jogos"; } } catch(e){}
+  try { var h = (location.hash || "").replace("#",""); if (h === "hoje" || h === "jogos" || h === "mundo") start = h; else { var s = localStorage.getItem("nosso-dia-tab"); if (s === "jogos" || s === "mundo") start = s; } } catch(e){}
   show(start, false);
 })();
 
@@ -1379,6 +1455,7 @@ body {
     out.push(board);
 
     if (done) {
+      if (window.NossoMundo) window.NossoMundo.grow("canto", "puzzle_" + S.meta.round);
       out.push(h("div", { class: "panel pass", role: "status" }, [
         h("h2", { text: "Completo!" }),
         h("p", { class: "note", text: "Vocês montaram as " + NN + " peças em " + dur(last - S.meta.at) + ". Você colocou " + mine + " e " + otherName(otherKey) + " colocou " + theirs + "." })
@@ -1607,6 +1684,7 @@ body {
     save(doc);
   }
   function finish(done) {
+    if (done && window.NossoMundo) window.NossoMundo.grow("borboleta", "vod_" + Date.now().toString(36) + "_" + S.myKey);
     var base = cur(), stats = JSON.parse(JSON.stringify(base.stats || {}));
     var me = stats[S.myKey] || { d: 0, s: 0 };
     if (done) me.d = (+me.d || 0) + 1; else me.s = (+me.s || 0) + 1;
@@ -1744,7 +1822,6 @@ body {
 })();
 
 </script>
-
-
+<script src="mundo.js"></script>
 
 </body></html>
