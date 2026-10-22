@@ -140,6 +140,10 @@ Se alguém limpar os dados do navegador ou trocar de celular, o app passa a ver 
 
 Os valores do `firebaseConfig` podem ficar públicos; quem protege os dados são as regras e o código do casal.
 
+### Vários aparelhos
+
+Cada uma pode usar o app no celular e no computador. Quando um aparelho novo entra com o código do casal, o app pergunta **"Quem é você neste aparelho?"** e liga aquele aparelho à pessoa escolhida (fica em `aparelhos/{id do aparelho}`). Se uma versão antiga tiver criado uma pessoa duplicada, escolher o nome certo junta a duplicata à pessoa original, levando as gratidões e lembranças. Em **Ajustes** dá para ver de quem é o aparelho e trocar, se alguém escolher errado.
+
 ### 2. GitHub Pages
 
 1. O Pages gratuito só funciona com repositório público: **Settings → General → Danger Zone → Change visibility → Public**. O repositório não tem senhas nem dados de vocês (os dados ficam no Firebase).

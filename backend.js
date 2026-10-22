@@ -119,13 +119,89 @@
       var cred = auth.currentUser ? { user: auth.currentUser } : await auth.signInAnonymously();
       var uid = cred.user.uid;
       var fs = firebase.firestore();
-      ctx = { fs: fs, uid: uid, base: "casais/" + code, code: code };
+      var base = "casais/" + code;
+      var person = await resolvePerson(fs, base, uid, code);
+      ctx = { fs: fs, uid: uid, person: person, base: base, code: code };
       return ctx;
     } catch (e) {
       console.error("Nosso Dia: falha ao conectar", e);
       return null;
     }
   })();
+
+  /* ---------- Quem é você neste aparelho? ----------
+     O login anônimo do Firebase é por aparelho/navegador. Para a mesma pessoa poder usar
+     o celular e o computador, cada aparelho é ligado a uma "pessoa" do casal:
+       aparelhos/{uid} = { person }   (e uma cópia no localStorage)
+     Quando um aparelho novo entra num espaço que já tem as duas, ou quando há pessoas
+     duplicadas (versões antigas criavam uma pessoa por aparelho), o app pergunta quem é.
+     Escolher um nome que já existe junta a duplicata deste aparelho à pessoa escolhida. */
+  function personKey(code) { return "nosso-dia-pessoa:" + code; }
+  function docKey(s) { return String(s).replace(/[^A-Za-z0-9_\-]/g, "_").slice(0, 100); }
+  function askWho(options) {
+    return new Promise(function (resolve) {
+      overlay(function (box, close) {
+        box.appendChild(el("h2", { text: "Quem é você neste aparelho?" }));
+        box.appendChild(el("p", { text: "Vocês podem usar o Nosso Dia no celular e no computador. Escolha seu nome para este aparelho ser reconhecido como você." }));
+        options.forEach(function (o) {
+          box.appendChild(el("button", { class: "main", type: "button", text: o.name, onclick: function () { close(); resolve(o.id); } }));
+        });
+      });
+    });
+  }
+  async function mergeInto(fs, base, from, to) {
+    // Gratidões e lembranças escritas pela duplicata passam para a pessoa escolhida.
+    var grat = await fs.collection(base + "/gratitude").where("uid", "==", from).get();
+    for (var i = 0; i < grat.docs.length; i++) {
+      var g = grat.docs[i], d = g.data() || {};
+      var target = fs.doc(base + "/gratitude/" + d.date + "_" + to);
+      var t = await target.get();
+      if (!t.exists && d.date) await target.set(Object.assign({}, d, { uid: to }));
+      await g.ref.delete();
+    }
+    var notes = await fs.collection(base + "/relembrar").where("uid", "==", from).get();
+    for (var j = 0; j < notes.docs.length; j++) {
+      var n = notes.docs[j], x = n.data() || {};
+      var tn = fs.doc(base + "/relembrar/" + docKey(x.mem) + "_" + docKey(to));
+      var tt = await tn.get();
+      if (!tt.exists && x.mem) await tn.set(Object.assign({}, x, { uid: to }));
+      await n.ref.delete();
+    }
+    await fs.doc(base + "/people/" + from).delete();
+  }
+  async function resolvePerson(fs, base, uid, code) {
+    var cached = lsGet(personKey(code));
+    if (cached) return cached;
+    var dev = await fs.doc(base + "/aparelhos/" + uid).get();
+    var person = dev.exists && dev.data() && dev.data().person;
+    if (!person) {
+      var snap = await fs.collection(base + "/people").get();
+      var people = snap.docs.map(function (d) { return { id: d.id, name: String((d.data() || {}).name || "").trim(), at: +(d.data() || {}).at || 0 }; });
+      var mine = people.some(function (p) { return p.id === uid; });
+      person = uid;
+      if (people.length > 2 || (people.length >= 2 && !mine)) {
+        // Um nome aparece uma vez só: vale o registro mais antigo daquele nome.
+        var byName = {}, options = [];
+        people.sort(function (a, b) { return a.at - b.at; }).forEach(function (p) {
+          var k = p.name.toLowerCase();
+          if (!k || byName[k]) return;
+          byName[k] = p; options.push(p);
+        });
+        if (options.length) person = await askWho(options);
+        if (person !== uid && mine) {
+          var mineName = (people.filter(function (p) { return p.id === uid; })[0] || {}).name || "";
+          var chosenName = (people.filter(function (p) { return p.id === person; })[0] || {}).name || "";
+          // Nomes diferentes: provavelmente escolheu errado. Só junta se a pessoa confirmar.
+          var ok = mineName.toLowerCase() === chosenName.toLowerCase() ||
+            window.confirm("Este aparelho já estava registrado como “" + mineName + "”. Juntar com “" + chosenName + "”? As gratidões e lembranças de “" + mineName + "” passam a ser de “" + chosenName + "”.");
+          if (ok) await mergeInto(fs, base, uid, person); else person = uid;
+        }
+      }
+      await fs.doc(base + "/aparelhos/" + uid).set({ person: person, at: Date.now() });
+    }
+    lsSet(personKey(code), person);
+    return person;
+  }
 
   function dbApi(c) {
     return {
@@ -266,7 +342,7 @@
       var c = await ready;
       if (!c) return null;
       if (name === "db") return dbApi(c);
-      if (name === "user") return { id: async function () { return c.uid; } };
+      if (name === "user") return { id: async function () { return c.person; } };
       if (name === "room") { if (!mainRoom) mainRoom = makeRoom(c, "principal"); return mainRoom; }
       return null;
     }
@@ -304,6 +380,19 @@
         box.appendChild(el("button", { type: "button", text: "Sair deste espaço", onclick: function () {
           if (!window.confirm("Sair do espaço do casal neste aparelho? Os dados continuam salvos; para voltar, use o mesmo código.")) return;
           lsSet(LS_CODE, null); location.reload();
+        } }));
+      }
+      if (ctx) {
+        var who = el("p", { text: "Este aparelho é de: …" });
+        ctx.fs.doc(ctx.base + "/people/" + ctx.person).get().then(function (d) {
+          who.textContent = "Este aparelho é de: " + ((d.exists && d.data().name) || "você (ainda sem nome)");
+        }).catch(function () {});
+        box.appendChild(el("div", null, [el("span", { class: "lbl", text: "Pessoa" }), who]));
+        box.appendChild(el("button", { type: "button", text: "Não sou eu: trocar a pessoa deste aparelho", onclick: function () {
+          if (!window.confirm("Escolher de novo quem usa este aparelho? Nada do que vocês salvaram é apagado.")) return;
+          var c = ctx;
+          lsSet(personKey(c.code), null);
+          c.fs.doc(c.base + "/aparelhos/" + c.uid).delete().catch(function () {}).then(function () { location.reload(); });
         } }));
       }
       box.appendChild(el("button", { type: "button", text: "Fechar", onclick: close }));
