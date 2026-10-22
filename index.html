@@ -183,11 +183,15 @@ body {
 #app-puzzle .dot { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #fff; }
 #app-puzzle .dot.a { background: var(--a); }
 #app-puzzle .dot.b { background: var(--b); }
-#app-puzzle .tray { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px; }
+#app-puzzle .tray { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 8px; }
 #app-puzzle .piece { aspect-ratio: 1; min-width: 0; padding: 0; border: 2px solid var(--line); border-radius: 8px; background-image: var(--pz-img); background-color: var(--surface); background-repeat: no-repeat; cursor: pointer; }
 #app-puzzle .piece:hover { border-color: var(--muted); }
 #app-puzzle .piece.sel { border-color: var(--ink); outline: 3px solid var(--ink); outline-offset: 1px; transform: scale(1.06); }
 #app-puzzle .preview { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
+#jogos #app-puzzle .pz-ai .seg button { flex: 1 1 auto; }
+#app-puzzle .pz-ai { display: flex; flex-direction: column; gap: 8px; }
+#app-puzzle .pz-ai textarea { width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; resize: vertical; }
+#app-puzzle .pz-ai textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 #app-puzzle .filein { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
 #app-puzzle .filebtn { flex: 1 1 0; min-width: 0; text-align: center; cursor: pointer; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 10px; padding: 10px 12px; font-weight: 500; }
 #app-puzzle .filein:focus-visible + .filebtn { outline: 3px solid var(--ink); outline-offset: 2px; }
@@ -691,51 +695,51 @@ body {
   var UI = {
     pt: {
       tag: "Quem é mais provável…? Um jogo de cartas para duas pessoas, em qualquer lugar do mundo.",
-      yourName: "Seu nome", yourLang: "Seu idioma", create: "Criar sala", join: "Entrar", code: "Código da sala",
+      yourName: "Seu nome", yourLang: "Seu idioma", create: "Jogar juntas", online: "online", away: "esperando",
       or: "ou", local: "Jogar no mesmo celular", connecting: "Conectando…",
       offline: "Salas online não estão disponíveis nesta tela. Você ainda pode jogar no mesmo celular.",
-      roomFail: "Não deu para abrir a sala. Confira o código e tente de novo.", needName: "Escreva seu nome primeiro.", needCode: "Digite o código da sala.",
+      roomFail: "Não deu para conectar. Tente de novo em instantes.", needName: "Escreva seu nome primeiro.",
       otherName: "Nome da outra pessoa", start: "Começar", back: "Voltar",
-      shareCode: "Mande este código para a outra pessoa", copy: "Copiar", copied: "Copiado", waiting: "Esperando a outra pessoa entrar na sala…",
+      waiting: "Esperando a outra pessoa abrir o Mais Provável no celular dela…",
       here: "{n} entrou", sync: "Sintonia", cardN: "Carta {n}",
       noCard: "Ninguém tirou uma carta ainda.", drawDeck: "Tirar carta do baralho", drawAI: "Gerar com IA", generating: "Gerando…",
       aiFail: "Não consegui gerar agora. Usei uma carta do baralho.", tone: "Clima",
       tones: { any: "Qualquer", fun: "Engraçado", apoc: "Apocalipse", love: "Romântico", absurd: "Absurdo", deep: "Profundo", spicy: "Picante" },
       waitFor: "Esperando {n} responder…", passTo: "Passe o celular para {n}", passHint: "Sem olhar a resposta da outra pessoa.", ready: "Sou eu, estou pronto(a)",
       votedFor: "votou em", agreeBoth: "Sintonia! Os dois apontaram para {n}.", eachSelf: "Cada um votou em si mesmo.", eachOther: "Cada um apontou para o outro.",
-      next: "Próxima carta", leave: "Sair da sala", pickHint: "Quem é mais provável? Toque em um nome.", gone: "saiu"
+      next: "Próxima carta", leave: "Sair do jogo", pickHint: "Quem é mais provável? Toque em um nome.", gone: "saiu"
     },
     es: {
       tag: "¿Quién es más probable…? Un juego de cartas para dos personas, estén donde estén.",
-      yourName: "Tu nombre", yourLang: "Tu idioma", create: "Crear sala", join: "Entrar", code: "Código de la sala",
+      yourName: "Tu nombre", yourLang: "Tu idioma", create: "Jugar juntas", online: "en línea", away: "esperando",
       or: "o", local: "Jugar en el mismo móvil", connecting: "Conectando…",
       offline: "Las salas en línea no están disponibles en esta pantalla. Aún puedes jugar en el mismo móvil.",
-      roomFail: "No se pudo abrir la sala. Revisa el código e inténtalo otra vez.", needName: "Escribe tu nombre primero.", needCode: "Escribe el código de la sala.",
+      roomFail: "No se pudo conectar. Inténtalo otra vez en un momento.", needName: "Escribe tu nombre primero.",
       otherName: "Nombre de la otra persona", start: "Empezar", back: "Volver",
-      shareCode: "Envía este código a la otra persona", copy: "Copiar", copied: "Copiado", waiting: "Esperando a que la otra persona entre en la sala…",
+      waiting: "Esperando a que la otra persona abra Más Probable en su móvil…",
       here: "{n} entró", sync: "Sintonía", cardN: "Carta {n}",
       noCard: "Nadie ha sacado una carta todavía.", drawDeck: "Sacar carta del mazo", drawAI: "Generar con IA", generating: "Generando…",
       aiFail: "No pude generar ahora. Usé una carta del mazo.", tone: "Ambiente",
       tones: { any: "Cualquiera", fun: "Divertido", apoc: "Apocalipsis", love: "Romántico", absurd: "Absurdo", deep: "Profundo", spicy: "Picante" },
       waitFor: "Esperando a que {n} responda…", passTo: "Pásale el móvil a {n}", passHint: "Sin mirar la respuesta de la otra persona.", ready: "Soy yo, estoy listo/a",
       votedFor: "votó por", agreeBoth: "¡Sintonía! Los dos señalaron a {n}.", eachSelf: "Cada uno votó por sí mismo.", eachOther: "Cada uno señaló al otro.",
-      next: "Siguiente carta", leave: "Salir de la sala", pickHint: "¿Quién es más probable? Toca un nombre.", gone: "salió"
+      next: "Siguiente carta", leave: "Salir del juego", pickHint: "¿Quién es más probable? Toca un nombre.", gone: "salió"
     },
     en: {
       tag: "Who is most likely to…? A card game for two people, wherever they are in the world.",
-      yourName: "Your name", yourLang: "Your language", create: "Create room", join: "Join", code: "Room code",
+      yourName: "Your name", yourLang: "Your language", create: "Play together", online: "online", away: "waiting",
       or: "or", local: "Play on the same phone", connecting: "Connecting…",
       offline: "Online rooms are not available on this screen. You can still play on the same phone.",
-      roomFail: "Could not open the room. Check the code and try again.", needName: "Type your name first.", needCode: "Type the room code.",
+      roomFail: "Could not connect. Try again in a moment.", needName: "Type your name first.",
       otherName: "Other person's name", start: "Start", back: "Back",
-      shareCode: "Send this code to the other person", copy: "Copy", copied: "Copied", waiting: "Waiting for the other person to join the room…",
+      waiting: "Waiting for the other person to open Mais Provável on their phone…",
       here: "{n} joined", sync: "In sync", cardN: "Card {n}",
       noCard: "Nobody has drawn a card yet.", drawDeck: "Draw from the deck", drawAI: "Generate with AI", generating: "Generating…",
       aiFail: "Could not generate right now. Drew from the deck instead.", tone: "Mood",
       tones: { any: "Any", fun: "Funny", apoc: "Apocalypse", love: "Romantic", absurd: "Absurd", deep: "Deep", spicy: "Spicy" },
       waitFor: "Waiting for {n} to answer…", passTo: "Pass the phone to {n}", passHint: "No peeking at the other answer.", ready: "It's me, I'm ready",
       votedFor: "voted for", agreeBoth: "In sync! Both pointed at {n}.", eachSelf: "Each one voted for themselves.", eachOther: "Each one pointed at the other.",
-      next: "Next card", leave: "Leave room", pickHint: "Who is most likely? Tap a name.", gone: "left"
+      next: "Next card", leave: "Leave game", pickHint: "Who is most likely? Tap a name.", gone: "left"
     }
   };
   var LANGS = { pt: "Português", es: "Español", en: "English" };
@@ -790,7 +794,7 @@ body {
 
   /* ---------- Estado ---------- */
   var S = {
-    view: "home", lang: "pt", name: "", name2: "", codeIn: "", code: "", note: "",
+    view: "home", lang: "pt", name: "", name2: "", code: "", note: "",
     room: null, partner: null, partnerOnline: false,
     roomApi: undefined, sample: undefined,
     local: false, turn: 0, passing: false,
@@ -838,20 +842,13 @@ body {
   function partnerLang() { return S.partner && S.partner.lang && UI[S.partner.lang] ? S.partner.lang : null; }
 
   /* ---------- Fluxo da sala online ---------- */
-  function makeCode() {
-    var a = "abcdefghjkmnpqrstuvwxyz23456789", s = "";
-    for (var i = 0; i < 4; i++) s += a.charAt(Math.floor(Math.random() * a.length));
-    return s;
-  }
-
-  async function enterRoom(code) {
+  // O app é de um casal só: o jogo online usa sempre a mesma sala, dentro do espaço de vocês.
+  async function enterRoom() {
     var api = S.roomApi;
     if (!api) { S.note = t("offline"); render(); return; }
-    code = code.toLowerCase().replace(/[^a-z0-9]/g, "");
-    if (code.length < 3) { S.note = t("needCode"); render(); return; }
     try {
-      var r = await api.join("sala-" + code);
-      S.room = r; S.code = code; S.local = false; S.view = "game"; S.note = "";
+      var r = await api.join("sala-casal");
+      S.room = r; S.code = "casal"; S.local = false; S.view = "game"; S.note = "";
       S.card = null; S.picks = [null, null]; S.total = 0; S.agree = 0; S.n = 0; S.counted = {};
       r.on("card", function (m) {
         if (m.isMe || m.sameTab) return;
@@ -990,7 +987,6 @@ body {
   function viewHome() {
     var online = S.roomApi;
     var nameIn = h("input", { type: "text", id: "name", maxlength: "24", autocomplete: "given-name", value: S.name, oninput: function (e) { S.name = e.target.value.trim(); persist(); } });
-    var codeIn = h("input", { type: "text", id: "code", class: "code-in", maxlength: "6", autocomplete: "off", autocapitalize: "characters", placeholder: "ABCD", value: S.codeIn, oninput: function (e) { S.codeIn = e.target.value; } });
     function needName() { if (!S.name) { S.note = t("needName"); render(); return true; } return false; }
     var kids = [
       brandBar(null),
@@ -999,10 +995,7 @@ body {
         h("div", null, [h("label", { class: "lbl", for: "name", text: t("yourName") }), nameIn]),
         h("div", null, [h("span", { class: "lbl", text: t("yourLang") }), langSeg()]),
         S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null,
-        h("button", { type: "button", class: "btn-main", disabled: !online, text: S.roomApi === undefined ? t("connecting") : t("create"), onclick: function () { if (needName()) return; enterRoom(makeCode()); } }),
-        h("div", { class: "or", text: t("or") }),
-        h("div", null, [h("label", { class: "lbl", for: "code", text: t("code") })]),
-        h("div", { class: "row" }, [h("div", { class: "grow" }, [codeIn]), h("button", { type: "button", disabled: !online, text: t("join"), onclick: function () { if (needName()) return; enterRoom(S.codeIn); } })]),
+        h("button", { type: "button", class: "btn-main", disabled: !online, text: S.roomApi === undefined ? t("connecting") : t("create"), onclick: function () { if (needName()) return; enterRoom(); } }),
         S.roomApi === null ? h("p", { class: "note", text: t("offline") }) : null
       ]),
       h("button", { type: "button", class: "btn-ghost", text: t("local"), onclick: function () { S.view = "local"; S.note = ""; render(); } })
@@ -1034,7 +1027,7 @@ body {
     var kids = [];
     var chip = null;
     if (!S.local) {
-      chip = h("span", { class: "chip" }, [h("span", { class: "dot" + (S.partnerOnline ? " on" : "") }), (S.code || "").toUpperCase()]);
+      chip = h("span", { class: "chip" }, [h("span", { class: "dot" + (S.partnerOnline ? " on" : "") }), S.partnerOnline ? t("online") : t("away")]);
     }
     kids.push(brandBar(chip));
 
@@ -1045,16 +1038,7 @@ body {
     ]));
 
     if (!S.local && !S.partnerOnline) {
-      var codeBox = h("div", { class: "panel pass" }, [
-        h("p", { class: "note", text: t("shareCode") }),
-        h("div", { class: "big-code", text: (S.code || "").toUpperCase() }),
-        h("button", { type: "button", text: S.copied ? t("copied") : t("copy"), onclick: function () {
-          function done() { S.copied = true; render(); setTimeout(function () { S.copied = false; render(); }, 1600); }
-          try { navigator.clipboard.writeText((S.code || "").toUpperCase()).then(done, function () {}); } catch (e) {}
-        } }),
-        h("p", { class: "note", role: "status", text: t("waiting") })
-      ]);
-      kids.push(codeBox);
+      kids.push(h("div", { class: "panel pass" }, [h("p", { class: "note", role: "status", text: t("waiting") })]));
     }
 
     // passar o celular
@@ -1188,7 +1172,8 @@ body {
   var S = {
     ok: undefined, db: null, myKey: null, people: {}, meta: null, pieces: [],
     sel: null, hint: false, setup: false, draft: null, draftKind: "", size: 4,
-    busy: false, note: "", shake: -1, curSrc: ""
+    busy: false, note: "", shake: -1, curSrc: "",
+    sample: undefined, aiText: "", aiStyle: "fofo", aiBusy: false
   };
 
   function safe(id) { return String(id).replace(/[^A-Za-z0-9_\-.~:@+]/g, "_").slice(0, 120); }
@@ -1315,6 +1300,76 @@ body {
     rd.readAsDataURL(file);
   }
 
+  /* ---------- Imagem criada pela IA ----------
+     A IA desenha uma ilustração em SVG (texto); aqui ela é limpa e convertida em JPEG,
+     igual às outras imagens do quebra-cabeça. */
+  var AI_STYLES = {
+    fofo: ["Fofo", "ilustração fofa e colorida, formas arredondadas, cores alegres"],
+    paisagem: ["Paisagem", "paisagem detalhada com várias camadas de profundidade, céu, horizonte e primeiro plano"],
+    geometrico: ["Geométrico", "composição geométrica vibrante com muitas formas e cores diferentes"],
+    postal: ["Cartão-postal", "cena de cartão-postal, luz quente de fim de tarde, muitos detalhes"]
+  };
+  function cleanSvg(text) {
+    var m = String(text || "").match(/<svg[\s\S]*<\/svg>/i);
+    if (!m) return null;
+    var s = m[0]
+      .replace(/<script[\s\S]*?<\/script>/gi, "")
+      .replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, "")
+      .replace(/<(image|use|a|iframe|style)\b[\s\S]*?(\/>|<\/\1>)/gi, "")
+      .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi, "")
+      .replace(/\s(xlink:)?href\s*=\s*("(?!#)[^"]*"|'(?!#)[^']*')/gi, "");
+    s = s.replace(/<svg\b[^>]*>/i, function (tag) {
+      tag = tag.replace(/\s(width|height)\s*=\s*("[^"]*"|'[^']*')/gi, "");
+      if (!/xmlns=/.test(tag)) tag = tag.replace(/<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+      if (!/viewBox=/i.test(tag)) tag = tag.replace(/<svg/i, '<svg viewBox="0 0 560 560"');
+      return tag.replace(/<svg/i, '<svg width="560" height="560" preserveAspectRatio="xMidYMid slice"');
+    });
+    return s;
+  }
+  function svgToJpeg(svgText) {
+    return new Promise(function (resolve, reject) {
+      var im = new Image();
+      im.onload = function () {
+        try {
+          var cv = document.createElement("canvas"); cv.width = cv.height = W;
+          var g = cv.getContext("2d");
+          g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, W);
+          g.drawImage(im, 0, 0, W, W);
+          resolve(cv.toDataURL("image/jpeg", 0.85));
+        } catch (e) { reject(e); }
+      };
+      im.onerror = function () { reject(new Error("svg")); };
+      im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgText);
+    });
+  }
+  async function createAi() {
+    var desc = (S.aiText || "").trim().slice(0, 300);
+    if (!S.sample || S.aiBusy) return;
+    if (!desc) { S.note = "Descreva a imagem que vocês querem."; render(); return; }
+    S.aiBusy = true; S.note = ""; render();
+    var prompt =
+      "Desenhe uma ilustração em SVG para um quebra-cabeça que um casal vai montar junto.\n" +
+      "Tema: " + desc + "\n" +
+      "Estilo: " + AI_STYLES[S.aiStyle][1] + ".\n" +
+      "Requisitos: um único elemento <svg> com viewBox=\"0 0 560 560\"; o fundo cobre o quadro inteiro; " +
+      "muitas cores e detalhes diferentes espalhados por todas as regiões da imagem, para que cada peça do quebra-cabeça seja reconhecível; " +
+      "sem texto; use apenas path, rect, circle, ellipse, polygon, polyline, line, g, defs, linearGradient, radialGradient e stop; " +
+      "nada de <image>, <foreignObject>, <script>, <style>, fontes ou links externos. Se houver pessoas, desenhe de forma simples e carinhosa.\n" +
+      "Responda somente com o código SVG, sem explicações.";
+    try {
+      var text = S.sample.text
+        ? await S.sample.text(prompt, { maxTokens: 12000, quality: "high" })
+        : (await S.sample.json(prompt + "\nResponda em JSON: {\"svg\":\"...\"}", { maxTokens: 12000, quality: "high" })).svg;
+      var svg = cleanSvg(text);
+      if (!svg) throw new Error("sem svg");
+      S.draft = await svgToJpeg(svg); S.draftKind = "ia";
+    } catch (e) {
+      if (e && e.code === "not_granted") S.sample = null;
+      S.note = "Não consegui criar a imagem agora. Tente de novo ou mude a descrição.";
+    }
+    S.aiBusy = false; render();
+  }
+
   /* ---------- Estado derivado ---------- */
   function applyImg() {
     var src = S.meta ? S.meta.src : "";
@@ -1395,14 +1450,31 @@ body {
       row.appendChild(h("button", { type: "button", "aria-pressed": S.draftKind === p[0] ? "true" : "false", text: p[1], onclick: function () { S.draft = art(p[0]); S.draftKind = p[0]; S.note = ""; render(); } }));
     });
     var sizes = h("div", { class: "seg", role: "group", "aria-label": "Tamanho" });
-    [3, 4, 5].forEach(function (n) {
-      sizes.appendChild(h("button", { type: "button", "aria-pressed": S.size === n ? "true" : "false", text: (n * n) + " peças", onclick: function () { S.size = n; render(); } }));
+    [3, 4, 5, 6, 7, 8].forEach(function (n) {
+      sizes.appendChild(h("button", { type: "button", "aria-pressed": S.size === n ? "true" : "false", text: String(n * n), "aria-label": (n * n) + " peças", onclick: function () { S.size = n; render(); } }));
     });
+    var ai;
+    if (S.sample) {
+      var styles = h("div", { class: "seg", role: "group", "aria-label": "Estilo" });
+      Object.keys(AI_STYLES).forEach(function (k) {
+        styles.appendChild(h("button", { type: "button", "aria-pressed": S.aiStyle === k ? "true" : "false", text: AI_STYLES[k][0], onclick: function () { S.aiStyle = k; render(); } }));
+      });
+      ai = h("div", { class: "pz-ai" }, [
+        h("label", { class: "lbl", for: "pz-ai-text", text: "Ou crie com IA" }),
+        h("textarea", { id: "pz-ai-text", rows: "2", maxlength: "300", placeholder: "Ex.: nós duas num barquinho num lago ao pôr do sol, com patinhos", oninput: function (e) { S.aiText = e.target.value; } }, [S.aiText]),
+        styles,
+        h("button", { type: "button", class: "grow", disabled: S.aiBusy, text: S.aiBusy ? "Desenhando… (pode levar até 1 minuto)" : "Criar imagem com IA", onclick: createAi }),
+        h("p", { class: "note", text: "A IA cria um desenho ilustrado (não uma foto). Cada imagem usa um pouco dos créditos da chave da API." })
+      ]);
+    } else if (S.sample === null) {
+      ai = h("p", { class: "note", text: "Para criar imagens com IA, cole uma chave da API da Anthropic em Ajustes, no fim da página." });
+    }
     return h("div", { class: "panel" }, [
       h("div", null, [h("span", { class: "lbl", text: "1. Escolha a imagem" }), row]),
+      ai || null,
       S.draft ? h("img", { class: "preview", src: S.draft, alt: "Prévia da imagem escolhida" }) : null,
       S.draftKind === "foto" ? h("p", { class: "note", text: "A foto fica guardada nesta página e só aparece para quem você convidou." }) : null,
-      h("div", null, [h("span", { class: "lbl", text: "2. Tamanho" }), sizes]),
+      h("div", null, [h("span", { class: "lbl", text: "2. Quantas peças" }), sizes]),
       S.meta ? h("p", { class: "note warn", text: "Começar um novo quebra-cabeça apaga o progresso do atual." }) : null,
       S.note ? h("p", { class: "note warn", role: "status", text: S.note }) : null,
       h("div", { class: "row" }, [
@@ -1505,12 +1577,13 @@ body {
       var id = user ? await user.id() : null;
       if (!db || !id) { S.ok = false; render(); return; }
       S.db = db; S.myKey = safe(id); S.ok = true;
+      try { S.sample = (await c.use("sample")) || null; } catch (e) { S.sample = null; }
       var onErr = function () { S.note = "A conexão falhou. Recarregue a página."; render(); };
       db.doc("puzzle/current").onSnapshot(function (snap) {
         var d = snap.exists ? snap.data() : null;
         if (d) {
           var n = Math.floor(Number(d.size));
-          if (typeof d.round !== "string" || !OKROUND.test(d.round) || typeof d.src !== "string" || !OKSRC.test(d.src) || !(n >= 3 && n <= 6)) d = null;
+          if (typeof d.round !== "string" || !OKROUND.test(d.round) || typeof d.src !== "string" || !OKSRC.test(d.src) || !(n >= 3 && n <= 8)) d = null;
           else d = { round: d.round, size: n, src: d.src, by: d.by, at: Number(d.at) || 0 };
         }
         S.meta = d; applyImg(); render();

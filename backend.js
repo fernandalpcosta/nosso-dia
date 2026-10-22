@@ -217,23 +217,31 @@
   function sampleApi() {
     var key = lsGet(LS_KEY);
     if (!key) return null;
+    // opts.maxTokens: tamanho máximo da resposta (padrão 500).
+    // opts.quality === "high": usa um modelo mais capaz (para desenhos do quebra-cabeça).
+    async function ask(prompt, opts) {
+      opts = opts || {};
+      var r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": key,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: opts.quality === "high" ? "claude-sonnet-5-5" : "claude-haiku-5-5",
+          max_tokens: Math.min(16000, Math.max(100, opts.maxTokens || 500)),
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+      if (!r.ok) throw new Error("IA indisponível (" + r.status + ")");
+      var out = await r.json();
+      return (out.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("");
+    }
     return {
-      json: async function (prompt) {
-        var r = await fetch("https://api.anthropic.com/v1/messages", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "x-api-key": key,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-direct-browser-access": "true"
-          },
-          body: JSON.stringify({ model: "claude-haiku-5-5", max_tokens: 500, messages: [{ role: "user", content: prompt }] })
-        });
-        if (!r.ok) throw new Error("IA indisponível (" + r.status + ")");
-        var out = await r.json();
-        var text = (out.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("");
-        return parseJson(text);
-      }
+      json: async function (prompt, opts) { return parseJson(await ask(prompt, opts)); },
+      text: ask
     };
   }
 

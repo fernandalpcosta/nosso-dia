@@ -28,7 +28,7 @@ A aba tem três jogos; o último escolhido fica lembrado no aparelho.
 ### Mais Provável
 
 "Quem é mais provável de…?" para duas pessoas.
-- Sala online com código de 4 letras, ou jogo no mesmo celular (passando o aparelho).
+- "Jogar juntas" entra direto na sala do casal (sem código: o app é só de vocês duas), ou jogo no mesmo celular (passando o aparelho).
 - Interface e cartas em português, espanhol e inglês; cada um vê a carta no seu idioma e, embaixo, no idioma da outra pessoa.
 - Climas: engraçado, apocalipse, romântico, absurdo, profundo.
 - Baralho fixo de 20 cartas, mais cartas geradas por IA.
@@ -37,8 +37,8 @@ A aba tem três jogos; o último escolhido fica lembrado no aparelho.
 ### Quebra-cabeça
 
 Um quebra-cabeça montado a quatro mãos, em tempo real.
-- Imagem: uma das ilustrações prontas (pôr do sol, estrelas, mar) ou uma foto de vocês.
-- Tamanhos de 9, 16 ou 25 peças.
+- Imagem: uma das ilustrações prontas (pôr do sol, estrelas, mar), uma foto de vocês ou uma ilustração **criada pela IA** a partir de uma descrição, em quatro estilos (fofo, paisagem, geométrico, cartão-postal). A IA desenha em SVG, que vira imagem no próprio aparelho: é um desenho, não uma foto. Precisa da chave da API em Ajustes.
+- Tamanhos de 9, 16, 25, 36, 49 ou 64 peças.
 - Cada peça encaixada aparece na hora para a outra pessoa, com barra de progresso.
 - Começar um novo quebra-cabeça apaga o progresso do atual.
 
