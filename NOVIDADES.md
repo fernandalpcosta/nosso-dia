@@ -2,6 +2,14 @@
 
 ## 22 de outubro de 2026
 
+### 💞 Lembra quando…?
+
+Um cartão novo na aba **Hoje**: a cada 3 dias, uma lembrança de vocês volta. Cada uma conta um detalhe que a outra talvez tenha esquecido, e os dois aparecem quando as duas escreverem. Dá para guardar lembranças à mão ("Lembra quando… a gente se conheceu").
+
+<img src="docs/img/novidades/lembra-revelado.png" alt="Cartão Lembra quando com os detalhes das duas revelados" width="260"> <img src="docs/img/novidades/arvore-lembrancas.png" alt="Árvore das lembranças com corações no mundinho" width="420">
+
+Cada história revivida pendura um coração na nova **árvore das lembranças**, no mundinho.
+
 ### 🌳 Nosso mundo
 
 Uma florestinha que cresce com tudo o que vocês fazem juntas no app, igual nos dois celulares.

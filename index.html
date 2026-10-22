@@ -7,7 +7,7 @@
 /* Layout: two tabs (Hoje / Jogos) over one phone-width column. Hoje = three ritual cards with their own hues; Jogos = the question-card game. */
 :root {
   --bg: #f1eef8; --surface: #fbfaff; --ink: #221a3b; --muted: #625a7e; --line: #d9d3ea;
-  --g: #f2a93b; --on-g: #2a1b00; --l: #2a9d9d; --on-l: #04201f; --p: #e0527a; --on-p: #2b0612;
+  --g: #f2a93b; --on-g: #2a1b00; --l: #2a9d9d; --on-l: #04201f; --p: #e0527a; --on-p: #2b0612; --m: #8e5bd6; --on-m: #ffffff;
   --a: #3a55ff; --on-a: #ffffff; --b: #ff5b49; --on-b: #15172b;
   --card: #15172b; --card-ink: #f4f5ff; --ok: #17835a;
   --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -15,14 +15,14 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #16112a; --surface: #201a38; --ink: #f0ecff; --muted: #a79fc6; --line: #32295a;
-    --g: #f5b658; --l: #4fc3c0; --p: #f07c9c;
+    --g: #f5b658; --l: #4fc3c0; --p: #f07c9c; --m: #b794f0; --on-m: #1b1030;
     --a: #7b8cff; --on-a: #15172b; --b: #ff7c6b; --on-b: #15172b;
     --card: #f1f2ff; --card-ink: #15172b; --ok: #4fd1a0; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #16112a; --surface: #201a38; --ink: #f0ecff; --muted: #a79fc6; --line: #32295a;
-  --g: #f5b658; --l: #4fc3c0; --p: #f07c9c;
+  --g: #f5b658; --l: #4fc3c0; --p: #f07c9c; --m: #b794f0; --on-m: #1b1030;
   --a: #7b8cff; --on-a: #15172b; --b: #ff7c6b; --on-b: #15172b;
   --card: #f1f2ff; --card-ink: #15172b; --ok: #4fd1a0; color-scheme: dark;
 }
@@ -58,6 +58,11 @@ body {
 #hoje .g .tag{background: var(--g); color: var(--on-g);}
 #hoje .l .tag{background: var(--l); color: var(--on-l);}
 #hoje .p .tag{background: var(--p); color: var(--on-p);}
+#hoje .card.m{background: color-mix(in srgb, var(--m) 9%, var(--surface));}
+#hoje .m .tag{background: var(--m); color: var(--on-m);}
+#hoje .lb-form{display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed var(--line); padding-top: 12px;}
+#hoje .lb-form .lbl{margin-bottom: 0;}
+#hoje .card.m .row .link{align-self: auto;}
 #hoje .card h2{font-size: 1.35rem; font-weight: 800; letter-spacing: -0.015em; line-height: 1.15;}
 #hoje .sub{margin: 0; color: var(--muted); font-size: 0.92rem;}
 #hoje .lbl{font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 6px;}
@@ -256,6 +261,7 @@ body {
 @keyframes w-wing { from { transform: scaleY(1); } to { transform: scaleY(0.35); } }
 .w-breathe { animation: w-breathe 3.5s ease-in-out infinite alternate; }
 @keyframes w-breathe { from { transform: translateY(0); } to { transform: translateY(-1.5px); } }
+.w-heart { animation: w-bob 2.6s ease-in-out infinite alternate; }
 .w-bob { animation: w-bob 3s ease-in-out infinite alternate; }
 @keyframes w-bob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
 .w-ripple { animation: w-twinkle 2.5s ease-in-out infinite alternate; }
@@ -373,6 +379,9 @@ body {
   // Miniatura do mundinho: o mundo.js desenha aqui; o nó é reaproveitado a cada render.
   var miniHost = document.createElement("div");
   window.NossoDiaMini = miniHost;
+  // Cartão "Lembra quando…?": o lembra.js desenha aqui; também é reaproveitado a cada render.
+  var lembraHost = document.createElement("div");
+  window.NossoDiaLembra = lembraHost;
 
   /* ---------- Relógios ---------- */
   function timeIn(tz) {
@@ -640,7 +649,7 @@ body {
     if (S.note) kids.push(h("p", { class: "note", role: "status", text: S.note }));
     if (S.dbOk && !m) kids.push(cardNome());
     if (S.dbOk && m && !p) kids.push(h("p", { class: "note", text: "Falta a outra pessoa entrar. Mande o link do nosso espaço para ela (em Ajustes, no fim da página)." }));
-    kids.push(cardGratidao(), cardEscuta(), cardPlano());
+    kids.push(cardGratidao(), cardEscuta(), lembraHost, cardPlano());
 
     app.textContent = "";
     kids.forEach(function (k) { if (k) app.appendChild(k); });
@@ -1896,5 +1905,6 @@ body {
 
 </script>
 <script src="mundo.js"></script>
+<script src="lembra.js"></script>
 
 </body></html>

@@ -12,7 +12,7 @@
 (function () {
   "use strict";
 
-  var KINDS = { arvore: 1, canto: 1, borboleta: 1, passaro: 1 };
+  var KINDS = { arvore: 1, canto: 1, borboleta: 1, passaro: 1, memoria: 1 };
   var ANIMALS = ["coelho", "raposa", "capivara", "veado", "tartaruga", "esquilo", "ouriço", "coruja"];
   var ANIMAL_TXT = { coelho: "um coelho", raposa: "uma raposa", capivara: "uma capivara", veado: "um veado", tartaruga: "uma tartaruga", esquilo: "um esquilo", "ouriço": "um ouriço", coruja: "uma coruja" };
   var SPECIALS = ["cogumelos", "pedras com musgo", "um banco", "um balanço", "uma fogueira", "uma casinha de passarinho", "uma rede", "lanternas"];
@@ -20,7 +20,7 @@
     { t: 5, name: "Riacho" }, { t: 12, name: "Ponte" }, { t: 20, name: "Cachoeira" },
     { t: 35, name: "Lago com patos" }, { t: 50, name: "Arco-íris" }, { t: 75, name: "Cabana" }, { t: 100, name: "Árvore da vida" }
   ];
-  var CAP = { flower: 110, tree: 40, animal: 16, special: 8, butterfly: 12, bird: 10 };
+  var CAP = { flower: 110, tree: 40, animal: 16, special: 8, butterfly: 12, bird: 10, memory: 18 };
 
   var S = { ok: undefined, db: null, myKey: null, people: {}, grat: [], done: [], ev: [], known: {}, sent: {} };
   var mainHost = document.getElementById("app-mundo");
@@ -215,12 +215,35 @@
       c(-20, -110, 3, "#ffeb3b") + c(18, -130, 3, "#ffeb3b") + c(-4, -156, 3, "#ffeb3b") + c(32, -100, 3, "#ffeb3b") + "</g>";
   }
 
+  function memoryTree() {
+    return shadow(40) + pth("M-8 0 C-7 -24 -10 -48 -5 -70 L5 -70 C10 -48 7 -24 8 0 Z", "#7a4b2a") +
+      '<g class="w-sway slow">' + c(-30, -82, 28, "#f48fb1") + c(30, -84, 28, "#f48fb1") + c(0, -108, 34, "#f7a8c4") + c(-18, -112, 18, "#fbc4d8") + c(20, -114, 18, "#fbc4d8") + "</g>";
+  }
+  // Corações pendurados: um por história relembrada (posições fixas, as mesmas nos dois celulares).
+  var HEART_SPOTS = (function () {
+    var r = rng(131), out = [];
+    while (out.length < CAP.memory) {
+      var a = r() * Math.PI * 2, d = Math.sqrt(r());
+      out.push([n1(Math.cos(a) * d * 46), n1(-102 + Math.sin(a) * d * 34)]);
+    }
+    return out;
+  })();
+  function hearts(n, big) {
+    var s = big ? 1.25 : 1, out = "";
+    HEART_SPOTS.slice(0, Math.min(n, CAP.memory)).forEach(function (p, i) {
+      var x = p[0] * s, y = p[1] * s - (big ? 30 : 0);
+      out += '<line x1="' + x + '" y1="' + n1(y - 9) + '" x2="' + x + '" y2="' + n1(y - 3) + '" stroke="#8d5a33" stroke-width="0.8"/>' +
+        '<g class="w-heart" style="animation-delay:' + n1(i * 0.37 % 3) + 's"><path transform="translate(' + x + " " + y + ')" d="M0 6 C-8 0 -7 -6 -3.5 -6 C-1.5 -6 0 -4.5 0 -3 C0 -4.5 1.5 -6 3.5 -6 C7 -6 8 0 0 6 Z" fill="#e53965" stroke="#fff" stroke-width="0.8"/></g>';
+    });
+    return out;
+  }
+
   /* ---------- Cena completa ---------- */
   function counts() {
-    var ev = { arvore: [], canto: [], borboleta: [], passaro: [] };
+    var ev = { arvore: [], canto: [], borboleta: [], passaro: [], memoria: [] };
     S.ev.forEach(function (x) { if (ev[x.kind]) ev[x.kind].push(x); });
-    var o = { flower: S.grat.length, animal: S.done.length, tree: ev.arvore.length, special: ev.canto.length, butterfly: ev.borboleta.length, bird: ev.passaro.length };
-    o.total = o.flower + o.animal + o.tree + o.special + o.butterfly + o.bird;
+    var o = { flower: S.grat.length, animal: S.done.length, tree: ev.arvore.length, special: ev.canto.length, butterfly: ev.borboleta.length, bird: ev.passaro.length, memory: ev.memoria.length };
+    o.total = o.flower + o.animal + o.tree + o.special + o.butterfly + o.bird + o.memory;
     return o;
   }
   function phase() {
@@ -302,7 +325,9 @@
     P.animal.slice(0, Math.min(k.animal, CAP.animal)).forEach(function (p, i) { items.push({ y: p.y, s: '<g class="w-breathe" style="animation-delay:' + n1(p.r * 3) + 's">' + g(p.x, p.y, scaleAt(p.y) * 1.15, p.f, animal(ANIMALS[i % ANIMALS.length])) + "</g>" }); });
     P.special.slice(0, Math.min(k.special, CAP.special)).forEach(function (p, i) { items.push({ y: p.y, s: g(p.x, p.y, scaleAt(p.y) * 1.1, p.f, special(i, night)) }); });
     if (T >= 75) items.push({ y: CABIN.y, s: g(CABIN.x, CABIN.y, scaleAt(CABIN.y) * 1.25, false, cabin(night)) });
-    if (T >= 100) items.push({ y: BIGTREE.y, s: g(BIGTREE.x, BIGTREE.y, scaleAt(BIGTREE.y) * 1.1, false, bigTree()) });
+    // A árvore das lembranças nasce com a primeira história relembrada e vira a árvore da vida aos 100.
+    if (T >= 100) items.push({ y: BIGTREE.y, s: g(BIGTREE.x, BIGTREE.y, scaleAt(BIGTREE.y) * 1.1, false, bigTree() + hearts(k.memory, true), "") });
+    else if (k.memory) items.push({ y: BIGTREE.y, s: g(BIGTREE.x, BIGTREE.y, scaleAt(BIGTREE.y) * 1.1, false, memoryTree() + hearts(k.memory, false)) });
     items.sort(function (a, b) { return a.y - b.y; }).forEach(function (it) { out.push(it.s); });
     // luz do momento do dia
     if (night) out.push('<rect width="1000" height="600" fill="#0b1640" opacity="0.42"/>');
@@ -338,7 +363,7 @@
     return box;
   }
   function describe(k) {
-    return "Nosso mundo: " + k.flower + " flores, " + k.tree + " árvores, " + k.animal + " animais, " + k.special + " cantinhos especiais, " + k.butterfly + " borboletas e " + k.bird + " passarinhos.";
+    return "Nosso mundo: " + k.flower + " flores, " + k.tree + " árvores, " + k.animal + " animais, " + k.special + " cantinhos especiais, " + k.butterfly + " borboletas, " + k.bird + " passarinhos e " + k.memory + " lembranças na árvore das lembranças.";
   }
   function journal() {
     var list = [];
@@ -352,6 +377,7 @@
       else if (x.kind === "canto") list.push({ at: x.at, icon: "🍄", text: "Cantinho novo, " + SPECIALS[(sp++) % SPECIALS.length] + ": quebra-cabeça completo" });
       else if (x.kind === "borboleta") list.push({ at: x.at, icon: "🦋", text: "Borboletas: " + nameOf(x.by) + " cumpriu uma carta do verdade ou desafio" });
       else if (x.kind === "passaro") list.push({ at: x.at, icon: "🐦", text: "Um passarinho: sintonia no Mais Provável" });
+      else if (x.kind === "memoria") list.push({ at: x.at, icon: "💞", text: "Um coração na árvore das lembranças: vocês reviveram uma história" });
     });
     return list.sort(function (a, b) { return b.at - a.at; }).slice(0, 10);
   }
@@ -362,7 +388,7 @@
     if (S.ok === false) kids.push(h("p", { class: "note", text: "O mundo cresce quando os dados compartilhados estão ligados. Veja em Ajustes, no fim da página." }));
     kids.push(svg(k, ph, "0 0 1000 600", describe(k), "wm"));
     kids.push(h("div", { class: "w-chips" }, [
-      ["🌸", k.flower, "flores"], ["🌳", k.tree, "árvores"], ["🦊", k.animal, "animais"], ["🍄", k.special, "cantinhos"], ["🦋", k.butterfly, "borboletas"], ["🐦", k.bird, "passarinhos"]
+      ["🌸", k.flower, "flores"], ["🌳", k.tree, "árvores"], ["🦊", k.animal, "animais"], ["🍄", k.special, "cantinhos"], ["🦋", k.butterfly, "borboletas"], ["🐦", k.bird, "passarinhos"], ["💞", k.memory, "lembranças"]
     ].map(function (x) { return h("span", { class: "w-chip" }, [h("span", { "aria-hidden": "true", text: x[0] }), h("b", { text: String(x[1]) }), " " + x[2]]); })));
     var nm = nextMilestone(k.total);
     kids.push(h("section", { class: "w-card" }, nm ? [
@@ -380,6 +406,7 @@
         ["🍄", "Cada quebra-cabeça completo cria um cantinho especial"],
         ["🦋", "Cada verdade ou desafio cumprido solta borboletas (vaga-lumes à noite)"],
         ["🐦", "Cada sintonia no Mais Provável chama um passarinho"],
+        ["💞", "Cada “Lembra quando…?” revivido pelas duas pendura um coração na árvore das lembranças"],
         ["✨", "Com o total de atividades aparecem riacho, ponte, cachoeira, lago, arco-íris, cabana e a árvore da vida"]
       ].map(function (x) { return h("li", null, [h("span", { "aria-hidden": "true", text: x[0] }), x[1]]); }))
     ]));

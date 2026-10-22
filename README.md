@@ -23,6 +23,12 @@ Cada item mostra a contagem regressiva. Ao marcar "Fizemos!", o momento entra na
 
 No topo, dois relógios mostram a hora "aqui" e "aí", usando o fuso horário de cada aparelho.
 
+### Lembra quando…?
+
+A cada 3 dias aparece uma lembrança do casal, a mesma para as duas: um encontro do "Fizemos!", uma gratidão antiga (só de dias em que as duas escreveram) ou uma lembrança que vocês guardaram ("Lembra quando… a gente se conheceu"). Cada uma conta um detalhe que a outra talvez tenha esquecido; os dois detalhes aparecem quando as duas escreverem, com a sugestão de recontar a história juntas na próxima chamada. Cada história revivida pendura um coração na árvore das lembranças, no mundinho.
+
+A ideia vem da pesquisa sobre casais que saboreiam juntos as memórias boas ("joint savoring" e reminiscência), associado a mais satisfação e proximidade.
+
 ## Jogos
 
 A aba tem três jogos; o último escolhido fica lembrado no aparelho.
@@ -63,6 +69,7 @@ Uma florestinha que cresce com o que vocês fazem no app. As duas veem o mesmo m
 | Quebra-cabeça completo | 🍄 um cantinho especial (cogumelos, banco, balanço, fogueira…) |
 | Verdade ou desafio cumprido | 🦋 borboletas (vaga-lumes à noite) |
 | Sintonia no Mais Provável | 🐦 um passarinho |
+| "Lembra quando…?" revivido pelas duas | 💞 um coração na árvore das lembranças |
 
 Com o total de atividades aparecem surpresas: riacho (5), ponte (12), cachoeira (20), lago com patos (35), arco-íris (50), cabana (75) e a árvore da vida (100). O céu segue o horário de quem está olhando (dia, entardecer e noite estrelada).
 
