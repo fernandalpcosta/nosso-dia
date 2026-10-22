@@ -45,7 +45,7 @@ A aba tem três jogos; o último escolhido fica lembrado no aparelho.
 ### Quebra-cabeça
 
 Um quebra-cabeça montado a quatro mãos, em tempo real.
-- Imagem: uma das ilustrações prontas (pôr do sol, estrelas, mar), uma foto de vocês ou uma ilustração **criada pela IA** a partir de uma descrição, em quatro estilos (fofo, paisagem, geométrico, cartão-postal). A IA desenha em SVG, que vira imagem no próprio aparelho: é um desenho, não uma foto. Precisa da chave da API em Ajustes.
+- Imagem: uma das ilustrações prontas (pôr do sol, estrelas, mar), uma foto de vocês ou uma ilustração **criada pela IA** a partir de uma descrição, em quatro estilos (fofo, paisagem, papel recortado, cartão-postal). A IA desenha em SVG, que vira imagem no próprio aparelho: é um desenho, não uma foto. Precisa da chave da API em Ajustes.
 - Tamanhos de 9, 16, 25, 36, 49 ou 64 peças.
 - Cada peça encaixada aparece na hora para a outra pessoa, com barra de progresso.
 - Começar um novo quebra-cabeça apaga o progresso do atual.

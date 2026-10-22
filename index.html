@@ -1316,10 +1316,10 @@ body {
      A IA desenha uma ilustração em SVG (texto); aqui ela é limpa e convertida em JPEG,
      igual às outras imagens do quebra-cabeça. */
   var AI_STYLES = {
-    fofo: ["Fofo", "ilustração fofa e colorida, formas arredondadas, cores alegres"],
-    paisagem: ["Paisagem", "paisagem detalhada com várias camadas de profundidade, céu, horizonte e primeiro plano"],
-    geometrico: ["Geométrico", "composição geométrica vibrante com muitas formas e cores diferentes"],
-    postal: ["Cartão-postal", "cena de cartão-postal, luz quente de fim de tarde, muitos detalhes"]
+    fofo: ["Fofo", "ilustração de livro infantil em aquarela: formas arredondadas, cores suaves e alegres, manchas de tinta transparentes sobrepostas, bordas levemente irregulares"],
+    paisagem: ["Paisagem", "pintura de paisagem em guache: várias camadas de profundidade, perspectiva atmosférica (o que está longe fica mais claro, azulado e com menos contraste), luz dourada vinda de um lado"],
+    geometrico: ["Papel recortado", "arte de papel recortado em camadas: formas sobrepostas com sombras suaves entre as camadas, como se cada camada flutuasse um pouco sobre a de baixo"],
+    postal: ["Cartão-postal", "pôster de viagem vintage: paleta limitada e quente, grandes áreas de cor com degradês suaves, textura de impressão antiga, luz de fim de tarde"]
   };
   function cleanSvg(text) {
     var m = String(text || "").match(/<svg[\s\S]*<\/svg>/i);
@@ -1327,7 +1327,7 @@ body {
     var s = m[0]
       .replace(/<script[\s\S]*?<\/script>/gi, "")
       .replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, "")
-      .replace(/<(image|use|a|iframe|style)\b[\s\S]*?(\/>|<\/\1>)/gi, "")
+      .replace(/<(image|use|a|iframe|style|feImage)\b[\s\S]*?(\/>|<\/\1>)/gi, "")
       .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi, "")
       .replace(/\s(xlink:)?href\s*=\s*("(?!#)[^"]*"|'(?!#)[^']*')/gi, "");
     // Reparos comuns que fazem o navegador recusar o SVG: "&" solto e xlink sem declaração.
@@ -1340,6 +1340,27 @@ body {
       return tag.replace(/<svg/i, '<svg width="560" height="560" preserveAspectRatio="xMidYMid slice"');
     });
     return s;
+  }
+  // Acabamento aplicado a todo desenho da IA, venha como vier: brilho suave (tira a dureza das bordas),
+  // grão de papel bem leve e vinheta discreta. Só filtros SVG locais: nada é carregado de fora.
+  function finishSvg(svgText) {
+    // O desenho é ampliado um pouco além da moldura: a textura "pintada à mão" desloca as bordas
+    // e deixaria frestas brancas nos cantos.
+    var inner = svgText.replace(/<svg\b[^>]*>/i, function (tag) {
+      return tag.replace(/\s(width|height|x|y)\s*=\s*("[^"]*"|'[^']*')/gi, "").replace(/<svg/i, '<svg x="-14" y="-14" width="588" height="588"');
+    });
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="560" height="560" viewBox="0 0 560 560"><defs>' +
+      '<filter id="nd-glow" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+        '<feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b"/>' +
+        '<feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.35 0" result="s"/>' +
+        '<feBlend in="SourceGraphic" in2="s" mode="screen"/></filter>' +
+      '<filter id="nd-grain" x="0" y="0" width="100%" height="100%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" stitchTiles="stitch"/>' +
+        '<feColorMatrix type="saturate" values="0"/></filter>' +
+      '<radialGradient id="nd-vig" cx="50%" cy="50%" r="72%"><stop offset="0.55" stop-color="#2a1608" stop-opacity="0"/><stop offset="1" stop-color="#2a1608" stop-opacity="0.32"/></radialGradient>' +
+      '</defs><g filter="url(#nd-glow)">' + inner + '</g>' +
+      '<rect width="560" height="560" filter="url(#nd-grain)" opacity="0.13" style="mix-blend-mode:overlay"/>' +
+      '<rect width="560" height="560" fill="url(#nd-vig)"/></svg>';
   }
   function svgToJpeg(svgText) {
     return new Promise(function (resolve, reject) {
@@ -1394,8 +1415,13 @@ body {
       "Estilo: " + AI_STYLES[S.aiStyle][1] + ".\n" +
       "Requisitos: um único elemento <svg> com viewBox=\"0 0 560 560\"; o fundo cobre o quadro inteiro; " +
       "muitas cores e detalhes diferentes espalhados por todas as regiões da imagem, para que cada peça do quebra-cabeça seja reconhecível; " +
-      "sem texto; use apenas path, rect, circle, ellipse, polygon, polyline, line, g, defs, linearGradient, radialGradient e stop; " +
-      "nada de <image>, <foreignObject>, <script>, <style>, fontes ou links externos. Se houver pessoas, desenhe de forma simples e carinhosa.\n" +
+      "sem texto; use path, rect, circle, ellipse, polygon, polyline, line, g, defs, linearGradient, radialGradient, stop, clipPath, mask e filtros " +
+      "(filter, feTurbulence, feDisplacementMap, feGaussianBlur, feColorMatrix, feBlend, feComposite, feOffset, feMerge, feMergeNode, feFlood); " +
+      "nada de <image>, <feImage>, <use>, <foreignObject>, <script>, <style>, fontes ou links externos. Se houver pessoas, desenhe de forma simples e carinhosa.\n" +
+      "Direção de arte, para NÃO parecer um desenho vetorial antigo e chapado: nada de contornos pretos ou traços grossos; " +
+      "paleta harmoniosa de 5 a 7 cores com variações de tom; degradês em céu, água e volumes; luz vinda de uma direção, com sombras suaves (feGaussianBlur) e realces; " +
+      "elementos do fundo mais claros e menos saturados que os da frente; " +
+      "aplique ao desenho principal um filtro de textura orgânica (feTurbulence fractalNoise com baseFrequency entre 0.01 e 0.05, mais feDisplacementMap com scale entre 2 e 6) para as bordas parecerem pintadas à mão.\n" +
       "Seja econômico no código: no máximo cerca de 150 elementos, coordenadas com números inteiros, sem comentários e sem atributos desnecessários. O SVG precisa caber inteiro na resposta e terminar com </svg>.\n" +
       "Responda somente com o código SVG, sem explicações.";
     try {
@@ -1406,6 +1432,7 @@ body {
       var svg = cleanSvg(text);
       if (!svg) throw fail("nosvg");
       if (!svgValid(svg)) throw fail("invalid");
+      svg = finishSvg(svg);
       try {
         S.draft = await svgToJpeg(svg);
       } catch (convErr) {

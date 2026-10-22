@@ -36,7 +36,7 @@ Uma miniatura fica no topo da aba **Hoje**; é só tocar para visitar.
 
 <img src="docs/img/novidades/quebra-cabeca-ia.png" alt="Tela para criar a imagem do quebra-cabeça com IA" width="240"> <img src="docs/img/novidades/quebra-cabeca-64.png" alt="Quebra-cabeça de 64 peças sendo montado" width="300">
 
-- Descrevam a cena e escolham um estilo (fofo, paisagem, geométrico ou cartão-postal): a IA desenha uma ilustração para montar
+- Descrevam a cena e escolham um estilo (fofo, paisagem, papel recortado ou cartão-postal): a IA desenha uma ilustração para montar
 - Novos tamanhos: 36, 49 e 64 peças
 - A IA precisa da chave da API em **Ajustes** e cria desenhos, não fotos
 
