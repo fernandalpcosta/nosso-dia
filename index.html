@@ -196,6 +196,37 @@ body {
 #app-puzzle .preview { width: 120px; height: 120px; object-fit: cover; border-radius: 10px; border: 1px solid var(--line); }
 #jogos #app-puzzle .pz-ai .seg button { flex: 1 1 auto; }
 #app-puzzle .pz-ai { display: flex; flex-direction: column; gap: 8px; }
+#app-sudoku .pz-title { font-size: clamp(1.8rem, 8vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+#app-sudoku .sd-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+#app-sudoku .legend { display: inline-flex; align-items: center; gap: 6px; font-size: 0.88rem; font-weight: 700; flex-wrap: wrap; }
+#app-sudoku .legend .sw + .sw { margin-left: 6px; }
+#app-sudoku .sd-board { display: grid; grid-template-rows: repeat(9, 1fr); width: 100%; aspect-ratio: 1; border: 2.5px solid var(--ink); border-radius: 10px; overflow: hidden; background: var(--surface); }
+#app-sudoku .sd-row { display: grid; grid-template-columns: repeat(9, 1fr); min-height: 0; }
+#jogos #app-sudoku .sd-cell { position: relative; min-width: 0; min-height: 0; padding: 0; margin: 0; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); border-radius: 0; background: var(--surface); color: var(--ink); font-family: var(--font-display); font-size: clamp(1rem, 5.4vw, 1.55rem); font-weight: 600; line-height: 1; display: flex; align-items: center; justify-content: center; }
+#jogos #app-sudoku .sd-cell:disabled { opacity: 1; cursor: default; }
+#app-sudoku .sd-row .sd-cell:last-child { border-right: 0; }
+#app-sudoku .sd-row:last-child .sd-cell { border-bottom: 0; }
+#jogos #app-sudoku .sd-cell.br { border-right: 2.5px solid var(--ink); }
+#jogos #app-sudoku .sd-cell.bb { border-bottom: 2.5px solid var(--ink); }
+#jogos #app-sudoku .sd-cell.given { font-weight: 800; background: color-mix(in srgb, var(--ink) 6%, var(--surface)); }
+#jogos #app-sudoku .sd-cell.a { color: var(--a); }
+#jogos #app-sudoku .sd-cell.b { color: var(--b); }
+#jogos #app-sudoku .sd-cell.peer { background: color-mix(in srgb, var(--a) 9%, var(--surface)); }
+#jogos #app-sudoku .sd-cell.same { background: color-mix(in srgb, var(--a) 22%, var(--surface)); }
+#jogos #app-sudoku .sd-cell.sel { background: color-mix(in srgb, var(--a) 32%, var(--surface)); }
+#jogos #app-sudoku .sd-cell.wrong { background: color-mix(in srgb, var(--b) 22%, var(--surface)); text-decoration: underline wavy; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+#jogos #app-sudoku .sd-cell.them { box-shadow: inset 0 0 0 3px var(--b); }
+#jogos #app-sudoku .sd-cell:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
+#app-sudoku .sd-board.done .sd-cell { animation: sd-pop 0.6s ease both; }
+@keyframes sd-pop { 50% { background: color-mix(in srgb, var(--ok) 30%, var(--surface)); } }
+@media (prefers-reduced-motion: reduce) { #app-sudoku .sd-board.done .sd-cell { animation: none; } }
+#app-sudoku .sd-notes { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; height: 100%; padding: 1px; }
+#app-sudoku .sd-notes i { font-style: normal; font-family: var(--font-body); font-size: clamp(0.42rem, 2vw, 0.6rem); font-weight: 600; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+#app-sudoku .sd-pad { display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; }
+#jogos #app-sudoku .sd-pad button { padding: 12px 0; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; min-width: 0; }
+#jogos #app-sudoku .sd-pad button.full { opacity: 0.35; }
+#app-sudoku .sd-tools { flex-wrap: wrap; }
+#jogos #app-sudoku .sd-tools button { flex: 1 1 auto; padding: 9px 8px; font-size: 0.92rem; }
 #app-puzzle .pz-ai textarea { width: 100%; font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; resize: vertical; }
 #app-puzzle .pz-ai textarea:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
 #app-puzzle .filein { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
@@ -288,20 +319,22 @@ body {
     <button type="button" data-game="cartas" aria-pressed="true">Mais Provável</button>
     <button type="button" data-game="puzzle" aria-pressed="false">Quebra-cabeça</button>
     <button type="button" data-game="vod" aria-pressed="false">Verdade ou desafio</button>
+    <button type="button" data-game="sudoku" aria-pressed="false">Sudoku</button>
   </div>
   <div class="wrap" id="app-jogos"></div>
   <div class="wrap" id="app-puzzle" hidden></div>
   <div class="wrap" id="app-vod" hidden></div>
+  <div class="wrap" id="app-sudoku" hidden></div>
 </section>
 <section id="mundo" hidden><div class="wrap" id="app-mundo"></div></section>
 
-<script src="porque.js?v=20261022f"></script>
+<script src="porque.js?v=20261025a"></script>
 <!-- Fora do Claude: Firebase + backend.js criam o mesmo window.claude que a página usa. -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js?v=20261022f"></script>
-<script src="backend.js?v=20261022f"></script>
+<script src="firebase-config.js?v=20261025a"></script>
+<script src="backend.js?v=20261025a"></script>
 <script>
 
 (function () {
@@ -1685,7 +1718,7 @@ body {
 
 (function(){
   var btns = document.querySelectorAll(".gamepick button");
-  var panes = { cartas: document.getElementById("app-jogos"), puzzle: document.getElementById("app-puzzle"), vod: document.getElementById("app-vod") };
+  var panes = { cartas: document.getElementById("app-jogos"), puzzle: document.getElementById("app-puzzle"), vod: document.getElementById("app-vod"), sudoku: document.getElementById("app-sudoku") };
   function show(k, save){
     Object.keys(panes).forEach(function(key){ panes[key].hidden = (key !== k); });
     btns.forEach(function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-game") === k ? "true" : "false"); });
@@ -1693,7 +1726,7 @@ body {
   }
   btns.forEach(function(b){ b.addEventListener("click", function(){ show(b.getAttribute("data-game"), true); }); });
   var start = "cartas";
-  try { var sg = localStorage.getItem("nosso-dia-game"); if (sg === "puzzle" || sg === "vod") start = sg; } catch(e){}
+  try { var sg = localStorage.getItem("nosso-dia-game"); if (sg === "puzzle" || sg === "vod" || sg === "sudoku") start = sg; } catch(e){}
   show(start, false);
 })();
 </script>
@@ -1979,7 +2012,8 @@ body {
 })();
 
 </script>
-<script src="mundo.js?v=20261022f"></script>
-<script src="lembra.js?v=20261022f"></script>
+<script src="mundo.js?v=20261025a"></script>
+<script src="lembra.js?v=20261025a"></script>
+<script src="sudoku.js?v=20261025a"></script>
 
 </body></html>

@@ -94,6 +94,20 @@
         ["Proyer, R. T. (2014). To love and play: Testing the association of adult playfulness with the relationship personality and relationship satisfaction. Current Psychology.", ""]
       ]
     },
+    sudoku: {
+      title: "Sudoku a dois",
+      idea: "As duas resolvem o mesmo sudoku, cada uma no seu celular. Não é uma disputa: o tabuleiro só fecha quando vocês juntam o que cada uma enxergou. As cores mostram quem colocou cada número, e a casa que a outra está olhando aparece marcada, para dar aquela sensação de estar lado a lado.",
+      research: [
+        "Fazer juntas algo novo e um pouco desafiador está associado a menos tédio e a uma relação avaliada como melhor (Aron et al., 2000). Um quebra-cabeça de lógica em dupla é um desafio pequeno desse tipo.",
+        "Num estudo com casais casados, o que mais se ligou à satisfação com o casamento não foi a quantidade de tempo livre juntos, e sim o quanto as duas pessoas gostavam do lazer que dividiam, principalmente das atividades simples e frequentes do dia a dia (Johnson, Zabriskie e Hill, 2006).",
+        "Por isso o sudoku é cooperativo e sem relógio na tela: a ideia é ser um passatempo gostoso de fazer juntas, não uma prova."
+      ],
+      limits: "Não há estudo sobre sudoku em casal. Os estudos citados são sobre atividades compartilhadas em geral e, na maioria, mostram associação, não causa.",
+      refs: [
+        ["Aron, A., Norman, C. C., Aron, E. N., McKenna, C., & Heyman, R. E. (2000). Couples' shared participation in novel and arousing activities and experienced relationship quality. Journal of Personality and Social Psychology, 78(2), 273–284.", ""],
+        ["Johnson, H. A., Zabriskie, R. B., & Hill, B. (2006). The contribution of couple leisure involvement, leisure time, and leisure satisfaction to marital satisfaction. Marriage & Family Review, 40(1), 69–91.", ""]
+      ]
+    },
     vod: {
       title: "Verdade ou desafio",
       idea: "Perguntas que convidam a se abrir e desafios para fazer pela câmera, em três níveis. Passar a vez é sempre permitido.",

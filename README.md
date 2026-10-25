@@ -57,6 +57,14 @@ Uma pessoa por vez; a carta aparece para as duas ao mesmo tempo.
 - Baralho fixo mais cartas geradas por IA, com desafios que dá para cumprir por videochamada ou mensagem.
 - Botões "Respondi" / "Cumpri" passam a vez para a outra pessoa.
 
+### Sudoku a dois
+
+O mesmo sudoku nos dois celulares, resolvido em equipe (sem disputa e sem relógio na tela).
+- Três dificuldades (fácil, médio, difícil); todo jogo é gerado na hora e tem uma única solução.
+- Cada número aparece com a cor de quem colocou, e a casa que a outra está olhando fica marcada em coral.
+- Anotações (rascunho) são de cada uma e ficam só no próprio aparelho.
+- "Mostrar erros" (pode desligar), "Dica" e, no computador, teclado (números, setas, apagar e N para anotar).
+
 ## Mundo: nosso mundinho
 
 Uma florestinha que cresce com o que vocês fazem no app. As duas veem o mesmo mundo, e uma miniatura dele fica no topo da aba Hoje.
@@ -69,11 +77,12 @@ Uma florestinha que cresce com o que vocês fazem no app. As duas veem o mesmo m
 | Quebra-cabeça completo | 🍄 um cantinho especial (cogumelos, banco, balanço, fogueira…) |
 | Verdade ou desafio cumprido | 🦋 borboletas (vaga-lumes à noite) |
 | Sintonia no Mais Provável | 🐦 um passarinho |
+| Sudoku resolvido juntas | 🐞 uma joaninha |
 | "Lembra quando…?" revivido pelas duas | 💞 um coração na árvore das lembranças |
 
 Com o total de atividades aparecem surpresas: riacho (5), ponte (12), cachoeira (20), lago com patos (35), arco-íris (50), cabana (75) e a árvore da vida (100). O céu segue o horário de quem está olhando (dia, entardecer e noite estrelada).
 
-Como funciona: o mundo não é salvo como imagem; o `mundo.js` redesenha tudo a partir das gratidões e encontros já salvos e de "sementes" na coleção `mundo` (escuta, quebra-cabeça, verdade ou desafio, sintonia). Cada semente tem um id fixo, então nada conta em dobro, e as posições vêm de sorteios com semente fixa, por isso o mundo é igual nos dois celulares. O histórico antigo de vocês já conta: o mundo nasce crescido.
+Como funciona: o mundo não é salvo como imagem; o `mundo.js` redesenha tudo a partir das gratidões e encontros já salvos e de "sementes" na coleção `mundo` (escuta, quebra-cabeça, verdade ou desafio, sintonia, sudoku). Cada semente tem um id fixo, então nada conta em dobro, e as posições vêm de sorteios com semente fixa, por isso o mundo é igual nos dois celulares. O histórico antigo de vocês já conta: o mundo nasce crescido.
 
 ## A ciência por trás
 
@@ -88,6 +97,7 @@ Cada atividade tem um botão **Por que isso?** que explica a ideia, o que a pesq
 | Mais Provável | Kurtz e Algoe (2015); Proyer (2014) |
 | Quebra-cabeça a quatro mãos | Aron et al. (2000); Proyer (2014) |
 | Verdade ou desafio | Aron et al. (1997); Reis e Shaver (1988); Jiang e Hancock (2013); Aron et al. (2000) |
+| Sudoku a dois | Aron et al. (2000); Johnson, Zabriskie e Hill (2006) |
 | Nosso mundo | Sem pesquisa direta: escolha de design (o mundo só cresce, nunca murcha) |
 
 ### Referências
@@ -97,6 +107,7 @@ Cada atividade tem um botão **Por que isso?** que explica a ideia, o que a pesq
 - Aron, A., Melinat, E., Aron, E. N., Vallone, R. D., & Bator, R. J. (1997). The experimental generation of interpersonal closeness. Personality and Social Psychology Bulletin, 23(4), 363–377. [Link](https://ggia.berkeley.edu/practice/practice_as_pdf/36_questions_for_increasing_closeness)
 - Aron, A., Norman, C. C., Aron, E. N., McKenna, C., & Heyman, R. E. (2000). Couples' shared participation in novel and arousing activities and experienced relationship quality. Journal of Personality and Social Psychology, 78(2), 273–284.
 - Jiang, L. C., & Hancock, J. T. (2013). Absence makes the communication grow fonder: Geographic separation, interpersonal media, and intimacy in dating relationships. Journal of Communication, 63(3), 556–577. [Link](https://academic.oup.com/joc/article/63/3/556/4085877)
+- Johnson, H. A., Zabriskie, R. B., & Hill, B. (2006). The contribution of couple leisure involvement, leisure time, and leisure satisfaction to marital satisfaction. Marriage & Family Review, 40(1), 69–91.
 - Kurtz, L. E., & Algoe, S. B. (2015). Putting laughter in context: Shared laughter as behavioral indicator of relationship well-being. Personal Relationships, 22(4), 573–590. [Link](https://pubmed.ncbi.nlm.nih.gov/26957946/)
 - Laurenceau, J.-P., Barrett, L. F., & Pietromonaco, P. R. (1998). Intimacy as an interpersonal process: The importance of self-disclosure, partner disclosure, and perceived partner responsiveness in interpersonal exchanges. Journal of Personality and Social Psychology, 74(5), 1238–1251. [Link](https://www.affective-science.org/pubs/1998/LaurenFBPl1998.pdf)
 - Markman, H. J., Stanley, S. M., & Blumberg, S. L. (2010). Fighting for your marriage (ed. rev.). Jossey-Bass.

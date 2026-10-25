@@ -1,5 +1,17 @@
 # Novidades do Nosso Dia
 
+## 25 de outubro de 2026
+
+### 🧩 Sudoku a dois
+
+Um jogo novo na aba **Jogos**: o mesmo sudoku nos dois celulares, resolvido em equipe. Cada número tem a cor de quem colocou, e a casa que a outra está olhando aparece marcada. Tem fácil, médio e difícil, anotações, dica e aviso de erro. Cada sudoku resolvido traz uma 🐞 joaninha para o mundinho.
+
+<img src="docs/img/novidades/sudoku.png" alt="Sudoku a dois com números azuis e coral, mostrando onde a outra pessoa está" width="260">
+
+### 🤖 Cartas da IA sem cortes
+
+As cartas geradas com IA não vêm mais cortadas, e o **Testar a IA** em Ajustes agora gera uma carta de verdade.
+
 ## 22 de outubro de 2026
 
 ### 🔬 "Por que isso?" em todas as atividades
